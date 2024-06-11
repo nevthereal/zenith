@@ -5,6 +5,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { fail } from '@sveltejs/kit';
 
 const formSchema = z.object({
 	task: z.string()
@@ -17,11 +18,21 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	default: async () => {
+	default: async ({ request }) => {
+		const form = await superValidate(request, zod(formSchema));
+
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		const task = form.data.task;
+
 		const { object } = await generateObject({
 			model: model,
 			schema: taskSchema,
-			prompt: 'Today is the 11 of June 2024. Dinner tomorrow at 9PM'
+			prompt: task
 		});
+
+		console.log(object);
 	}
 };
