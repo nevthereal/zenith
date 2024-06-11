@@ -30,7 +30,18 @@ export const actions: Actions = {
 			model: model,
 			schema: taskSchema,
 			mode: 'tool',
-			system: `Right now is the ${dayjs()}. You are an assistant who processes the users input. The "due"-property should be in the JavaScript Date format (not as a string) and the "content"-property should be capital cased. If no date is provided, set the "due"-property it to the same day at 10am. Morning means 8am, noon means 12pm, afternoon or evening means 6pm and night means 8pm. Remove anything that has to do with time from the "content"-property, unless it's essential.`,
+			system: `Right now is the ${dayjs()}. 
+				You are an assistant who processes the users input. 
+				
+				The "due"-property should be in the JavaScript Date format (not as a string).
+				If no time is provided, set the "due"-property it to the same day at 10am if it is not today.
+				If it is today, set it to the next full hour.
+				Otherwise, just set it to a logical time, like dinner would be in the evening.
+				Morning means 8am, noon means 12pm, afternoon or evening means 6pm and night or tonight means 8pm. 
+				Remove anything that has to do with time from the "content"-property, unless it's essential.
+				
+				The "content"-property describes the event or the task that should be completed.
+				It should be Capital Cased.`,
 			prompt: form.data.task
 		});
 
