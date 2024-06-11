@@ -1,4 +1,4 @@
-import { taskSchema } from '$lib';
+import { taskSchema, type Task } from '$lib/types';
 import { model } from '$lib/ai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';

@@ -6,4 +6,8 @@ export const taskSchema = z.object({
 	content: z.string()
 });
 
-export type Task = z.infer<typeof taskSchema>;
+type zTask = z.infer<typeof taskSchema>;
+
+export interface Task extends zTask {
+	userId: string;
+}
