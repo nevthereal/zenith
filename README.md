@@ -1,38 +1,24 @@
-# create-svelte
+# _Zenith_
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+![Logo](./static/favicon.png)
 
-## Creating a project
+Zenith (/ˈzen.ɪθ/) is an AI-powered Event/Task Manager for the web. The concept is simple; you put in a prompt and natural language processing of AI will transform your prompt into an event!
 
-If you're seeing this, you've probably already done this step. Congrats!
+# Technologies used
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+- SvelteKit
+- TailwindCSS + daisyui
+- Vercel AI SDK
+- zod, SvelteKit-Superforms
+- Drizzle ORM
+- Turso
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+# Roadmap
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- [x] AI features
+- [ ] Frontend UI
+- [ ] Frontend Functionality
+- [ ] Database
+- [ ] Data logic & functionality
+- [ ] Authentication
+- [ ] Admin page
