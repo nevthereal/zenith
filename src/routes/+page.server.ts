@@ -30,7 +30,7 @@ export const actions: Actions = {
 			model: model,
 			schema: taskSchema,
 			mode: 'tool',
-			system: `Output the "due" property in the JavaScript Date format. right now is ${dayjs()}. Format the "title" propert prettily.`,
+			system: `Right now is the ${dayjs()}. You are an assistant who processes the users input. The "due"-property should be in the JavaScript Date format (not as a string) and the "content"-property should be capital cased. If no date is provided, set the "due"-property it to the same day at 10am. Morning means 8am, noon means 12pm, afternoon or evening means 6pm and night means 8pm. Remove anything that has to do with time from the "content"-property, unless it's essential.`,
 			prompt: form.data.task
 		});
 
