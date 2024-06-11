@@ -8,12 +8,16 @@
 	const { form } = superForm(data.form);
 </script>
 
-<form method="POST" class="flex w-[50vw] flex-col">
-	<label for="task">Task:</label>
-	<input class="rounded-2xl border-2 p-2" type="text" name="task" bind:value={$form.task} />
-</form>
-
-<div class="rounded-2xl border-2 p-4">
-	<h1 class="mb-2">Task name</h1>
-	<p>Date</p>
+<div class="flex flex-col items-center">
+	<h1 class="mb-16 text-5xl font-bold">What are you up to?</h1>
+	<form method="POST" class="flex items-center gap-4">
+		<input
+			class="input input-bordered input-primary border-2"
+			type="text"
+			placeholder="Event or Task"
+			name="task"
+			bind:value={$form.task}
+		/>
+		<button class="btn btn-primary">Add!</button>
+	</form>
 </div>
