@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
+import dayjs from 'dayjs';
 
 const formSchema = z.object({
 	task: z.string()
@@ -25,12 +26,11 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const task = form.data.task;
-
 		const { object } = await generateObject({
 			model: model,
 			schema: taskSchema,
-			prompt: task
+			system: `Output the due property in the JavaScript Date format. right now is ${dayjs()}`,
+			prompt: form.data.task
 		});
 
 		console.log(object);
