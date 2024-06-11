@@ -29,7 +29,8 @@ export const actions: Actions = {
 		const { object } = await generateObject({
 			model: model,
 			schema: taskSchema,
-			system: `Output the due property in the JavaScript Date format. right now is ${dayjs()}`,
+			mode: 'tool',
+			system: `Output the "due" property in the JavaScript Date format. right now is ${dayjs()}. Format the "title" propert prettily.`,
 			prompt: form.data.task
 		});
 
