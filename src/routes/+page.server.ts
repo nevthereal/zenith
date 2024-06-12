@@ -9,7 +9,7 @@ import { fail } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
 import { tasksTable } from '$lib/db/schema';
-import { asc, eq } from 'drizzle-orm';
+import { asc, lt } from 'drizzle-orm';
 
 const formSchema = z.object({
 	task: z.string().min(1)
@@ -20,7 +20,7 @@ export const load: PageServerLoad = async () => {
 
 	const tasks = await db.query.tasksTable.findMany({
 		orderBy: asc(tasksTable.due),
-		limit: 2
+		where: lt(tasksTable.due, dayjs().endOf('day').toDate())
 	});
 
 	return { form, tasks };
