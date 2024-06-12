@@ -19,7 +19,7 @@
 </script>
 
 <div class="flex flex-col items-center">
-	<h1 class="mb-16 text-5xl font-bold">What are you up to?</h1>
+	<h1 class="mb-8 text-5xl font-bold">What are your plans?</h1>
 	<form method="POST" class="mb-12 flex items-center gap-4" use:enhance>
 		<input
 			class="input input-bordered input-primary border-2"

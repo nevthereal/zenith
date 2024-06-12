@@ -11,16 +11,18 @@
 			location.reload();
 		}
 	};
+
+	const due = dayjs(task.due);
 </script>
 
 <div class="flex flex-row justify-between gap-4 rounded-box bg-base-200 p-8 md:w-[30vw]">
 	<div>
 		<h1 class="text-2xl font-bold text-primary">{task.content}</h1>
-		<p class="">
-			{dayjs(task.due).toDate().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
+		<p class={due.isBefore(dayjs()) ? 'text-error' : ''}>
+			{due.toDate().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
 		</p>
 	</div>
 	<button class="btn btn-circle my-auto" on:click={deleteTask}>
-		<Trash />
+		<Trash stroke-width={2} />
 	</button>
 </div>
