@@ -28,6 +28,7 @@
 		</button>
 	</form>
 	<section class="flex flex-col gap-4">
+		<h2 class="text-lg font-semibold italic">Up today:</h2>
 		{#each tasks as task}
 			<Task {task} />
 		{/each}
