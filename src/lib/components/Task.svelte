@@ -20,7 +20,7 @@
 			{dayjs(task.due).toDate().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
 		</p>
 	</div>
-	<button class="btn btn-circle" on:click={deleteTask}>
+	<button class="btn btn-circle my-auto" on:click={deleteTask}>
 		<Trash />
 	</button>
 </div>

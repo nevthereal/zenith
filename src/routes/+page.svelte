@@ -7,7 +7,15 @@
 
 	const tasks = data.tasks;
 
-	const { form, delayed, enhance } = superForm(data.form);
+	const { form, delayed, enhance } = superForm(data.form, {
+		onUpdated() {
+			location.reload();
+		},
+
+		onError({ result }) {
+			console.error('Something went wrong', result);
+		}
+	});
 </script>
 
 <div class="flex flex-col items-center">
@@ -32,5 +40,6 @@
 		{#each tasks as task}
 			<Task {task} />
 		{/each}
+		<a href="/upcoming" class="link link-primary mr-auto font-semibold italic">View all upcoming</a>
 	</section>
 </div>

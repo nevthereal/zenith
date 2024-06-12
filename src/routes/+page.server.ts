@@ -57,5 +57,7 @@ export const actions: Actions = {
 			content: object.content,
 			due: new Date(object.due)
 		});
+
+		return message(form, object);
 	}
 };
