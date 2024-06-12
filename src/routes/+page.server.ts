@@ -3,19 +3,27 @@ import { model } from '$lib/ai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
-import { superValidate } from 'sveltekit-superforms';
+import { message, setMessage, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
 import dayjs from 'dayjs';
+import { db } from '$lib/db/db';
+import { tasksTable } from '$lib/db/schema';
+import { asc, eq } from 'drizzle-orm';
 
 const formSchema = z.object({
-	task: z.string()
+	task: z.string().min(1)
 });
 
 export const load: PageServerLoad = async () => {
 	const form = await superValidate(zod(formSchema));
 
-	return { form };
+	const tasks = await db.query.tasksTable.findMany({
+		orderBy: asc(tasksTable.due),
+		limit: 2
+	});
+
+	return { form, tasks };
 };
 
 export const actions: Actions = {
@@ -33,7 +41,7 @@ export const actions: Actions = {
 			system: `Right now is the ${dayjs()}. 
 				You are an assistant who processes the users input. 
 				
-				The "due"-property should be in the JavaScript Date format (not as a string).
+				The "due"-property should be in the JavaScript Date format ISO String.
 				If no time is provided, set the "due"-property it to the same day at 10am if it is not today.
 				If it is today, set it to the next full hour.
 				Otherwise, just set it to a logical time, like dinner would be in the evening.
@@ -45,6 +53,9 @@ export const actions: Actions = {
 			prompt: form.data.task
 		});
 
-		console.log(object);
+		await db.insert(tasksTable).values({
+			content: object.content,
+			due: new Date(object.due)
+		});
 	}
 };
