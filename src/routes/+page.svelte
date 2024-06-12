@@ -35,11 +35,16 @@
 			{/if}
 		</button>
 	</form>
-	<section class="flex flex-col gap-4">
-		<h2 class="text-lg font-semibold italic">Up today:</h2>
+
+	<section class="flex flex-col items-center gap-4">
+		{#if tasks.length > 0}
+			<h2 class="text-xl font-semibold italic">Up today:</h2>
+		{:else}
+			<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
+		{/if}
 		{#each tasks as task}
 			<Task {task} />
 		{/each}
-		<a href="/upcoming" class="link link-primary mr-auto font-semibold italic">View all upcoming</a>
+		<a href="/upcoming" class="link link-primary font-semibold italic">View all upcoming</a>
 	</section>
 </div>

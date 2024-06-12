@@ -46,10 +46,11 @@ export const actions: Actions = {
 				If it is today, set it to the next full hour.
 				Otherwise, just set it to a logical time, like dinner would be in the evening.
 				Morning means 8am, noon means 12pm, afternoon or evening means 6pm and night or tonight means 8pm. 
-				Remove anything that has to do with time from the "content"-property, unless it's essential.
+				If a word like yesterday or tomorrow comes up, really think about if it actually happens then or if I, 
+				for example want to tell somebody about yesterday. Or I may want to buy the groceries for tomorrows breakfast
+				this evening (suppose it is not too late) and not tomorrow morning. And take the opening hours for shops in consideration.
 				
-				The "content"-property describes the event or the task that should be completed.
-				It should be Capital Cased.`,
+				The "content"-property describes the event or the task that should be completed.`,
 			prompt: form.data.task
 		});
 
