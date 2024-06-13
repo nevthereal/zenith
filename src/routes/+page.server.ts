@@ -15,7 +15,7 @@ export const load: PageServerLoad = async () => {
 	const createForm = await superValidate(zod(createSchema));
 	const editForm = await superValidate(zod(editSchema));
 
-	const events = await db.query.eventsTable.findMany({
+	const events = db.query.eventsTable.findMany({
 		orderBy: asc(eventsTable.date),
 		where: lt(eventsTable.date, dayjs().endOf('day').toDate())
 	});

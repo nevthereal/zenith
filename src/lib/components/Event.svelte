@@ -72,7 +72,7 @@
 				<button on:click={toggleEdit} class="btn btn-circle my-auto">
 					<X />
 				</button>
-				<button class="btn btn-circle my-auto">
+				<button class="btn btn-circle my-auto" type="submit">
 					{#if !$delayed}
 						<Check />
 					{:else}
@@ -83,13 +83,3 @@
 		</form>
 	{/if}
 </div>
-
-<style>
-	input::-webkit-calendar-picker-indicator {
-		display: none;
-	}
-
-	input[type='date']::-webkit-input-placeholder {
-		visibility: hidden !important;
-	}
-</style>
