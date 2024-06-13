@@ -1,6 +1,6 @@
 <script lang="ts">
 	import logo from '$lib/assets/logo.svg';
-	import { CircleUser, List } from 'lucide-svelte';
+	import { CalendarDays, CircleUser, List } from 'lucide-svelte';
 </script>
 
 <nav class="flex items-center justify-between p-4">
@@ -10,7 +10,7 @@
 		></a
 	>
 	<div class="flex gap-8">
-		<List />
-		<CircleUser />
+		<a href="/upcoming"><CalendarDays /></a>
+		<a href="/account"><CircleUser /></a>
 	</div>
 </nav>
