@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 // for LLM
 export const eventSchema = z.object({
-	due: z.string(),
+	date: z.string(),
 	content: z.string()
 });
 

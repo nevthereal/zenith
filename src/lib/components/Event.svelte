@@ -27,7 +27,7 @@
 		}
 	};
 
-	const due = dayjs(event.due);
+	const date = dayjs(event.date);
 
 	$form.event = event.content;
 	$form.id = event.id;
@@ -37,8 +37,8 @@
 	{#if !edit}
 		<div>
 			<h1 class="text-2xl font-bold text-primary">{event.content}</h1>
-			<p class={due.isBefore(dayjs()) ? 'text-error' : ''}>
-				{due.toDate().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
+			<p class={date.isBefore(dayjs()) ? 'text-error' : ''}>
+				{date.toDate().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
 			</p>
 		</div>
 		<div class="flex gap-2">

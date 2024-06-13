@@ -1,0 +1,1 @@
+ALTER TABLE "events" RENAME COLUMN "due" TO "date";

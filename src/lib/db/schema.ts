@@ -2,7 +2,7 @@ import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const eventsTable = pgTable('events', {
 	id: serial('id').primaryKey(),
-	due: timestamp('due').notNull(),
+	date: timestamp('date').notNull(),
 	content: text('content').notNull(),
 	userId: text('userId').references(() => usersTable.id)
 });

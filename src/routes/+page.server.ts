@@ -16,8 +16,8 @@ export const load: PageServerLoad = async () => {
 	const editForm = await superValidate(zod(editSchema));
 
 	const events = await db.query.eventsTable.findMany({
-		orderBy: asc(eventsTable.due),
-		where: lt(eventsTable.due, dayjs().endOf('day').toDate())
+		orderBy: asc(eventsTable.date),
+		where: lt(eventsTable.date, dayjs().endOf('day').toDate())
 	});
 
 	return { createForm, events, editForm };
@@ -38,8 +38,8 @@ export const actions: Actions = {
 			system: `Right now is the ${dayjs()}. 
 				You are an assistant who processes the users input. 
 				
-				The "due"-property should be in the JavaScript Date format ISO String.
-				If no time is provided, set the "due"-property it to the same day at 10am if it is not today.
+				The "date"-property should be in the JavaScript Date format ISO String.
+				If no time is provided, set the "date"-property it to the same day at 10am if it is not today.
 				If it is today, set it to the next full hour.
 				Otherwise, just set it to a logical time, like dinner would be in the evening.
 				Morning means 8am, noon means 12pm, afternoon or evening means 6pm and night or tonight means 8pm. 
@@ -53,7 +53,7 @@ export const actions: Actions = {
 
 		await db.insert(eventsTable).values({
 			content: object.content,
-			due: new Date(object.due)
+			date: new Date(object.date)
 		});
 
 		return message(form, object);
@@ -80,7 +80,7 @@ export const actions: Actions = {
 			.update(eventsTable)
 			.set({
 				content: form.data.event,
-				due: new Date(object.date)
+				date: new Date(object.date)
 			})
 			.where(eq(eventsTable.id, form.data.id));
 	}

@@ -13,7 +13,7 @@ import { z } from 'zod';
 
 export const load: PageServerLoad = async () => {
 	const events = await db.query.eventsTable.findMany({
-		where: gt(eventsTable.due, dayjs().endOf('day').toDate())
+		where: gt(eventsTable.date, dayjs().endOf('day').toDate())
 	});
 
 	const editForm = await superValidate(zod(editSchema));
@@ -44,7 +44,7 @@ export const actions: Actions = {
 			.update(eventsTable)
 			.set({
 				content: form.data.event,
-				due: new Date(object.date)
+				date: new Date(object.date)
 			})
 			.where(eq(eventsTable.id, form.data.id));
 	}
