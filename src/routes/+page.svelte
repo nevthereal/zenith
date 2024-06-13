@@ -1,11 +1,11 @@
 <script lang="ts">
 	import type { PageServerData } from './$types';
 	import { superForm } from 'sveltekit-superforms';
-	import Task from '$lib/components/Task.svelte';
+	import Event from '$lib/components/Event.svelte';
 
 	export let data: PageServerData;
 
-	const tasks = data.tasks;
+	const events = data.events;
 
 	const { form, delayed, enhance } = superForm(data.form, {
 		onUpdated() {
@@ -25,8 +25,8 @@
 			class="input input-bordered input-primary border-2"
 			type="text"
 			placeholder="Event or Task"
-			name="task"
-			bind:value={$form.task}
+			name="event"
+			bind:value={$form.event}
 		/>
 		<button class="btn btn-primary"
 			>Add!
@@ -37,13 +37,13 @@
 	</form>
 
 	<section class="flex flex-col items-center gap-4">
-		{#if tasks.length > 0}
+		{#if events.length > 0}
 			<h2 class="text-xl font-semibold italic">Up today:</h2>
 		{:else}
 			<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
 		{/if}
-		{#each tasks as task}
-			<Task {task} />
+		{#each events as event}
+			<Event {event} />
 		{/each}
 		<a href="/upcoming" class="link link-primary font-semibold italic">View all upcoming</a>
 	</section>

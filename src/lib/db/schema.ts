@@ -1,6 +1,6 @@
 import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
 
-export const tasksTable = sqliteTable('tasks', {
+export const eventsTable = sqliteTable('events', {
 	id: int('id').primaryKey(),
 	due: int('due', { mode: 'timestamp' }).notNull(),
 	content: text('content').notNull(),

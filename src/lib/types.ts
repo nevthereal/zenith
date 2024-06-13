@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-export const taskSchema = z.object({
+export const eventSchema = z.object({
 	due: z.string(),
 	content: z.string()
 });
 
-type zTask = z.infer<typeof taskSchema>;
+type zEvent = z.infer<typeof eventSchema>;
 
-export interface Task extends zTask {}
+export interface Event extends zEvent {}

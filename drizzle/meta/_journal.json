@@ -15,6 +15,13 @@
       "when": 1718185731286,
       "tag": "0001_narrow_piledriver",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1718281141645,
+      "tag": "0002_serious_marvel_boy",
+      "breakpoints": true
     }
   ]
 }

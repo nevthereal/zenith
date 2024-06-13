@@ -1,4 +1,4 @@
-import { taskSchema, type Task } from '$lib/types';
+import { eventSchema } from '$lib/types';
 import { model } from '$lib/ai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
@@ -8,22 +8,22 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
-import { tasksTable } from '$lib/db/schema';
+import { eventsTable } from '$lib/db/schema';
 import { asc, lt } from 'drizzle-orm';
 
 const formSchema = z.object({
-	task: z.string().min(1)
+	event: z.string().min(1)
 });
 
 export const load: PageServerLoad = async () => {
 	const form = await superValidate(zod(formSchema));
 
-	const tasks = await db.query.tasksTable.findMany({
-		orderBy: asc(tasksTable.due),
-		where: lt(tasksTable.due, dayjs().endOf('day').toDate())
+	const events = await db.query.eventsTable.findMany({
+		orderBy: asc(eventsTable.due),
+		where: lt(eventsTable.due, dayjs().endOf('day').toDate())
 	});
 
-	return { form, tasks };
+	return { form, events };
 };
 
 export const actions: Actions = {
@@ -36,7 +36,7 @@ export const actions: Actions = {
 
 		const { object } = await generateObject({
 			model: model,
-			schema: taskSchema,
+			schema: eventSchema,
 			mode: 'tool',
 			system: `Right now is the ${dayjs()}. 
 				You are an assistant who processes the users input. 
@@ -50,11 +50,11 @@ export const actions: Actions = {
 				for example want to tell somebody about yesterday. Or I may want to buy the groceries for tomorrows breakfast
 				this evening (suppose it is not too late) and not tomorrow morning. And take the opening hours for shops in consideration.
 				
-				The "content"-property describes the event or the task that should be completed.`,
-			prompt: form.data.task
+				The "content"-property describes the event or the event that should be completed.`,
+			prompt: form.data.event
 		});
 
-		await db.insert(tasksTable).values({
+		await db.insert(eventsTable).values({
 			content: object.content,
 			due: new Date(object.due)
 		});
