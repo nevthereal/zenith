@@ -18,6 +18,21 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Zenith</title>
+	<meta name="description" content="AI-powered planning. No more annoying interfaces." />
+	<meta property="og:title" content="Zenith" />
+	<meta property="og:description" content="AI-powered planning. No more annoying interfaces." />
+	<meta property="og:url" content="https://www.zenith.com" />
+	<meta
+		property="twitter:description"
+		content="AI-powered planning. No more annoying interfaces."
+	/>
+	<meta property="twitter:title" content="Zenith" />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:site" content="@BremNeville" />
+</svelte:head>
+
 <div class="flex flex-col items-center">
 	<h1 class="mb-8 text-5xl font-bold">What are your plans?</h1>
 	<form action="?/create" method="POST" class="mb-12 flex items-center gap-4" use:enhance>
