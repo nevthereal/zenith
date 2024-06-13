@@ -1,21 +1,24 @@
-import { sqliteTable, int, text } from 'drizzle-orm/sqlite-core';
+import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
-export const eventsTable = sqliteTable('events', {
-	id: int('id').primaryKey(),
-	due: int('due', { mode: 'timestamp' }).notNull(),
+export const eventsTable = pgTable('events', {
+	id: serial('id').primaryKey(),
+	due: timestamp('due').notNull(),
 	content: text('content').notNull(),
-	userId: int('userId').references(() => usersTable.id)
+	userId: text('userId').references(() => usersTable.id)
 });
 
-export const usersTable = sqliteTable('users', {
+export const usersTable = pgTable('users', {
 	id: text('id').notNull().primaryKey(),
 	username: text('username')
 });
 
-export const sessionTable = sqliteTable('sessions', {
-	id: text('id').notNull().primaryKey(),
+export const sessionTable = pgTable('sessions', {
+	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
 		.references(() => usersTable.id),
-	expiresAt: int('expires_at').notNull()
+	expiresAt: timestamp('expires_at', {
+		withTimezone: true,
+		mode: 'date'
+	}).notNull()
 });
