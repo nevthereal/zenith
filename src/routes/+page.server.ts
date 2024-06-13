@@ -1,34 +1,31 @@
-import { eventSchema } from '$lib/types';
+import { eventSchema, createSchema, editSchema } from '$lib/schemas';
 import { model } from '$lib/ai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
-import { z } from 'zod';
-import { message, setMessage, superValidate } from 'sveltekit-superforms';
+import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
 import { eventsTable } from '$lib/db/schema';
-import { asc, lt } from 'drizzle-orm';
-
-const formSchema = z.object({
-	event: z.string().min(1)
-});
+import { asc, eq, lt } from 'drizzle-orm';
+import { z } from 'zod';
 
 export const load: PageServerLoad = async () => {
-	const form = await superValidate(zod(formSchema));
+	const createForm = await superValidate(zod(createSchema));
+	const editForm = await superValidate(zod(editSchema));
 
 	const events = await db.query.eventsTable.findMany({
 		orderBy: asc(eventsTable.due),
 		where: lt(eventsTable.due, dayjs().endOf('day').toDate())
 	});
 
-	return { form, events };
+	return { createForm, events, editForm };
 };
 
 export const actions: Actions = {
-	default: async ({ request }) => {
-		const form = await superValidate(request, zod(formSchema));
+	create: async ({ request }) => {
+		const form = await superValidate(request, zod(createSchema));
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -60,5 +57,31 @@ export const actions: Actions = {
 		});
 
 		return message(form, object);
+	},
+	edit: async ({ request }) => {
+		const form = await superValidate(request, zod(editSchema));
+
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		const { object } = await generateObject({
+			model: model,
+			schema: z.object({
+				date: z.string()
+			}),
+			mode: 'tool',
+			system: `For context: right now is ${dayjs()}
+				You are an assistant who transforms my input into a Date ISO String.`,
+			prompt: form.data.date
+		});
+
+		await db
+			.update(eventsTable)
+			.set({
+				content: form.data.event,
+				due: new Date(object.date)
+			})
+			.where(eq(eventsTable.id, form.data.id));
 	}
 };

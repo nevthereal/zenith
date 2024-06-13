@@ -14,7 +14,7 @@
 			<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
 		{:else}
 			{#each events as event}
-				<Event {event} />
+				<Event data={data.editForm} {event} />
 			{/each}
 		{/if}
 	</section>

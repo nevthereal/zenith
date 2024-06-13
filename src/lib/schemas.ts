@@ -1,0 +1,25 @@
+import dayjs from 'dayjs';
+import { z } from 'zod';
+
+// for LLM
+export const eventSchema = z.object({
+	due: z.string(),
+	content: z.string()
+});
+
+// for creating form
+export const createSchema = z.object({
+	event: z.string().min(1)
+});
+
+// for editing form
+export const editSchema = z.object({
+	event: z.string().min(1),
+	date: z.string(),
+	id: z.number()
+});
+
+type zEvent = z.infer<typeof eventSchema>; // for LLM
+export type EditSchema = typeof editSchema; // for editing form
+
+export interface Event extends zEvent {}
