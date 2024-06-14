@@ -4,28 +4,34 @@ import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
 import { eventsTable } from '$lib/db/schema';
-import { asc, eq, lt } from 'drizzle-orm';
+import { and, asc, eq, lt } from 'drizzle-orm';
 import { z } from 'zod';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+	const user = locals.user;
+	if (!user) redirect(302, '/login');
+
 	const createForm = await superValidate(zod(createSchema));
 	const editForm = await superValidate(zod(editSchema));
 
 	const events = db.query.eventsTable.findMany({
 		orderBy: asc(eventsTable.date),
-		where: lt(eventsTable.date, dayjs().endOf('day').toDate())
+		where: and(lt(eventsTable.date, dayjs().endOf('day').toDate()), eq(eventsTable.userId, user.id))
 	});
 
-	return { createForm, events, editForm };
+	return { createForm, events, editForm, user };
 };
 
 export const actions: Actions = {
-	create: async ({ request }) => {
+	create: async ({ request, locals }) => {
 		const form = await superValidate(request, zod(createSchema));
+
+		const user = locals.user;
+		if (!user) redirect(302, '/login');
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -53,7 +59,8 @@ export const actions: Actions = {
 
 		await db.insert(eventsTable).values({
 			content: object.content,
-			date: new Date(object.date)
+			date: new Date(object.date),
+			userId: user.id
 		});
 
 		return message(form, object);

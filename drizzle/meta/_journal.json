@@ -15,6 +15,20 @@
       "when": 1718288690492,
       "tag": "0001_moaning_grandmaster",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1718348897486,
+      "tag": "0002_many_joshua_kane",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1718349487046,
+      "tag": "0003_wide_thing",
+      "breakpoints": true
     }
   ]
 }

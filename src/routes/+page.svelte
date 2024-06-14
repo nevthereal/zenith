@@ -16,6 +16,8 @@
 			console.error('Something went wrong', result);
 		}
 	});
+
+	const user = data.user;
 </script>
 
 <svelte:head>
@@ -34,6 +36,9 @@
 </svelte:head>
 
 <div class="flex flex-col items-center">
+	<h3 class="text-xl font-medium">
+		Hi, <span class="font-bold text-primary">{user.username}</span>
+	</h3>
 	<h1 class="mb-8 text-5xl font-bold">What are your plans?</h1>
 	<form action="?/create" method="POST" class="mb-12 flex items-center gap-4" use:enhance>
 		<input

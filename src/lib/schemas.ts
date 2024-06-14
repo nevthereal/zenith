@@ -19,7 +19,7 @@ export const editSchema = z.object({
 	id: z.number()
 });
 
-type zEvent = z.infer<typeof eventSchema>; // for LLM
+type zEvent = z.infer<typeof eventSchema>;
 export type EditSchema = typeof editSchema; // for editing form
 
 export interface Event extends zEvent {}
