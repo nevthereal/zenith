@@ -15,7 +15,7 @@ export const createSchema = z.object({
 // for editing form
 export const editSchema = z.object({
 	event: z.string().min(1),
-	date: z.string(),
+	date: z.date(),
 	id: z.number()
 });
 

@@ -37,7 +37,7 @@
 	{#if !edit}
 		<div>
 			<h1 class="text-2xl font-bold text-primary">{event.content}</h1>
-			<p class={date.isBefore(dayjs()) ? 'text-error' : ''}>
+			<p class={date.isBefore(dayjs()) ? 'text-warning' : ''}>
 				{date.toDate().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
 			</p>
 		</div>
@@ -63,9 +63,9 @@
 				{...$constraints.date}
 				bind:value={$form.date}
 				name="date"
-				type="text"
+				type="datetime-local"
 				placeholder="When?"
-				class="input w-full"
+				class="input w-full text-center"
 			/>
 			<input type="text" name="id" class="hidden" bind:value={$form.id} />
 			<div class="flex">
@@ -83,3 +83,13 @@
 		</form>
 	{/if}
 </div>
+
+<style>
+	input::-webkit-calendar-picker-indicator {
+		display: none;
+	}
+
+	input[type='date']::-webkit-input-placeholder {
+		visibility: hidden !important;
+	}
+</style>

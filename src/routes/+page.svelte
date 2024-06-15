@@ -8,8 +8,8 @@
 	const events = data.events;
 
 	const { form, delayed, enhance, constraints } = superForm(data.createForm, {
-		onResult() {
-			location.reload();
+		onUpdated({ form }) {
+			if (form.valid) location.reload();
 		},
 
 		onError({ result }) {
@@ -25,7 +25,7 @@
 	<meta name="description" content="AI-powered planning. No more annoying interfaces." />
 	<meta property="og:title" content="Zenith" />
 	<meta property="og:description" content="AI-powered planning. No more annoying interfaces." />
-	<meta property="og:url" content="https://www.zenith.com" />
+	<meta property="og:url" content="https://www.Zenith.xyz" />
 	<meta
 		property="twitter:description"
 		content="AI-powered planning. No more annoying interfaces."

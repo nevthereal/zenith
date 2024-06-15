@@ -9,7 +9,6 @@ import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
 import { eventsTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
-import { z } from 'zod';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = locals.user;
@@ -71,23 +70,11 @@ export const actions: Actions = {
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-
-		const { object } = await generateObject({
-			model: model,
-			schema: z.object({
-				date: z.string()
-			}),
-			mode: 'tool',
-			system: `For context: right now is ${dayjs()}
-				You are an assistant who transforms my input into a Date ISO String.`,
-			prompt: form.data.date
-		});
-
 		await db
 			.update(eventsTable)
 			.set({
 				content: form.data.event,
-				date: new Date(object.date)
+				date: form.data.date
 			})
 			.where(eq(eventsTable.id, form.data.id));
 	}
