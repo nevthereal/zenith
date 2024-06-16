@@ -12,13 +12,14 @@
 	let editModal: HTMLDialogElement;
 
 	onMount(() => {
-		editModal = document.getElementById('edit-modal');
+		editModal = document.getElementById(`edit-modal${event.id}`) as HTMLDialogElement;
 	});
 
 	const { form, enhance, constraints, delayed } = superForm(data, {
 		onResult() {
 			location.reload();
-		}
+		},
+		id: event.id.toString()
 	});
 	const deleteEvent = async () => {
 		if (confirm(`Do you want to delete "${event.content}"`)) {
@@ -48,7 +49,7 @@
 			<Trash stroke-width={2} />
 		</button>
 	</div>
-	<dialog id="edit-modal" class="modal">
+	<dialog id={`edit-modal${event.id}`} class="modal">
 		<div class="modal-box">
 			<form method="POST" action="?/edit" use:enhance class="flex justify-between gap-2">
 				<input
