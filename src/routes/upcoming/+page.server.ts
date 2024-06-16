@@ -5,7 +5,7 @@ import { eventsTable } from '$lib/db/schema';
 import dayjs from 'dayjs';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { editSchema } from '$lib/schemas';
+import { editSchema } from '$lib/zod';
 import { fail, redirect } from '@sveltejs/kit';
 import { generateObject } from 'ai';
 import { model } from '$lib/ai';

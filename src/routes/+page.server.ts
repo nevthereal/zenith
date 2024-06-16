@@ -1,4 +1,4 @@
-import { eventSchema, createSchema, editSchema } from '$lib/schemas';
+import { eventSchema, createSchema, editSchema } from '$lib/zod';
 import { model } from '$lib/ai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';

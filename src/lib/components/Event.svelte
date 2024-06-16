@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { eventsTable } from '$lib/db/schema';
-	import type { EditSchema } from '$lib/schemas';
+	import type { EditSchema } from '$lib/zod';
 	import dayjs from 'dayjs';
 	import { Check, Pencil, Trash, X } from 'lucide-svelte';
 	import { onMount } from 'svelte';
