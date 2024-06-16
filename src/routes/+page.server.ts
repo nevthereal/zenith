@@ -40,7 +40,7 @@ export const actions: Actions = {
 			model: model,
 			schema: eventSchema,
 			mode: 'tool',
-			system: `Right now is the ${dayjs()}. 
+			system: `Right now is the ${dayjs().toDate()}. 
 				You are an assistant who processes the users input. 
 				
 				The "date"-property should be in the JavaScript Date format ISO String.
@@ -51,6 +51,7 @@ export const actions: Actions = {
 				If a word like yesterday or tomorrow comes up, really think about if it actually happens then or if I, 
 				for example want to tell somebody about yesterday. Or I may want to buy the groceries for tomorrows breakfast
 				this evening (suppose it is not too late) and not tomorrow morning. And take the opening hours for shops in consideration.
+				The time should be in my timezone.
 				
 				The "content"-property describes the event or the event that should be completed.`,
 			prompt: form.data.event
