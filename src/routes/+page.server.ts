@@ -9,10 +9,10 @@ import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
 import { eventsTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
+import { checkUser } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const user = locals.user;
-	if (!user) redirect(302, '/login');
+	const user = checkUser(locals);
 
 	const createForm = await superValidate(zod(createSchema));
 	const editForm = await superValidate(zod(editSchema));
@@ -30,7 +30,7 @@ export const actions: Actions = {
 		const form = await superValidate(request, zod(createSchema));
 
 		const user = locals.user;
-		if (!user) redirect(302, '/login');
+		if (!user) redirect(302, '/signin');
 
 		if (!form.valid) {
 			return fail(400, { form });

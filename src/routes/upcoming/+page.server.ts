@@ -6,11 +6,11 @@ import dayjs from 'dayjs';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { editSchema } from '$lib/zod';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
+import { checkUser } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const user = locals.user;
-	if (!user) redirect(302, '/login');
+	const user = checkUser(locals);
 
 	const events = await db.query.eventsTable.findMany({
 		where: and(

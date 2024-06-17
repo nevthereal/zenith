@@ -1,10 +1,9 @@
 import { lucia } from '$lib/auth/lucia';
-import { fail, redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ locals, cookies }) => {
 	if (!locals.session) {
-		return fail(401);
+		return new Response('Failed', { status: 405 });
 	}
 	await lucia.invalidateSession(locals.session.id);
 	const sessionCookie = lucia.createBlankSessionCookie();
@@ -12,5 +11,6 @@ export const POST: RequestHandler = async ({ locals, cookies }) => {
 		path: '.',
 		...sessionCookie.attributes
 	});
-	redirect(302, '/login');
+
+	return new Response('Success');
 };
