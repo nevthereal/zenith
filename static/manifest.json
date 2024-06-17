@@ -1,0 +1,17 @@
+{
+	"short-name": "Zenith",
+	"name": "Zenith",
+	"start-url": "/",
+	"icons": [
+		{
+			"src": "favicon.png",
+			"sizes": "48x48",
+			"type": "image/png"
+		}
+	],
+	"background_color": "#1a202c",
+	"display": "standalone",
+	"theme_color": "#5a67d8",
+	"categories": ["productivity", "utilities"],
+	"description": "AI-powered planning at your fingertips"
+}
