@@ -3,16 +3,19 @@
 	import type { EditSchema } from '$lib/zod';
 	import dayjs from 'dayjs';
 	import { Check, Pencil, Trash, X } from 'lucide-svelte';
-	import { onMount } from 'svelte';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 
-	export let event: typeof eventsTable.$inferSelect;
-	export let data: SuperValidated<Infer<EditSchema>>;
+	interface Props {
+		data: SuperValidated<Infer<EditSchema>>;
+		event: typeof eventsTable.$inferSelect;
+	}
+
+	let { data, event }: Props = $props();
 
 	let editModal: HTMLDialogElement;
 	let deleteModal: HTMLDialogElement;
 
-	onMount(() => {
+	$effect(() => {
 		editModal = document.getElementById(`edit-modal-${event.id}`) as HTMLDialogElement;
 		deleteModal = document.getElementById(`delete-modal-${event.id}`) as HTMLDialogElement;
 	});
@@ -46,10 +49,10 @@
 		</p>
 	</div>
 	<div class="flex gap-2">
-		<button class="btn btn-circle my-auto" on:click={() => editModal.showModal()}>
+		<button class="btn btn-circle my-auto" onclick={() => editModal.showModal()}>
 			<Pencil stroke-width={2} />
 		</button>
-		<button class="btn btn-circle my-auto" on:click={() => deleteModal.showModal()}>
+		<button class="btn btn-circle my-auto" onclick={() => deleteModal.showModal()}>
 			<Trash stroke-width={2} />
 		</button>
 	</div>
@@ -93,8 +96,8 @@
 	</dialog>
 	<dialog class="modal" id={`delete-modal-${event.id}`}>
 		<div class="modal-box">
-			<h3 class="text-lg font-bold">Are you sure?</h3>
-			<p class="py-4">
+			<h2 class="text-xl font-bold">Are you sure?</h2>
+			<p class="pt-6">
 				You are about to delete <br />
 				<span class="font-medium text-primary">{event.content}</span>
 				at
@@ -103,7 +106,7 @@
 			<div class="modal-action">
 				<form method="dialog" class="flex gap-4">
 					<button class="btn">No</button>
-					<button class="btn btn-error" on:click={deleteEvent}>Yes</button>
+					<button class="btn btn-error" onclick={deleteEvent}>Yes</button>
 				</form>
 			</div>
 		</div>

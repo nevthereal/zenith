@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Event from '$lib/components/Event.svelte';
-	import type { PageServerData } from './$types';
 
-	export let data: PageServerData;
+	let { data } = $props();
 
 	const events = data.events;
 </script>

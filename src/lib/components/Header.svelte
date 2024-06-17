@@ -1,6 +1,6 @@
 <script lang="ts">
 	import logo from '$lib/assets/logo.svg';
-	import { CalendarDays, CircleUser, List } from 'lucide-svelte';
+	import { CalendarDays, CircleUser } from 'lucide-svelte';
 </script>
 
 <nav class="flex items-center justify-between p-4">

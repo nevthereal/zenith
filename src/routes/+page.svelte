@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { PageServerData } from './$types';
 	import { superForm } from 'sveltekit-superforms';
 	import Event from '$lib/components/Event.svelte';
 
-	export let data: PageServerData;
+	let { data } = $props();
 
 	const events = data.events;
 

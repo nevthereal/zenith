@@ -7,9 +7,6 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { editSchema } from '$lib/zod';
 import { fail, redirect } from '@sveltejs/kit';
-import { generateObject } from 'ai';
-import { model } from '$lib/ai';
-import { z } from 'zod';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = locals.user;
