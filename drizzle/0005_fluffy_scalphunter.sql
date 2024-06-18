@@ -1,0 +1,1 @@
+ALTER TABLE "events" ALTER COLUMN "tag" SET NOT NULL;
