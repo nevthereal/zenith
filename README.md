@@ -25,6 +25,6 @@ Zenith is an AI-powered Event/Task Manager for the web. The concept is simple; y
 - [x] Database
 - [x] Authentication
 - [x] Edit Modal
-- [ ] Categories
+- [ ] Tags
 - [ ] Stripe
 - [ ] Admin page

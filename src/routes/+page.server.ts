@@ -60,7 +60,8 @@ export const actions: Actions = {
 		await db.insert(eventsTable).values({
 			content: object.content,
 			date: new Date(object.date),
-			userId: user.id
+			userId: user.id,
+			tag: object.tag
 		});
 
 		return message(form, object);
