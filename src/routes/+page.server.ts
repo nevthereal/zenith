@@ -76,7 +76,8 @@ export const actions: Actions = {
 			.update(eventsTable)
 			.set({
 				content: form.data.event,
-				date: form.data.date
+				date: form.data.date,
+				tag: form.data.tag
 			})
 			.where(eq(eventsTable.id, form.data.id));
 	}

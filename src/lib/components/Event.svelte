@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { eventsTable } from '$lib/db/schema';
+	import { eventsTable, tagEnum } from '$lib/db/schema';
+	import { cn } from '$lib/utils';
 	import type { EditSchema } from '$lib/zod';
 	import dayjs from 'dayjs';
 	import { Check, Pencil, Trash, X } from 'lucide-svelte';
@@ -14,6 +15,8 @@
 
 	let editModal: HTMLDialogElement;
 	let deleteModal: HTMLDialogElement;
+
+	const tags = tagEnum.enumValues;
 
 	$effect(() => {
 		editModal = document.getElementById(`edit-modal-${event.id}`) as HTMLDialogElement;
@@ -43,9 +46,11 @@
 
 <div class="flex flex-row justify-between gap-4 rounded-box bg-base-200 p-8 md:w-[30vw]">
 	<div>
-		<h1 class="text-2xl font-bold text-primary">{event.content}</h1>
-		<p class={date.isBefore(dayjs()) ? 'text-warning' : ''}>
-			{formattedDate}
+		<h1 class="text-3xl font-bold text-primary">{event.content}</h1>
+		<p>
+			<span class={cn(date.isBefore(dayjs()) && 'text-warning')}>{formattedDate}</span>
+			{'·'}
+			<span class="font-medium text-secondary">{event.tag}</span>
 		</p>
 	</div>
 	<div class="flex gap-2">
@@ -58,50 +63,52 @@
 	</div>
 	<dialog id={`edit-modal-${event.id}`} class="modal">
 		<div class="modal-box">
-			<form method="POST" action="?/edit" use:enhance class="flex justify-between gap-2">
+			<h1 class="mb-4 text-xl font-medium">Edit Event</h1>
+			<form method="POST" action="?/edit" use:enhance class="flex flex-col gap-4">
 				<input
 					{...$constraints.event}
 					bind:value={$form.event}
 					type="text"
 					name="event"
 					placeholder="What?"
-					class="input w-full"
+					class="input input-bordered w-full"
 				/>
-				<input
-					{...$constraints.date}
-					bind:value={$form.date}
-					name="date"
-					type="datetime-local"
-					placeholder="When?"
-					class="input w-full text-center"
-				/>
+				<div class="grid grid-cols-2 gap-4">
+					<input
+						{...$constraints.date}
+						bind:value={$form.date}
+						name="date"
+						type="datetime-local"
+						placeholder="When?"
+						class="input input-bordered w-full"
+					/>
+					<select name="tag" bind:value={$form.tag} class="select select-bordered">
+						<option disabled selected>Select a Tag</option>
+						{#each tags as tag}
+							<option class="option" value={tag}>{tag}</option>
+						{/each}
+					</select>
+				</div>
 				<input type="text" name="id" class="hidden" bind:value={$form.id} />
 				<div class="flex">
-					<button class="btn btn-circle my-auto" type="submit">
-						{#if !$delayed}
-							<Check />
-						{:else}
+					<button class="btn btn-primary mx-auto" type="submit">
+						Update
+						{#if $delayed}
 							<span class="loading loading-spinner loading-xs"></span>
 						{/if}
 					</button>
 				</div>
 			</form>
 			<p class="mt-8 select-none text-center font-mono text-xs text-base-content/75">
-				press <kbd class="kbd">esc</kbd> or click outside to cancel
+				press <kbd class="kbd">esc</kbd> to cancel
 			</p>
 		</div>
-		<form method="dialog" class="modal-backdrop">
-			<button>close</button>
-		</form>
 	</dialog>
 	<dialog class="modal" id={`delete-modal-${event.id}`}>
 		<div class="modal-box">
 			<h2 class="text-xl font-bold">Are you sure?</h2>
 			<p class="pt-6">
-				You are about to delete <br />
-				<span class="font-medium text-primary">{event.content}</span>
-				at
-				<span class="font-medium text-primary">{formattedDate}</span>
+				You are about to delete "{event.content}"
 			</p>
 			<div class="modal-action">
 				<form method="dialog" class="flex gap-4">

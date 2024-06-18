@@ -32,11 +32,13 @@ export const actions: Actions = {
 		if (!form.valid) {
 			return fail(400, { form });
 		}
+
 		await db
 			.update(eventsTable)
 			.set({
 				content: form.data.event,
-				date: form.data.date
+				date: form.data.date,
+				tag: form.data.tag
 			})
 			.where(eq(eventsTable.id, form.data.id));
 	}

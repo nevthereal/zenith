@@ -1,4 +1,6 @@
 import { redirect } from '@sveltejs/kit';
+import clsx, { type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export const checkUser = (locals: App.Locals) => {
 	const user = locals.user;
@@ -6,3 +8,7 @@ export const checkUser = (locals: App.Locals) => {
 
 	return user;
 };
+
+export function cn(...inputs: ClassValue[]) {
+	return twMerge(clsx(inputs));
+}

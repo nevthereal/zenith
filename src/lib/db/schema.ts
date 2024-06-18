@@ -10,7 +10,7 @@ export const eventsTable = pgTable('events', {
 	userId: text('userId')
 		.references(() => usersTable.id)
 		.notNull(),
-	tag: tagEnum('tag')
+	tag: tagEnum('tag').notNull()
 });
 
 export const usersTable = pgTable('users', {
