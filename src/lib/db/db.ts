@@ -8,4 +8,4 @@ const client = neon(DB_URL);
 
 export const db = drizzle(client, { schema });
 
-export const adapter = new DrizzlePostgreSQLAdapter(db, schema.sessionTable, schema.usersTable);
+export const adapter = new DrizzlePostgreSQLAdapter(db, schema.sessionsTable, schema.usersTable);

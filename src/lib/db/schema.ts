@@ -1,4 +1,7 @@
-import { boolean, integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
+import { boolean, integer, pgEnum, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+
+export const tagEnum = pgEnum('tag', ['Private', 'Work', 'Fitness', 'Events', 'Productivity']);
 
 export const eventsTable = pgTable('events', {
 	id: serial('id').primaryKey(),
@@ -6,7 +9,8 @@ export const eventsTable = pgTable('events', {
 	content: text('content').notNull(),
 	userId: text('userId')
 		.references(() => usersTable.id)
-		.notNull()
+		.notNull(),
+	tag: tagEnum('tag')
 });
 
 export const usersTable = pgTable('users', {
@@ -18,7 +22,7 @@ export const usersTable = pgTable('users', {
 	joined: timestamp('joined').notNull()
 });
 
-export const sessionTable = pgTable('sessions', {
+export const sessionsTable = pgTable('sessions', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
@@ -28,3 +32,12 @@ export const sessionTable = pgTable('sessions', {
 		mode: 'date'
 	}).notNull()
 });
+
+export const userRelation = relations(usersTable, ({ many }) => ({
+	events: many(eventsTable),
+	sessions: many(sessionsTable)
+}));
+
+export const eventRelation = relations(eventsTable, ({ one }) => ({
+	user: one(usersTable, { fields: [eventsTable.userId], references: [usersTable.id] })
+}));
