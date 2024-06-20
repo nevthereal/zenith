@@ -1,14 +1,10 @@
 <script lang="ts">
+	import { redirect } from '@sveltejs/kit';
 	import wretch from 'wretch';
 
 	let { data } = $props();
 
 	const user = data.user;
-
-	const signout = async () => {
-		wretch('/api/signout').post();
-		location.reload();
-	};
 
 	const purchase = async () => {
 		wretch('/api/stripe/purchase')
@@ -19,10 +15,17 @@
 	};
 </script>
 
+{#if user.paid}
+	<div class="flex">
+		<button class="btn btn-warning btn-lg mx-auto" onclick={purchase}
+			>Purchase the product to continue</button
+		>
+	</div>
+{/if}
+
 <h1>Welcome, {user.username}</h1>
 {#if user.admin}
 	<p>You are an admin</p>
 {/if}
-<button onclick={purchase}>Purchase the product to continue</button>
 
-<button onclick={signout} class="btn btn-error mt-4">Log out</button>
+<a href="/api/signout" class="btn btn-error mt-4">Log out</a>

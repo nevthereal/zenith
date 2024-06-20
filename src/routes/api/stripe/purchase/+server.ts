@@ -15,8 +15,8 @@ export const POST: RequestHandler = async ({ url, locals }) => {
 			userId: user.id
 		},
 		customer_creation: 'always',
-		success_url: `${url.origin}/success`,
-		cancel_url: `${url.origin}/cancel`
+		success_url: `${url.origin}/success?id={CHECKOUT_SESSION_ID}`,
+		cancel_url: `${url.origin}/account`
 	});
 
 	return new Response(JSON.stringify({ url: session.url }), {

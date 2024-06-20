@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge';
 
 export const checkUser = (locals: App.Locals) => {
 	const user = locals.user;
-	if (!user) redirect(302, '/signin');
+	if (!user) redirect(302, '/landing');
 	return user;
 };
 

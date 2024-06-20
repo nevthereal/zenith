@@ -1,7 +1,8 @@
 import { lucia } from '$lib/auth/lucia';
+import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
-export const POST: RequestHandler = async ({ locals, cookies }) => {
+export const GET: RequestHandler = async ({ locals, cookies }) => {
 	if (!locals.session) {
 		return new Response('Failed', { status: 405 });
 	}
@@ -12,5 +13,5 @@ export const POST: RequestHandler = async ({ locals, cookies }) => {
 		...sessionCookie.attributes
 	});
 
-	return new Response('Success');
+	redirect(302, '/signin');
 };
