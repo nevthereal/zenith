@@ -19,7 +19,9 @@ export const usersTable = pgTable('users', {
 	githubId: integer('github_id').unique().notNull(),
 	email: text('email').notNull(),
 	admin: boolean('admin').default(false),
-	joined: timestamp('joined').notNull()
+	joined: timestamp('joined').notNull(),
+	stripeId: text('stripe-id'),
+	paid: boolean('paid').default(false)
 });
 
 export const sessionsTable = pgTable('sessions', {
@@ -34,8 +36,7 @@ export const sessionsTable = pgTable('sessions', {
 });
 
 export const userRelation = relations(usersTable, ({ many }) => ({
-	events: many(eventsTable),
-	sessions: many(sessionsTable)
+	events: many(eventsTable)
 }));
 
 export const eventRelation = relations(eventsTable, ({ one }) => ({

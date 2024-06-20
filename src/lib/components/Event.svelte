@@ -3,8 +3,9 @@
 	import { cn } from '$lib/utils';
 	import type { EditSchema } from '$lib/zod';
 	import dayjs from 'dayjs';
-	import { Check, Pencil, Trash, X } from 'lucide-svelte';
+	import { Pencil, Trash, X } from 'lucide-svelte';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
+	import wretch from 'wretch';
 
 	interface Props {
 		data: SuperValidated<Infer<EditSchema>>;
@@ -29,8 +30,8 @@
 		},
 		id: `editForm-${event.id}`
 	});
-	const deleteEvent = async () => {
-		await fetch(`/api/delete-event?id=${event.id}`, { method: 'DELETE' });
+	const deleteEvent = () => {
+		wretch(`/api/delete-event?id=${event.id}`).delete();
 		location.reload();
 	};
 

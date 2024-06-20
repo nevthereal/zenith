@@ -38,9 +38,16 @@
 	<h3 class="text-xl font-medium">
 		Hi, <span class="font-bold text-primary">{user.username}</span>
 	</h3>
-	<h1 class="mb-8 text-5xl font-bold">What are your plans?</h1>
-	<form action="?/create" method="POST" class="mb-12 flex items-center gap-4" use:enhance>
+	<h1 class="text-5xl font-bold">What are your plans?</h1>
+	<form
+		action="?/create"
+		method="POST"
+		class="tooltip tooltip-bottom tooltip-secondary my-12 flex items-center gap-4"
+		data-tip={!user.paid && 'Please refer to the account page and purchase the product to continue'}
+		use:enhance
+	>
 		<input
+			disabled={!user.paid}
 			class="input input-bordered input-primary border-2"
 			type="text"
 			placeholder="Event or Task"
@@ -48,7 +55,7 @@
 			bind:value={$form.event}
 			{...$constraints.event}
 		/>
-		<button class="btn btn-primary"
+		<button class="btn btn-primary" disabled={!user.paid}
 			>Add!
 			{#if $delayed}
 				<span class="loading loading-spinner loading-xs"></span>
@@ -58,20 +65,7 @@
 
 	<section class="flex flex-col items-center gap-4">
 		{#await events}
-			<div
-				class="flex select-none flex-row justify-between gap-4 rounded-box bg-base-200 p-8 md:w-[30vw]"
-			>
-				<div>
-					<h1 class="skeleton mb-2 text-2xl font-bold text-primary text-transparent">
-						This is actually loading
-					</h1>
-					<p class="skeleton text-primary text-transparent">Here could be a date</p>
-				</div>
-				<div class="flex gap-2">
-					<div class="skeleton my-auto h-12 w-12 shrink-0 rounded-full"></div>
-					<div class="skeleton my-auto h-12 w-12 shrink-0 rounded-full"></div>
-				</div>
-			</div>
+			<h2 class="text-xl font-semibold italic">Fetching events...</h2>
 		{:then events}
 			{#if events.length == 0}
 				<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>

@@ -19,7 +19,9 @@ export const lucia = new Lucia(adapter, {
 			githubId: attributes.github_id,
 			username: attributes.username,
 			email: attributes.email,
-			admin: attributes.admin
+			admin: attributes.admin,
+			paid: attributes.paid,
+			stripeId: attributes.stripeId
 		};
 	}
 });
@@ -36,4 +38,6 @@ interface DatabaseUserAttributes {
 	username: string;
 	email: string;
 	admin: boolean;
+	paid: boolean;
+	stripeId: string;
 }
