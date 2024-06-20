@@ -29,8 +29,8 @@ export const actions: Actions = {
 	create: async ({ request, locals }) => {
 		const form = await superValidate(request, zod(createSchema));
 
-		const user = locals.user;
-		if (!user) redirect(302, '/signin');
+		const user = checkUser(locals);
+		if (!user.paid) redirect(302, '/account');
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -66,7 +66,11 @@ export const actions: Actions = {
 
 		return message(form, object);
 	},
-	edit: async ({ request }) => {
+	edit: async ({ request, locals }) => {
+		const user = checkUser(locals);
+
+		if (!user.paid) redirect(302, '/account');
+
 		const form = await superValidate(request, zod(editSchema));
 
 		if (!form.valid) {

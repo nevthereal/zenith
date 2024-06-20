@@ -1,6 +1,7 @@
 import { PRICE_ID } from '$env/static/private';
 import type { RequestHandler } from './$types';
-import { checkUser, stripe } from '$lib/utils';
+import { checkUser } from '$lib/utils';
+import { stripe } from '$lib/stripe';
 
 export const POST: RequestHandler = async ({ url, locals }) => {
 	const user = checkUser(locals);
@@ -10,6 +11,10 @@ export const POST: RequestHandler = async ({ url, locals }) => {
 		customer_email: user.email,
 		allow_promotion_codes: true,
 		mode: 'payment',
+		metadata: {
+			userId: user.id
+		},
+		customer_creation: 'always',
 		success_url: `${url.origin}/success`,
 		cancel_url: `${url.origin}/cancel`
 	});

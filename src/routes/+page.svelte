@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
 	import Event from '$lib/components/Event.svelte';
+	import { cn } from '$lib/utils';
 
 	let { data } = $props();
 
@@ -24,7 +25,7 @@
 	<meta name="description" content="AI-powered planning. No more annoying interfaces." />
 	<meta property="og:title" content="Zenith" />
 	<meta property="og:description" content="AI-powered planning. No more annoying interfaces." />
-	<meta property="og:url" content="https://www.Zenith.xyz" />
+	<meta property="og:url" content="https://www.zenithproductivity.app" />
 	<meta
 		property="twitter:description"
 		content="AI-powered planning. No more annoying interfaces."
@@ -42,7 +43,10 @@
 	<form
 		action="?/create"
 		method="POST"
-		class="tooltip tooltip-bottom tooltip-secondary my-12 flex items-center gap-4"
+		class={cn(
+			'my-12 flex items-center gap-4',
+			!user.paid && 'tooltip tooltip-bottom tooltip-secondary'
+		)}
 		data-tip={!user.paid && 'Please refer to the account page and purchase the product to continue'}
 		use:enhance
 	>

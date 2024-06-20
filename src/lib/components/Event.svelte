@@ -3,7 +3,7 @@
 	import { cn } from '$lib/utils';
 	import type { EditSchema } from '$lib/zod';
 	import dayjs from 'dayjs';
-	import { Pencil, Trash, X } from 'lucide-svelte';
+	import { Pencil, Trash } from 'lucide-svelte';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import wretch from 'wretch';
 
