@@ -20,7 +20,7 @@ export const usersTable = pgTable('users', {
 	email: text('email').notNull(),
 	admin: boolean('admin').default(false),
 	joined: timestamp('joined').notNull(),
-	stripeId: text('stripe-id'),
+	stripeId: text('stripe_id'),
 	paid: boolean('paid').default(false)
 });
 

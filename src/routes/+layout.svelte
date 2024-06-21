@@ -12,13 +12,13 @@
 	<a href="/" class="flex items-center"
 		><img src={logo} alt="Logo" class="size-20" /><span class="text-4xl font-bold italic"
 			>{#if user}
-				Dashboard
+				up today
 			{:else}
-				Zenith
+				zenith
 			{/if}</span
 		></a
 	>
-	<div class="flex gap-8">
+	<div class="flex gap-6 md:gap-8">
 		{#if user}
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/upcoming"
 				><CalendarDays /> <span class="hidden md:block">Upcoming</span></a
