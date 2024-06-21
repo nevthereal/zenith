@@ -1,9 +1,41 @@
 <script>
-	import Header from '$lib/components/Header.svelte';
+	import logo from '$lib/assets/logo.svg';
+	import { CalendarDays, CircleUser, HandCoins, LogIn } from 'lucide-svelte';
 	import '../app.css';
+
+	const { data, children } = $props();
+
+	const user = data.user;
 </script>
 
-<Header />
+<nav class="flex items-center justify-between p-4">
+	<a href="/" class="flex items-center"
+		><img src={logo} alt="Logo" class="size-20" /><span class="text-4xl font-bold italic"
+			>{#if user}
+				Dashboard
+			{:else}
+				Zenith
+			{/if}</span
+		></a
+	>
+	<div class="flex gap-8">
+		{#if user}
+			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/upcoming"
+				><CalendarDays /> <span class="hidden md:block">Upcoming</span></a
+			>
+			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/account"
+				><CircleUser /> <span class="hidden md:block">Account</span></a
+			>
+		{:else}
+			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/pricing"
+				><HandCoins /> <span class="hidden md:block">Pricing</span></a
+			>
+			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/signin"
+				><LogIn /> <span class="hidden md:block">Sign In</span></a
+			>
+		{/if}
+	</div>
+</nav>
 <main class="px-8">
-	<slot />
+	{@render children()}
 </main>

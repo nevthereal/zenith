@@ -15,7 +15,7 @@
 	};
 </script>
 
-{#if user.paid}
+{#if !user.paid}
 	<div class="flex">
 		<button class="btn btn-warning btn-lg mx-auto" onclick={purchase}
 			>Purchase the product to continue</button

@@ -14,6 +14,9 @@ export const POST: RequestHandler = async ({ url, locals }) => {
 		metadata: {
 			userId: user.id
 		},
+		invoice_creation: {
+			enabled: true
+		},
 		customer_creation: 'always',
 		success_url: `${url.origin}/success?id={CHECKOUT_SESSION_ID}`,
 		cancel_url: `${url.origin}/account`

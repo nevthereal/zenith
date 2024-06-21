@@ -48,6 +48,7 @@
     "@libsql/client": "^0.6.2",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@neondatabase/serverless": "^0.9.3",
+    "@sveltejs/enhanced-img": "^0.3.0",
     "ai": "^3.1.31",
     "arctic": "^1.9.1",
     "clsx": "^2.1.1",
