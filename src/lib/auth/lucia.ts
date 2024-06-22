@@ -37,7 +37,7 @@ declare module 'lucia' {
 interface DatabaseUserAttributes {
 	github_id: number;
 	username: string;
-	email: string;
+	email: string | null;
 	admin: boolean;
 	paid: boolean;
 	stripeId: string | null;

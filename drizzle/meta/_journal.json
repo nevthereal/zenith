@@ -57,6 +57,13 @@
       "when": 1718971974545,
       "tag": "0007_typical_silk_fever",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1719046216157,
+      "tag": "0008_talented_switch",
+      "breakpoints": true
     }
   ]
 }

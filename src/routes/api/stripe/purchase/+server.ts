@@ -8,7 +8,7 @@ export const POST: RequestHandler = async ({ url, locals }) => {
 
 	const session = await stripe.checkout.sessions.create({
 		line_items: [{ price: PRICE_ID, quantity: 1 }],
-		customer_email: user.email,
+		customer_email: user.email || undefined,
 		allow_promotion_codes: true,
 		mode: 'payment',
 		metadata: {

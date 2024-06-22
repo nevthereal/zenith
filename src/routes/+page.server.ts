@@ -44,7 +44,7 @@ export const actions: Actions = {
 				You are an assistant who processes the users input. 
 				
 				The "date"-property should be in the JavaScript Date format ISO String.
-				If no time is provided, set the "date"-property it to the same day at 10am if it is not today.
+				If no time is provided, set the "date"-property to the same day at 10am if it is not today.
 				If it is today, set it to the next full hour.
 				Otherwise, just set it to a logical time, like dinner would be in the evening.
 				Morning means 8am, noon means 12pm, afternoon or evening means 6pm and night or tonight means 8pm. 

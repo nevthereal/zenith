@@ -15,9 +15,9 @@ export const eventsTable = pgTable('events', {
 
 export const usersTable = pgTable('users', {
 	id: text('id').notNull().primaryKey(),
-	username: text('username'),
+	username: text('username').notNull(),
 	githubId: integer('github_id').unique().notNull(),
-	email: text('email').notNull(),
+	email: text('email'),
 	admin: boolean('admin').default(false),
 	joined: timestamp('joined').notNull(),
 	stripeId: text('stripe_id'),
