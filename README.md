@@ -1,6 +1,6 @@
 # _Zenith_
 
-![Logo](./static/favicon.png)
+![Logo](./static/zenith-logo.png)
 
 Zenith is an AI-powered Event/Task Manager for the web. The concept is simple; you put in a prompt and natural language processing of AI will transform your prompt into an event!
 
@@ -28,6 +28,7 @@ Zenith is an AI-powered Event/Task Manager for the web. The concept is simple; y
 - [x] Tags
 - [x] Stripe
 - [x] Success Page
+- [ ] Orders table
 - [ ] Prettier Account Page
 - [ ] Landing page
 - [ ] Prettier login page

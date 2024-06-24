@@ -23,7 +23,7 @@
 					</tr>
 					<tr>
 						<th class="font-bold">Email:</th>
-						<td>{invoice.customer_email}</td>
+						<td>{session.customer_email}</td>
 					</tr>
 					<tr>
 						<th class="font-bold">Subtotal:</th>

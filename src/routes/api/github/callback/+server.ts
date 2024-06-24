@@ -32,8 +32,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			where: eq(usersTable.githubId, githubUser.id)
 		});
 
-		console.log(githubUser);
-
 		if (existingUser) {
 			const session = await lucia.createSession(existingUser.id, {});
 			const sessionCookie = lucia.createSessionCookie(session.id);

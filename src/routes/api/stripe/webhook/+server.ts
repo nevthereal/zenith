@@ -39,7 +39,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			}
 		}
 	} catch (err) {
-		console.log(`Fail.`, err);
+		console.log('Something went wrong.', err);
 		error(500);
 	}
 
