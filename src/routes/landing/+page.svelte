@@ -17,16 +17,16 @@
 	<meta name="twitter:site" content="@BremNeville" />
 </svelte:head>
 
-<div class="hero min-h-[80dvh]" style={`background-image: url(${hero});`}>
+<div class="hero h-[90dvh] bg-black" style={`background-image: url(${hero})`}>
 	<div class="hero-overlay bg-opacity-60"></div>
 	<div class="hero-content text-center text-neutral-content">
 		<div class="max-w-md">
-			<h1 class="mb-5 text-5xl font-bold">Zenith</h1>
-			<p class="mb-5">
-				Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-				quasi. In deleniti eaque aut repudiandae et a id nisi.
-			</p>
-			<button class="btn btn-primary">Get Started</button>
+			<h1 class="mb-4 text-8xl font-black tracking-tighter">Zenith</h1>
+			<p class="mb-4 text-2xl font-medium">AI-Powered everyday life planning at your fingertips</p>
+			<div class="flex justify-center gap-6">
+				<a href="/features" class="btn btn-primary shadow-md shadow-primary">Features</a>
+				<a href="/signin" class="btn btn-secondary shadow-md shadow-secondary">Sign In</a>
+			</div>
 		</div>
 	</div>
 </div>
