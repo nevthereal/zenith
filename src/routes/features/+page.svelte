@@ -1,23 +1,13 @@
-<script lang="ts">
-	import { Sparkles, type Icon } from 'lucide-svelte';
-	import type { Component } from 'svelte';
-
-	type FeatureCardProps = {
-		featureName: string;
-		icon: Component<Icon>;
-	};
-</script>
-
-<section class="prose mx-auto prose-h1:font-black prose-h1:tracking-tighter">
+<section class="prose mx-auto my-8 prose-h1:font-black prose-h1:tracking-tighter">
 	<h1>Features</h1>
 	<p>Before we talk about the actual features themselves, let's talk about</p>
-	<h2>Pricing</h2>
+	<h2 id="pricing">Pricing</h2>
 	<p>
 		Since using AI and storing Data somewhere isn't free, especially not at scale, you can purchase
 		this product for <strong>$10</strong>. It is a one-time purchase with no subscription tied to it
 		and you have full access to all features.
 	</p>
-	<h2>AI Features</h2>
+	<h2 id="ai-features">AI Features</h2>
 	<p>
 		Since I feel uncomfortable using AI for <strong>EVERYTHING</strong>, I narrowed it down to just
 		use it for <strong>Event Generation</strong>. The AI will understand what you are saying and
@@ -26,6 +16,26 @@
 	<p>
 		Why? Because I think clicking through menus after menus is very tedious and has a lot of
 		friction. Just having one text field is much more convenient and with the good understanding
-		capabilites of <em>GPT-4o</em> everything gets done for you.
+		capabilities of <em>GPT-4o</em> everything gets done for you.
+	</p>
+	<h2 id="all-features">Other Features</h2>
+	<ul>
+		<li>Cloud saved events</li>
+		<li>Tagging</li>
+	</ul>
+	<h2 id="planned">Planned Features</h2>
+	<p>
+		This app is of course at an early stage of production and I have more plans for this. A big goal
+		is definitely going in the direction of collaboration.
+	</p>
+	<ul>
+		<li>"Spaces" (Replacement for Tags, essentially a container for related events)</li>
+		<li>Shared Events</li>
+		<li>Shared Spaces</li>
+	</ul>
+	<p>
+		Suggest a feature? Hit me up at <a href="mailto:contact@nevillebrem.com"
+			>contact@nevillebrem.com</a
+		>
 	</p>
 </section>
