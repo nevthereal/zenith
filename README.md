@@ -19,6 +19,8 @@ Zenith is an AI-powered Event/Task Manager for the web. The concept is simple; y
 
 # Roadmap
 
+## Launch
+
 - [x] AI features
 - [x] Frontend UI
 - [x] Frontend Functionality
@@ -31,7 +33,12 @@ Zenith is an AI-powered Event/Task Manager for the web. The concept is simple; y
 - [ ] Orders table
 - [ ] Prettier Account page
 - [x] Landing page
-- [ ] Features/Pricing page
-- [ ] Prettier login page
-- [ ] Pricing page
+- [x] Features/Pricing page
+- [x] Prettier login page
 - [ ] Admin page
+
+## Future:
+
+- [ ] Spaces (instead of tags)
+- [ ] Shared Events
+- [ ] Shared Spaces

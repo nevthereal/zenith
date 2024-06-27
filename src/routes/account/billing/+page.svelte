@@ -9,8 +9,13 @@
 
 <div class="text-lg">
 	{#if user.paid}
-		<p>You currently are on the paid tier.</p>
+		<p>Your account is paid</p>
 		<p>Your stripe ID: {user.stripeId}</p>
+		<p>
+			For support contact: <a href="mailto:contact@nevillebrem.com" class="link"
+				>contact@nevillebrem.com</a
+			>
+		</p>
 	{:else}
 		<p class="mb-2">Please purchase the product to use the features of this app.</p>
 		<button

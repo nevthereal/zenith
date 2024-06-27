@@ -27,8 +27,6 @@ export const POST: RequestHandler = async ({ request }) => {
 			if (sessionWithCustomer.metadata) {
 				const customer = sessionWithCustomer.customer as Stripe.Customer;
 
-				console.log(customer);
-
 				await db
 					.update(usersTable)
 					.set({

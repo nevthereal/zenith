@@ -1,5 +1,5 @@
 <script>
-	import logo from '$lib/assets/logo.svg';
+	import logo from '$lib/assets/zenith-logo.svg';
 	import { CalendarDays, CircleUser, LogIn, Sparkles } from 'lucide-svelte';
 	import '../app.css';
 
@@ -8,7 +8,7 @@
 	const user = data.user;
 </script>
 
-<nav class="flex h-[10dvh] items-center justify-between p-4">
+<nav class="flex h-[10dvh] select-none items-center justify-between p-4">
 	<a href={user ? '/' : '/landing'} class="flex items-center"
 		><img src={logo} alt="Logo" class="size-20" /><span class="text-4xl font-bold italic"
 			>{#if user}
