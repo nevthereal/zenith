@@ -11,7 +11,6 @@
 		onUpdated({ form }) {
 			if (form.valid) location.reload();
 		},
-
 		onError({ result }) {
 			console.error('Something went wrong', result);
 		}

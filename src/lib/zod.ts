@@ -5,9 +5,9 @@ const zTagEnum = z.enum(tagEnum.enumValues);
 
 // for LLM
 export const eventSchema = z.object({
-	date: z.string(),
-	content: z.string(),
-	tag: zTagEnum
+	date: z.string().describe('A the due date in ISO Format'),
+	content: z.string().describe('The activity or event due'),
+	tag: zTagEnum.describe('A suitable tag for the event')
 });
 
 // for creating form

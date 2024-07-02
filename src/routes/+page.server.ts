@@ -40,20 +40,7 @@ export const actions: Actions = {
 			model: model,
 			schema: eventSchema,
 			mode: 'tool',
-			system: `Right now is the ${dayjs().toDate()}. 
-				You are an assistant who processes the users input. 
-				
-				The "date"-property should be in the JavaScript Date format ISO String.
-				If no time is provided, set the "date"-property to the same day at 10am if it is not today.
-				If it is today, set it to the next full hour.
-				Otherwise, just set it to a logical time, like dinner would be in the evening.
-				Morning means 8am, noon means 12pm, afternoon or evening means 6pm and night or tonight means 8pm. 
-				If a word like yesterday or tomorrow comes up, really think about if it actually happens then or if I, 
-				for example want to tell somebody about yesterday. Or I may want to buy the groceries for tomorrows breakfast
-				this evening (suppose it is not too late) and not tomorrow morning. And take the opening hours for shops in consideration.
-				The time should be in my timezone.
-				
-				The "content"-property describes the event or the event that should be completed.`,
+			system: `Right now is the ${dayjs().toDate()}. You are an assistant who processes the users input.`,
 			prompt: form.data.event
 		});
 
