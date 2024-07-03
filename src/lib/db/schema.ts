@@ -35,6 +35,15 @@ export const sessionsTable = pgTable('sessions', {
 	}).notNull()
 });
 
+export const ordersTable = pgTable('orders', {
+	orderId: text('order_id').primaryKey().notNull(),
+	customerId: text('cus_id').notNull(),
+	sessionId: text('session_id').notNull(),
+	completedAt: timestamp('completed_at').notNull(),
+	userId: text('user_id').references(() => usersTable.id),
+	invoiceUrl: text('invoice_url').notNull()
+});
+
 export const userRelation = relations(usersTable, ({ many }) => ({
 	events: many(eventsTable)
 }));

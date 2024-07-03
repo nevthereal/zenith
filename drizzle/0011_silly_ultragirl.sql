@@ -1,0 +1,1 @@
+ALTER TABLE "orders" ALTER COLUMN "invoice_url" SET NOT NULL;
