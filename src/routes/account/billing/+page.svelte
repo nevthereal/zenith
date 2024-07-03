@@ -1,6 +1,5 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
-	import Stripe from 'stripe';
 	import wretch from 'wretch';
 
 	const { data } = $props();
@@ -42,7 +41,7 @@
 		<p class="mb-2">Please purchase the product to use the features of this app.</p>
 		<button
 			class="btn btn-warning"
-			onclick={async () =>
+			onclick={() =>
 				wretch('/api/stripe/purchase')
 					.post()
 					.json((json) => {

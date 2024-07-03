@@ -38,14 +38,8 @@
 	<h3 class="text-xl font-medium">
 		Hi, <span class="font-bold text-primary">{user.username}</span>
 	</h3>
-	<h1 class="text-5xl font-bold">
-		{#if user.paid}
-			What are your plans?
-		{:else}
-			Purchase the product
-		{/if}
-	</h1>
-	{#if user.paid}
+	<h1 class="text-5xl font-bold">What are your plans?</h1>
+	{#if !user.paid}
 		<form action="?/create" method="POST" class="my-12 flex items-center gap-4" use:enhance>
 			<input
 				disabled={!user.paid}
@@ -66,8 +60,9 @@
 	{:else}
 		<div class="my-12">
 			<button
-				class="btn btn-warning"
-				onclick={async () =>
+				class="btn btn-warning tooltip tooltip-top"
+				data-tip="Purchase the product to continue"
+				onclick={() =>
 					wretch('/api/stripe/purchase')
 						.post()
 						.json((json) => {

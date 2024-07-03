@@ -16,7 +16,7 @@
 		<div class="flex">
 			<button
 				class="btn btn-warning"
-				onclick={async () =>
+				onclick={() =>
 					wretch('/api/stripe/purchase')
 						.post()
 						.json((json) => {
