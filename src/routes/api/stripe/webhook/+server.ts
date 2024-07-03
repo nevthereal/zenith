@@ -4,7 +4,7 @@ import type { RequestHandler } from './$types';
 import { stripe } from '$lib/stripe';
 import type Stripe from 'stripe';
 import { db } from '$lib/db/db';
-import { usersTable } from '$lib/db/schema';
+import { ordersTable, usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -21,11 +21,12 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		if (eventType === 'checkout.session.completed') {
 			const sessionWithCustomer = await stripe.checkout.sessions.retrieve(event.data.object.id, {
-				expand: ['customer']
+				expand: ['customer', 'invoice']
 			});
 
 			if (sessionWithCustomer.metadata) {
 				const customer = sessionWithCustomer.customer as Stripe.Customer;
+				const invoice = sessionWithCustomer.invoice as Stripe.Invoice;
 
 				await db
 					.update(usersTable)
@@ -34,6 +35,15 @@ export const POST: RequestHandler = async ({ request }) => {
 						paid: true
 					})
 					.where(eq(usersTable.id, sessionWithCustomer.metadata.userId));
+
+				await db.insert(ordersTable).values({
+					completedAt: new Date(),
+					customerId: customer.id,
+					orderId: sessionWithCustomer.payment_intent as string,
+					userId: sessionWithCustomer.metadata.userId,
+					sessionId: sessionWithCustomer.id,
+					invoiceUrl: invoice.hosted_invoice_url!
+				});
 			}
 		}
 	} catch (err) {

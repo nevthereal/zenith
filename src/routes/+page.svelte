@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
 	import Event from '$lib/components/Event.svelte';
-	import { cn } from '$lib/utils';
+	import wretch from 'wretch';
 
 	let { data } = $props();
 
@@ -38,33 +38,45 @@
 	<h3 class="text-xl font-medium">
 		Hi, <span class="font-bold text-primary">{user.username}</span>
 	</h3>
-	<h1 class="text-5xl font-bold">What are your plans?</h1>
-	<form
-		action="?/create"
-		method="POST"
-		class={cn(
-			'my-12 flex items-center gap-4',
-			!user.paid && 'tooltip tooltip-bottom tooltip-secondary'
-		)}
-		data-tip={!user.paid && 'Please refer to the account page and purchase the product to continue'}
-		use:enhance
-	>
-		<input
-			disabled={!user.paid}
-			class="input input-bordered input-primary border-2"
-			type="text"
-			placeholder="Event or Task"
-			name="event"
-			bind:value={$form.event}
-			{...$constraints.event}
-		/>
-		<button class="btn btn-primary" disabled={!user.paid}
-			>Add!
-			{#if $delayed}
-				<span class="loading loading-spinner loading-xs"></span>
-			{/if}
-		</button>
-	</form>
+	<h1 class="text-5xl font-bold">
+		{#if user.paid}
+			What are your plans?
+		{:else}
+			Purchase the product
+		{/if}
+	</h1>
+	{#if user.paid}
+		<form action="?/create" method="POST" class="my-12 flex items-center gap-4" use:enhance>
+			<input
+				disabled={!user.paid}
+				class="input input-bordered input-primary border-2"
+				type="text"
+				placeholder="Event or Task"
+				name="event"
+				bind:value={$form.event}
+				{...$constraints.event}
+			/>
+			<button class="btn btn-primary" disabled={!user.paid}
+				>Add!
+				{#if $delayed}
+					<span class="loading loading-spinner loading-xs"></span>
+				{/if}
+			</button>
+		</form>
+	{:else}
+		<div class="my-12">
+			<button
+				class="btn btn-warning"
+				onclick={async () =>
+					wretch('/api/stripe/purchase')
+						.post()
+						.json((json) => {
+							return window.location.replace(json.url);
+						})}
+				>Purchase ($10)
+			</button>
+		</div>
+	{/if}
 
 	<section class="flex flex-col items-center gap-4">
 		{#await events}

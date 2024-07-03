@@ -37,10 +37,6 @@
 
 	const date = dayjs(event.date);
 
-	const formattedDate = date
-		.toDate()
-		.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
-
 	$form.event = event.content;
 	$form.id = event.id;
 </script>
@@ -49,7 +45,9 @@
 	<div>
 		<h1 class="text-3xl font-bold text-primary">{event.content}</h1>
 		<p>
-			<span class={cn(date.isBefore(dayjs()) && 'text-warning')}>{formattedDate}</span>
+			<span class={cn(date.isBefore(dayjs()) && 'text-warning')}
+				>{date.format('D MMMM YYYY, hh:mm')}</span
+			>
 			{'·'}
 			<span class="font-medium text-secondary">{event.tag}</span>
 		</p>

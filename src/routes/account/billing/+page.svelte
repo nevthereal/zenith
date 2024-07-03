@@ -1,18 +1,40 @@
 <script lang="ts">
+	import dayjs from 'dayjs';
+	import Stripe from 'stripe';
 	import wretch from 'wretch';
 
 	const { data } = $props();
 	const user = data.user;
+	const order = data.order;
 </script>
 
 <h1 class="mb-4 text-5xl font-bold tracking-tighter">Billing</h1>
 
 <div class="text-lg">
-	{#if user.paid}
+	{#if user.paid && order}
 		<p>Your account is paid</p>
-		<p>Your stripe ID: {user.stripeId}</p>
+		<table class="table my-6 prose-th:font-bold">
+			<tbody>
+				<tr>
+					<th>Customer ID:</th>
+					<td>{order.customerId}</td>
+				</tr>
+				<tr>
+					<th>Order ID:</th>
+					<td>{order.orderId}</td>
+				</tr>
+				<tr>
+					<th>Completed:</th>
+					<td>{dayjs(order.completedAt).format('D MMMM YYYY, hh:mm')}</td>
+				</tr>
+				<tr>
+					<th>Invoice</th>
+					<td><a href={order.invoiceUrl} class="link">Invoice URL</a></td>
+				</tr>
+			</tbody>
+		</table>
 		<p>
-			For support contact: <a href="mailto:contact@nevillebrem.com" class="link"
+			For support contact: <a target="_blank" href="mailto:contact@nevillebrem.com" class="link"
 				>contact@nevillebrem.com</a
 			>
 		</p>
