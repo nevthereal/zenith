@@ -5,8 +5,12 @@ const zTagEnum = z.enum(tagEnum.enumValues);
 
 // for LLM
 export const eventSchema = z.object({
-	date: z.string().describe('A the due date in ISO Format'),
-	content: z.string().describe('The activity or event due'),
+	date: z
+		.string()
+		.describe(
+			'A the due date in ISO Format. Should always be in the future and the time should be in 5-minutes steps, except specified. The time should also make sense in regard to the content'
+		),
+	content: z.string().describe('The activity or event due.'),
 	tag: zTagEnum.describe('A suitable tag for the event')
 });
 

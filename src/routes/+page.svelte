@@ -39,7 +39,7 @@
 		Hi, <span class="font-bold text-primary">{user.username}</span>
 	</h3>
 	<h1 class="text-5xl font-bold">What are your plans?</h1>
-	{#if !user.paid}
+	{#if user.paid}
 		<form action="?/create" method="POST" class="my-12 flex items-center gap-4" use:enhance>
 			<input
 				disabled={!user.paid}
