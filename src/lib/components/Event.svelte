@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
 	import { eventsTable, tagEnum } from '$lib/db/schema';
 	import { cn } from '$lib/utils';
 	import type { EditSchema } from '$lib/zod';
@@ -26,13 +27,15 @@
 
 	const { form, enhance, constraints, delayed } = superForm(data, {
 		onResult() {
-			location.reload();
+			invalidate('fetch:events');
+			editModal.close();
 		},
 		id: `editForm-${event.id}`
 	});
-	const deleteEvent = () => {
+	const deleteEvent = async () => {
 		wretch(`/api/delete-event?id=${event.id}`).delete();
-		location.reload();
+		await invalidate('fetch:events');
+		deleteModal.close();
 	};
 
 	const date = dayjs(event.date);
@@ -46,7 +49,7 @@
 		<h1 class="text-3xl font-bold text-primary">{event.content}</h1>
 		<p>
 			<span class={cn(date.isBefore(dayjs()) && 'text-warning')}
-				>{date.format('D MMMM YYYY, hh:mm')}</span
+				>{date.format('D MMMM YYYY, HH:mm')}</span
 			>
 			{'·'}
 			<span class="font-medium text-secondary">{event.tag}</span>

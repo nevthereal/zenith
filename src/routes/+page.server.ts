@@ -11,13 +11,14 @@ import { eventsTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
 import { checkUser } from '$lib/utils';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, depends }) => {
 	const user = checkUser(locals);
 
 	const createForm = await superValidate(zod(createSchema));
 	const editForm = await superValidate(zod(editSchema));
 
-	const events = db.query.eventsTable.findMany({
+	depends('fetch:events');
+	const events = await db.query.eventsTable.findMany({
 		orderBy: asc(eventsTable.date),
 		where: and(lt(eventsTable.date, dayjs().endOf('day').toDate()), eq(eventsTable.userId, user.id))
 	});

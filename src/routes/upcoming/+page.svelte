@@ -3,7 +3,7 @@
 
 	let { data } = $props();
 
-	const events = data.events;
+	let events = $derived(data.events);
 </script>
 
 <div class="flex flex-col items-center">

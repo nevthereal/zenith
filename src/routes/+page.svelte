@@ -2,14 +2,15 @@
 	import { superForm } from 'sveltekit-superforms';
 	import Event from '$lib/components/Event.svelte';
 	import wretch from 'wretch';
+	import { invalidate } from '$app/navigation';
 
 	let { data } = $props();
 
-	const events = data.events;
+	let events = $derived(data.events);
 
 	const { form, delayed, enhance, constraints } = superForm(data.createForm, {
 		onUpdated({ form }) {
-			if (form.valid) location.reload();
+			if (form.valid) invalidate('fetch:events');
 		},
 		onError({ result }) {
 			console.error('Something went wrong', result);
@@ -74,16 +75,12 @@
 	{/if}
 
 	<section class="flex flex-col items-center gap-4">
-		{#await events}
-			<h2 class="text-xl font-semibold italic">Fetching events...</h2>
-		{:then events}
-			{#if events.length == 0}
-				<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
-			{/if}
-			{#each events as event}
-				<Event {event} data={data.editForm} />
-			{/each}
-		{/await}
+		{#if events.length == 0}
+			<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
+		{/if}
+		{#each events as event}
+			<Event {event} data={data.editForm} />
+		{/each}
 		<a href="/upcoming" class="link link-primary font-semibold italic">View all upcoming</a>
 	</section>
 </div>
