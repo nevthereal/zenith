@@ -33,9 +33,11 @@
 		id: `editForm-${event.id}`
 	});
 	const deleteEvent = async () => {
-		wretch(`/api/delete-event?id=${event.id}`).delete();
-		await invalidate('fetch:events');
+		await fetch(`/api/delete-event?id=${event.id}`, {
+			method: 'DELETE'
+		});
 		deleteModal.close();
+		invalidate('fetch:events');
 	};
 
 	const date = dayjs(event.date);
