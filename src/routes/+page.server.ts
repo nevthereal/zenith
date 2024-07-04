@@ -40,7 +40,7 @@ export const actions: Actions = {
 			model: model,
 			schema: eventSchema,
 			mode: 'tool',
-			system: `Right now is the ${dayjs().toDate()}. You are an assistant who processes the users input.`,
+			system: `Right now is the ${dayjs().toDate()}. You are an assistant who processes the users input to an event.`,
 			prompt: form.data.event
 		});
 
