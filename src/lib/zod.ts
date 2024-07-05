@@ -3,7 +3,7 @@ import { tagEnum } from '$lib/db/schema';
 
 const zTagEnum = z.enum(tagEnum.enumValues);
 
-const dateDesc = `The due date and time of the event. 
+const dateInstructions = `The due date and time of the event. 
 	Should always be in the future. The time should also make sense in regard to the content
 	and should be logical in regard to things like opening hours and just normal human behavior.
 	If I don't specify any time or date, just set it to the next full hour. 
@@ -17,7 +17,7 @@ export const eventSchema = z.object({
 			offset: true,
 			precision: 0
 		})
-		.describe(dateDesc),
+		.describe(dateInstructions),
 	content: z.string().describe('The activity or event.'),
 	tag: zTagEnum.describe('A suitable tag for the event')
 });
