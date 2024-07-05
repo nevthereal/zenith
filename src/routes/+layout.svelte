@@ -27,13 +27,11 @@
 				><CircleUser /> <span class="hidden md:block">Account</span></a
 			>
 		{:else}
-			<a
-				class="my-auto flex items-center gap-2 text-lg font-medium duration-200 ease-in-out hover:text-primary"
-				href="/features"><Sparkles /> <span class="hidden md:block">Features</span></a
+			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/features"
+				><Sparkles /> <span class="hidden md:block">Features</span></a
 			>
-			<a
-				class="my-auto flex items-center gap-2 text-lg font-medium duration-200 ease-in-out hover:text-secondary"
-				href="/signin"><LogIn /> <span class="hidden md:block">Sign In</span></a
+			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/signin"
+				><LogIn /> <span class="hidden md:block">Sign In</span></a
 			>
 		{/if}
 	</div>

@@ -25,7 +25,7 @@
 			<p class="mb-4 text-2xl font-medium">AI-Powered everyday life planning at your fingertips</p>
 			<div class="flex justify-center gap-6">
 				<a href="/features" class="btn btn-primary shadow-md shadow-primary">Features</a>
-				<a href="/signin" class="btn btn-secondary shadow-md shadow-secondary">Sign In</a>
+				<a href="/signin" class="btn shadow-md shadow-base-300">Sign In</a>
 			</div>
 		</div>
 	</div>
