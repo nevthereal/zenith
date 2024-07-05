@@ -25,7 +25,7 @@ export const createSchema = z.object({
 
 export const editSchema = z.object({
 	event: z.string().min(1),
-	date: z.date(),
+	date: z.string().datetime(),
 	id: z.number(),
 	tag: zTagEnum
 });

@@ -6,7 +6,6 @@
 	import dayjs from 'dayjs';
 	import { Pencil, Trash } from 'lucide-svelte';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-	import wretch from 'wretch';
 
 	interface Props {
 		data: SuperValidated<Infer<EditSchema>>;
@@ -43,6 +42,8 @@
 	const date = dayjs(event.date);
 
 	$form.event = event.content;
+	$form.date = dayjs(event.date).format('YYYY-MM-DDTHH:mm');
+
 	$form.id = event.id;
 </script>
 
