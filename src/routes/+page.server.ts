@@ -62,8 +62,6 @@ export const actions: Actions = {
 		const form = await superValidate(request, zod(editSchema));
 
 		if (!form.valid) {
-			console.log(form.errors);
-			console.log(form.data);
 			return fail(400, { form });
 		}
 

@@ -48,6 +48,7 @@
 	const date = dayjs(event.date);
 
 	$form.event = event.content;
+	$form.date = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
 </script>
 
 <div class="flex flex-row justify-between gap-4 rounded-box bg-base-200 p-8 md:w-[30vw]">

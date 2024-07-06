@@ -15,7 +15,8 @@ export const eventSchema = z.object({
 		.string()
 		.datetime({
 			offset: true,
-			precision: 0
+			precision: 0,
+			local: true
 		})
 		.describe(dateInstructions),
 	content: z.string().describe('The activity or event.'),

@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { editSchema } from '$lib/zod';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { checkUser } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
@@ -27,7 +27,11 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 };
 
 export const actions: Actions = {
-	edit: async ({ request }) => {
+	edit: async ({ request, locals }) => {
+		const user = checkUser(locals);
+
+		if (!user.paid) redirect(302, '/account');
+
 		const form = await superValidate(request, zod(editSchema));
 
 		if (!form.valid) {
