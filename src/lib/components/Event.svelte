@@ -5,7 +5,7 @@
 	import type { EditSchema } from '$lib/zod';
 	import dayjs from 'dayjs';
 	import { Pencil, Trash } from 'lucide-svelte';
-	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
+	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 
 	interface Props {
 		data: SuperValidated<Infer<EditSchema>>;
@@ -25,9 +25,15 @@
 	});
 
 	const { form, enhance, constraints, delayed } = superForm(data, {
-		onResult() {
+		onSubmit({ formData }) {
+			formData.set('id', event.id.toString());
+		},
+		onUpdated() {
 			invalidate('fetch:events');
 			editModal.close();
+		},
+		onError({ result }) {
+			console.error('Something went wrong', result);
 		},
 		id: `editForm-${event.id}`
 	});
@@ -35,16 +41,13 @@
 		await fetch(`/api/delete-event?id=${event.id}`, {
 			method: 'DELETE'
 		});
-		deleteModal.close();
 		invalidate('fetch:events');
+		deleteModal.close();
 	};
 
 	const date = dayjs(event.date);
 
 	$form.event = event.content;
-	$form.date = dayjs(event.date).format('YYYY-MM-DDTHH:mm');
-
-	$form.id = event.id;
 </script>
 
 <div class="flex flex-row justify-between gap-4 rounded-box bg-base-200 p-8 md:w-[30vw]">
@@ -94,7 +97,6 @@
 						{/each}
 					</select>
 				</div>
-				<input type="text" name="id" class="hidden" bind:value={$form.id} />
 				<div class="flex">
 					<button class="btn btn-primary mx-auto" type="submit">
 						Update

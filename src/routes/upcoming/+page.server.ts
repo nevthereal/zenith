@@ -38,7 +38,7 @@ export const actions: Actions = {
 			.update(eventsTable)
 			.set({
 				content: form.data.event,
-				date: form.data.date,
+				date: dayjs(form.data.date).toDate(),
 				tag: form.data.tag
 			})
 			.where(eq(eventsTable.id, form.data.id));

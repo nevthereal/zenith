@@ -22,14 +22,13 @@ export const eventSchema = z.object({
 	tag: zTagEnum.describe('A suitable tag for the event')
 });
 
-// for creating form
 export const createSchema = z.object({
 	event: z.string().min(1)
 });
 
 export const editSchema = z.object({
 	event: z.string().min(1),
-	date: z.string().datetime(),
+	date: z.date(),
 	id: z.number(),
 	tag: zTagEnum
 });

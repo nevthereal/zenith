@@ -62,13 +62,16 @@ export const actions: Actions = {
 		const form = await superValidate(request, zod(editSchema));
 
 		if (!form.valid) {
+			console.log(form.errors);
+			console.log(form.data);
 			return fail(400, { form });
 		}
+
 		await db
 			.update(eventsTable)
 			.set({
 				content: form.data.event,
-				date: form.data.date,
+				date: dayjs(form.data.date).toDate(),
 				tag: form.data.tag
 			})
 			.where(eq(eventsTable.id, form.data.id));
