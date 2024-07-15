@@ -9,7 +9,6 @@ import { eq } from 'drizzle-orm';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const whSecret = WEBHOOK;
-	if (!whSecret) return new Response('No Webhook', { status: 401 });
 	const body = await request.text();
 
 	const signature = request.headers.get('stripe-signature') ?? '';
@@ -42,7 +41,7 @@ export const POST: RequestHandler = async ({ request }) => {
 					orderId: sessionWithCustomer.payment_intent as string,
 					userId: sessionWithCustomer.metadata.userId,
 					sessionId: sessionWithCustomer.id,
-					invoiceUrl: invoice.hosted_invoice_url!
+					invoiceUrl: invoice.hosted_invoice_url as string
 				});
 			}
 		}
