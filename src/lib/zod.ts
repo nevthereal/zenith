@@ -34,4 +34,6 @@ export const editSchema = z.object({
 	tag: zTagEnum
 });
 
-export type EditSchema = typeof editSchema; // for editing form
+export const deleteSchema = z.object({
+	id: z.number()
+});

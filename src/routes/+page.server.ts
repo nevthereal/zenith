@@ -1,10 +1,10 @@
-import { eventSchema, createSchema, editSchema } from '$lib/zod';
+import { eventSchema, createSchema, editSchema, deleteSchema } from '$lib/zod';
 import { model } from '$lib/ai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
-import { message, superValidate } from 'sveltekit-superforms';
+import { superValidate, fail } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { fail, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
 import { eventsTable } from '$lib/db/schema';
@@ -16,6 +16,7 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 
 	const createForm = await superValidate(zod(createSchema));
 	const editForm = await superValidate(zod(editSchema));
+	const deleteForm = await superValidate(zod(deleteSchema));
 
 	depends('fetch:events');
 	const events = await db.query.eventsTable.findMany({
@@ -23,7 +24,7 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 		where: and(lt(eventsTable.date, dayjs().endOf('day').toDate()), eq(eventsTable.userId, user.id))
 	});
 
-	return { createForm, events, editForm, user };
+	return { createForm, events, editForm, user, deleteForm };
 };
 
 export const actions: Actions = {
@@ -51,8 +52,6 @@ export const actions: Actions = {
 			userId: user.id,
 			tag: object.tag
 		});
-
-		return message(form, object);
 	},
 	edit: async ({ request, locals }) => {
 		const user = checkUser(locals);
@@ -73,5 +72,26 @@ export const actions: Actions = {
 				tag: form.data.tag
 			})
 			.where(eq(eventsTable.id, form.data.id));
+	},
+	delete: async ({ request, locals }) => {
+		const user = checkUser(locals);
+
+		const form = await superValidate(request, zod(deleteSchema));
+
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		const qEvent = await db.query.eventsTable.findFirst({
+			where: eq(eventsTable.id, form.data.id)
+		});
+
+		if (!qEvent) {
+			return fail(404, { form });
+		} else if (qEvent.userId != user.id) {
+			return fail(401, { form });
+		} else if (user.admin || qEvent.userId === user.id) {
+			await db.delete(eventsTable).where(eq(eventsTable.id, form.data.id));
+		} else return fail(400, { form });
 	}
 };

@@ -2,17 +2,18 @@
 	import { invalidate } from '$app/navigation';
 	import { eventsTable, tagEnum } from '$lib/db/schema';
 	import { cn } from '$lib/utils';
-	import type { EditSchema } from '$lib/zod';
+	import type { deleteSchema, editSchema } from '$lib/zod';
 	import dayjs from 'dayjs';
 	import { Pencil, Trash } from 'lucide-svelte';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 
 	interface Props {
-		data: SuperValidated<Infer<EditSchema>>;
+		editFormData: SuperValidated<Infer<typeof editSchema>>;
+		deleteFormData: SuperValidated<Infer<typeof deleteSchema>>;
 		event: typeof eventsTable.$inferSelect;
 	}
 
-	let { data, event }: Props = $props();
+	let { editFormData, deleteFormData, event }: Props = $props();
 
 	let editModal: HTMLDialogElement;
 	let deleteModal: HTMLDialogElement;
@@ -24,38 +25,44 @@
 		deleteModal = document.getElementById(`delete-modal-${event.id}`) as HTMLDialogElement;
 	});
 
-	const { form, enhance, constraints, delayed } = superForm(data, {
-		onSubmit({ formData }) {
-			formData.set('id', event.id.toString());
-		},
+	const {
+		form: editForm,
+		enhance: editEnhance,
+		constraints: editConstraints,
+		delayed: editDelayed
+	} = superForm(editFormData, {
 		onUpdated() {
 			invalidate('fetch:events');
 			editModal.close();
 		},
-		onError({ result }) {
-			console.error('Something went wrong', result);
-		},
 		id: `editForm-${event.id}`
 	});
-	const deleteEvent = async () => {
-		await fetch(`/api/delete-event?id=${event.id}`, {
-			method: 'DELETE'
-		});
-		invalidate('fetch:events');
-		deleteModal.close();
-	};
+
+	const {
+		form: deleteForm,
+		enhance: deleteEnhanced,
+		delayed: deleteDelayed
+	} = superForm(deleteFormData, {
+		onUpdated() {
+			invalidate('fetch:events');
+			deleteModal.close();
+		},
+		id: `deleteForm-${event.id}`
+	});
 
 	const date = dayjs(event.date);
 
-	$form.event = event.content;
-	$form.date = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
+	$editForm.event = event.content;
+	$editForm.date = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
+	$editForm.id = event.id;
+	$deleteForm.id = event.id;
 </script>
 
 <div class="flex flex-row justify-between gap-4 rounded-box bg-base-200 p-8 md:w-[30vw]">
 	<div>
 		<h1 class="text-3xl font-bold text-primary">{event.content}</h1>
 		<p>
-			<span class={cn(date.isBefore(dayjs()) && 'text-warning')}
+			<span class={cn(date.isBefore(dayjs()) && 'text-error')}
 				>{date.format('D MMMM YYYY, HH:mm')}</span
 			>
 			{'·'}
@@ -73,10 +80,11 @@
 	<dialog id={`edit-modal-${event.id}`} class="modal">
 		<div class="modal-box">
 			<h1 class="mb-4 text-xl font-medium">Edit Event</h1>
-			<form method="POST" action="?/edit" use:enhance class="flex flex-col gap-4">
+			<form method="POST" action="/?/edit" use:editEnhance class="flex flex-col gap-4">
+				<input type="text" bind:value={$editForm.id} class="hidden" />
 				<input
-					{...$constraints.event}
-					bind:value={$form.event}
+					{...$editConstraints.event}
+					bind:value={$editForm.event}
 					type="text"
 					name="event"
 					placeholder="What?"
@@ -84,14 +92,14 @@
 				/>
 				<div class="grid grid-cols-2 gap-4">
 					<input
-						{...$constraints.date}
-						bind:value={$form.date}
+						{...$editConstraints.date}
+						bind:value={$editForm.date}
 						name="date"
 						type="datetime-local"
 						placeholder="When?"
 						class="input input-bordered w-full"
 					/>
-					<select name="tag" bind:value={$form.tag} class="select select-bordered">
+					<select name="tag" bind:value={$editForm.tag} class="select select-bordered">
 						<option disabled selected>Select a Tag</option>
 						{#each tags as tag}
 							<option class="option" value={tag}>{tag}</option>
@@ -101,7 +109,7 @@
 				<div class="flex">
 					<button class="btn btn-primary mx-auto" type="submit">
 						Update
-						{#if $delayed}
+						{#if $editDelayed}
 							<span class="loading loading-spinner loading-xs"></span>
 						{/if}
 					</button>
@@ -121,7 +129,14 @@
 			<div class="modal-action">
 				<form method="dialog" class="flex gap-4">
 					<button class="btn">No</button>
-					<button class="btn btn-error" onclick={deleteEvent}>Yes</button>
+				</form>
+				<form method="POST" action="/?/delete" use:deleteEnhanced>
+					<input type="text" name="id" bind:value={$deleteForm.id} class="hidden" />
+					<button class="btn btn-error"
+						>Yes{#if $deleteDelayed}
+							<span class="loading loading-spinner loading-xs"></span>
+						{/if}</button
+					>
 				</form>
 			</div>
 		</div>

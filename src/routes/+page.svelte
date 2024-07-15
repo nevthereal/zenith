@@ -78,8 +78,8 @@
 		{#if events.length == 0}
 			<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
 		{/if}
-		{#each events as event}
-			<Event {event} data={data.editForm} />
+		{#each events as event (event.id)}
+			<Event {event} editFormData={data.editForm} deleteFormData={data.deleteForm} />
 		{/each}
 		<a href="/upcoming" class="link link-primary font-semibold italic">View all upcoming</a>
 	</section>

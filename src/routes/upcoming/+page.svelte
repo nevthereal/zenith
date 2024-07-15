@@ -12,8 +12,8 @@
 		{#if events.length === 0}
 			<h2 class="text-xl font-semibold italic">Nothing upcoming.</h2>
 		{:else}
-			{#each events as event}
-				<Event data={data.editForm} {event} />
+			{#each events as event (event.id)}
+				<Event deleteFormData={data.deleteForm} editFormData={data.editForm} {event} />
 			{/each}
 		{/if}
 	</section>

@@ -1,12 +1,11 @@
 import { db } from '$lib/db/db';
 import { and, asc, eq, gt } from 'drizzle-orm';
-import type { Actions, PageServerLoad } from './$types';
+import type { PageServerLoad } from './$types';
 import { eventsTable } from '$lib/db/schema';
 import dayjs from 'dayjs';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { editSchema } from '$lib/zod';
-import { fail, redirect } from '@sveltejs/kit';
+import { deleteSchema, editSchema } from '$lib/zod';
 import { checkUser } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
@@ -22,29 +21,7 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 	});
 
 	const editForm = await superValidate(zod(editSchema));
+	const deleteForm = await superValidate(zod(deleteSchema));
 
-	return { events, editForm };
-};
-
-export const actions: Actions = {
-	edit: async ({ request, locals }) => {
-		const user = checkUser(locals);
-
-		if (!user.paid) redirect(302, '/account');
-
-		const form = await superValidate(request, zod(editSchema));
-
-		if (!form.valid) {
-			return fail(400, { form });
-		}
-
-		await db
-			.update(eventsTable)
-			.set({
-				content: form.data.event,
-				date: dayjs(form.data.date).toDate(),
-				tag: form.data.tag
-			})
-			.where(eq(eventsTable.id, form.data.id));
-	}
+	return { events, editForm, deleteForm };
 };
