@@ -1,6 +1,5 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
-	import wretch from 'wretch';
 
 	const { data } = $props();
 	const user = data.user;
@@ -39,14 +38,8 @@
 		</p>
 	{:else}
 		<p class="mb-2">Please purchase the product to use the features of this app.</p>
-		<button
-			class="btn btn-warning"
-			onclick={() =>
-				wretch('/api/stripe/purchase')
-					.post()
-					.json((json) => {
-						return window.location.replace(json.url);
-					})}>Purchase ($10)</button
-		>
+		<form action="/?/purchase" method="post">
+			<button class="btn btn-warning">Purchase ($10)</button>
+		</form>
 	{/if}
 </div>

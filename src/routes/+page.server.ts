@@ -10,6 +10,8 @@ import { db } from '$lib/db/db';
 import { eventsTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
 import { checkUser } from '$lib/utils';
+import { stripe } from '$lib/stripe';
+import { PRICE_ID } from '$env/static/private';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
 	const user = checkUser(locals);
@@ -93,5 +95,25 @@ export const actions: Actions = {
 		} else if (user.admin || qEvent.userId === user.id) {
 			await db.delete(eventsTable).where(eq(eventsTable.id, form.data.id));
 		} else return fail(400, { form });
+	},
+	purchase: async ({ locals, url }) => {
+		const user = checkUser(locals);
+
+		const session = await stripe.checkout.sessions.create({
+			line_items: [{ price: PRICE_ID, quantity: 1 }],
+			customer_email: user.email || undefined,
+			allow_promotion_codes: true,
+			mode: 'payment',
+			metadata: {
+				userId: user.id
+			},
+			invoice_creation: {
+				enabled: true
+			},
+			customer_creation: 'always',
+			success_url: `${url.origin}/success?id={CHECKOUT_SESSION_ID}`,
+			cancel_url: `${url.href}`
+		});
+		return redirect(302, session.url as string);
 	}
 };
