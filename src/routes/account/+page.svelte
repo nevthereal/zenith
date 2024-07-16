@@ -12,7 +12,7 @@
 <div class="mb-4 flex items-center justify-between">
 	<h1 class="text-5xl font-bold tracking-tighter">Account overview</h1>
 </div>
-<div class="text-lg leading-8">
+<div class="debug text-lg leading-8">
 	<p><span class="font-medium">Username:</span> {user.username}</p>
 	<p><span class="font-medium">Joined:</span> {dayjs().to(dayjs(user.joined))}</p>
 	<p>
