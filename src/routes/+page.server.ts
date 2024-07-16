@@ -54,6 +54,7 @@ export const actions: Actions = {
 			userId: user.id,
 			tag: object.tag
 		});
+		return { form };
 	},
 	edit: async ({ request, locals }) => {
 		const user = checkUser(locals);
@@ -74,6 +75,7 @@ export const actions: Actions = {
 				tag: form.data.tag
 			})
 			.where(eq(eventsTable.id, form.data.id));
+		return { form };
 	},
 	delete: async ({ request, locals }) => {
 		const user = checkUser(locals);
@@ -95,6 +97,7 @@ export const actions: Actions = {
 		} else if (user.admin || qEvent.userId === user.id) {
 			await db.delete(eventsTable).where(eq(eventsTable.id, form.data.id));
 		} else return fail(400, { form });
+		return { form };
 	},
 	purchase: async ({ locals, url }) => {
 		const user = checkUser(locals);

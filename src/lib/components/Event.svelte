@@ -34,6 +34,9 @@
 		onSubmit({ formData }) {
 			formData.set('id', event.id.toString());
 		},
+		onResult({ result }) {
+			console.log(result);
+		},
 		onUpdated() {
 			invalidate('fetch:events');
 			editModal.close();
@@ -43,7 +46,7 @@
 
 	const {
 		form: deleteForm,
-		enhance: deleteEnhanced,
+		enhance: deleteEnhance,
 		delayed: deleteDelayed
 	} = superForm(deleteFormData, {
 		onSubmit({ formData }) {
@@ -56,12 +59,10 @@
 		id: `deleteForm-${event.id}`
 	});
 
-	const date = dayjs(event.date);
+	const date = $derived(dayjs(event.date));
 
 	$editForm.event = event.content;
 	$editForm.date = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
-	$editForm.id = event.id;
-	$deleteForm.id = event.id;
 </script>
 
 <div class="flex flex-row justify-between gap-4 rounded-box bg-base-200 p-8 md:w-[30vw]">
@@ -135,7 +136,7 @@
 				<form method="dialog" class="flex gap-4">
 					<button class="btn">No</button>
 				</form>
-				<form method="POST" action="/?/delete" use:deleteEnhanced>
+				<form method="POST" action="/?/delete" use:deleteEnhance>
 					<button class="btn btn-error"
 						>Yes{#if $deleteDelayed}
 							<span class="loading loading-spinner loading-xs"></span>

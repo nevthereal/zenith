@@ -18,10 +18,8 @@
 	<p><span class="font-medium">Username:</span> {user.username}</p>
 	<p class="flex items-center gap-2">
 		<span class="font-medium">Email:</span>
-		{#if revealed}
-			{user.email}
-		{/if}
-		<button class="btn btn-neutral btn-xs" onclick={() => (revealed = !revealed)}
+		<span class={revealed ? 'blur-none' : 'blur-sm'}>{user.email}</span>
+		<button class="btn btn-neutral btn-xs font-mono" onclick={() => (revealed = !revealed)}
 			>{revealed ? 'Hide' : 'Show'}</button
 		>
 	</p>
