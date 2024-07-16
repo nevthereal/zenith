@@ -24,7 +24,11 @@
 			<li><a href="/account"><CircleUser /> Overview</a></li>
 			<li><a href="/account/edit"><Pencil /> Edit</a></li>
 			<li><a href="/account/billing"><HandCoins /> Billing</a></li>
-			<li><a href="/api/signout" class="text-error">Log out</a></li>
+			<li>
+				<form action="/account/?/signout" method="post">
+					<button class="text-error">Log out</button>
+				</form>
+			</li>
 		</ul>
 	</div>
 </div>
