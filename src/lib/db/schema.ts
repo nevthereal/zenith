@@ -17,7 +17,7 @@ export const usersTable = pgTable('users', {
 	id: text('id').notNull().primaryKey(),
 	username: text('username').notNull(),
 	githubId: integer('github_id').unique().notNull(),
-	email: text('email'),
+	email: text('email').notNull(),
 	admin: boolean('admin').default(false),
 	joined: timestamp('joined').notNull(),
 	stripeId: text('stripe_id'),

@@ -57,7 +57,7 @@
 			</button>
 		</form>
 	{:else}
-		<div class="my-12">
+		<div class="my-6">
 			<form action="/?/purchase" method="post">
 				<button
 					class="btn btn-warning tooltip tooltip-top"

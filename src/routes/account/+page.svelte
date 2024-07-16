@@ -7,6 +7,8 @@
 	let { data } = $props();
 
 	const user = data.user;
+
+	let revealed = $state(false);
 </script>
 
 <div class="mb-4 flex items-center justify-between">
@@ -14,6 +16,15 @@
 </div>
 <div class="debug text-lg leading-8">
 	<p><span class="font-medium">Username:</span> {user.username}</p>
+	<p class="flex items-center gap-2">
+		<span class="font-medium">Email:</span>
+		{#if revealed}
+			{user.email}
+		{/if}
+		<button class="btn btn-neutral btn-xs" onclick={() => (revealed = !revealed)}
+			>{revealed ? 'Hide' : 'Show'}</button
+		>
+	</p>
 	<p><span class="font-medium">Joined:</span> {dayjs().to(dayjs(user.joined))}</p>
 	<p>
 		<span class="font-medium">Paid:</span>

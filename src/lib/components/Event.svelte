@@ -15,8 +15,8 @@
 
 	let { editFormData, deleteFormData, event }: Props = $props();
 
-	let editModal: HTMLDialogElement;
-	let deleteModal: HTMLDialogElement;
+	let editModal: HTMLDialogElement = $state() as HTMLDialogElement;
+	let deleteModal: HTMLDialogElement = $state() as HTMLDialogElement;
 
 	const tags = tagEnum.enumValues;
 
@@ -31,6 +31,9 @@
 		constraints: editConstraints,
 		delayed: editDelayed
 	} = superForm(editFormData, {
+		onSubmit({ formData }) {
+			formData.set('id', event.id.toString());
+		},
 		onUpdated() {
 			invalidate('fetch:events');
 			editModal.close();
@@ -43,6 +46,9 @@
 		enhance: deleteEnhanced,
 		delayed: deleteDelayed
 	} = superForm(deleteFormData, {
+		onSubmit({ formData }) {
+			formData.set('id', event.id.toString());
+		},
 		onUpdated() {
 			invalidate('fetch:events');
 			deleteModal.close();
@@ -81,7 +87,6 @@
 		<div class="modal-box">
 			<h1 class="mb-4 text-xl font-medium">Edit Event</h1>
 			<form method="POST" action="/?/edit" use:editEnhance class="flex flex-col gap-4">
-				<input type="text" bind:value={$editForm.id} class="hidden" />
 				<input
 					{...$editConstraints.event}
 					bind:value={$editForm.event}
@@ -131,7 +136,6 @@
 					<button class="btn">No</button>
 				</form>
 				<form method="POST" action="/?/delete" use:deleteEnhanced>
-					<input type="text" name="id" bind:value={$deleteForm.id} class="hidden" />
 					<button class="btn btn-error"
 						>Yes{#if $deleteDelayed}
 							<span class="loading loading-spinner loading-xs"></span>
