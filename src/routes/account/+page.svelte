@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cn } from '$lib/utils.js';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
 
@@ -18,7 +19,7 @@
 	<p><span class="font-medium">Username:</span> {user.username}</p>
 	<p class="flex items-center gap-2">
 		<span class="font-medium">Email:</span>
-		<span class={revealed ? 'blur-none' : 'blur-sm'}>{user.email}</span>
+		<span class={cn(revealed ? 'blur-0' : 'blur-sm')}>{user.email}</span>
 		<button class="btn btn-neutral btn-xs font-mono" onclick={() => (revealed = !revealed)}
 			>{revealed ? 'Hide' : 'Show'}</button
 		>

@@ -24,8 +24,8 @@
 			<h1 class="mb-4 text-8xl font-black tracking-tighter">Zenith</h1>
 			<p class="mb-4 text-2xl font-medium">everyday planning powered by AI, at your fingertips</p>
 			<div class="flex justify-center gap-6">
-				<a href="/features" class="btn btn-primary shadow-md shadow-primary">Features</a>
-				<a href="/signin" class="btn shadow-md shadow-base-300">Sign In</a>
+				<a href="/features" class="btn btn-primary">Features</a>
+				<a href="/signin" class="btn shadow-md">Sign In</a>
 			</div>
 		</div>
 	</div>
