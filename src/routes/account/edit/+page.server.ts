@@ -46,6 +46,7 @@ export const actions: Actions = {
 			updateEmail();
 			return setMessage(form, 'Updated email');
 		}
+		return { form };
 	},
 	delete_user: async ({ locals }) => {
 		const user = checkUser(locals);
@@ -54,6 +55,6 @@ export const actions: Actions = {
 		await db.delete(eventsTable).where(eq(eventsTable.userId, user.id));
 		await db.delete(ordersTable).where(eq(ordersTable.userId, user.id));
 		await db.delete(usersTable).where(eq(usersTable.id, user.id));
-		return redirect(302, '/signin');
+		redirect(302, '/signin');
 	}
 };

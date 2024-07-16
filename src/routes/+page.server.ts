@@ -117,6 +117,6 @@ export const actions: Actions = {
 			success_url: `${url.origin}/success?id={CHECKOUT_SESSION_ID}`,
 			cancel_url: `${url.href}`
 		});
-		return redirect(302, session.url as string);
+		redirect(302, session.url as string);
 	}
 };
