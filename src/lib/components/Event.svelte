@@ -34,9 +34,6 @@
 		onSubmit({ formData }) {
 			formData.set('id', event.id.toString());
 		},
-		onResult({ result }) {
-			console.log(result);
-		},
 		onUpdated() {
 			invalidate('fetch:events');
 			editModal.close();
@@ -44,25 +41,22 @@
 		id: `editForm-${event.id}`
 	});
 
-	const {
-		form: deleteForm,
-		enhance: deleteEnhance,
-		delayed: deleteDelayed
-	} = superForm(deleteFormData, {
+	const { enhance: deleteEnhance } = superForm(deleteFormData, {
 		onSubmit({ formData }) {
 			formData.set('id', event.id.toString());
+			deleteModal.close();
 		},
 		onUpdated() {
 			invalidate('fetch:events');
-			deleteModal.close();
 		},
 		id: `deleteForm-${event.id}`
 	});
 
 	const date = $derived(dayjs(event.date));
+	const dateInput = dateProxy(editForm, 'date', { format: 'datetime' });
 
 	$editForm.event = event.content;
-	$editForm.date = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
+	$dateInput = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
 </script>
 
 <div class="flex flex-row justify-between gap-4 rounded-box bg-base-200 p-8 md:w-[30vw]">
@@ -99,7 +93,7 @@
 				<div class="grid grid-cols-2 gap-4">
 					<input
 						{...$editConstraints.date}
-						bind:value={$editForm.date}
+						bind:value={$dateInput}
 						name="date"
 						type="datetime-local"
 						placeholder="When?"
@@ -137,11 +131,7 @@
 					<button class="btn">No</button>
 				</form>
 				<form method="POST" action="/?/delete" use:deleteEnhance>
-					<button class="btn btn-error"
-						>Yes{#if $deleteDelayed}
-							<span class="loading loading-spinner loading-xs"></span>
-						{/if}</button
-					>
+					<button class="btn btn-error">Yes</button>
 				</form>
 			</div>
 		</div>
