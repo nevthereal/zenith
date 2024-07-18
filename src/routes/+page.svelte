@@ -62,7 +62,7 @@
 				<button
 					class="btn btn-warning tooltip tooltip-top"
 					data-tip="Purchase the product to continue"
-					>Purchase ($10)
+					>Purchase ($20)
 				</button>
 			</form>
 		</div>

@@ -39,7 +39,7 @@
 	{:else}
 		<p class="mb-2">Please purchase the product to use the features of this app.</p>
 		<form action="/?/purchase" method="post">
-			<button class="btn btn-warning">Purchase ($10)</button>
+			<button class="btn btn-warning">Purchase ($20)</button>
 		</form>
 	{/if}
 </div>

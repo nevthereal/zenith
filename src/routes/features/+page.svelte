@@ -4,7 +4,7 @@
 	<h2 id="pricing">Pricing</h2>
 	<p>
 		Since using AI and storing Data somewhere isn't free, especially not at scale, you can purchase
-		this product for <strong>$10</strong>. It is a one-time purchase with no subscription tied to it
+		this product for <strong>$20</strong>. It is a one-time purchase with no subscription tied to it
 		and you have full access to all features.
 	</p>
 	<h2 id="ai-features">AI Features</h2>
