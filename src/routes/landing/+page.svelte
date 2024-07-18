@@ -17,15 +17,15 @@
 	<meta name="twitter:site" content="@BremNeville" />
 </svelte:head>
 
-<div class="hero h-[90dvh] bg-black" style={`background-image: url(${hero})`}>
-	<div class="hero-overlay bg-opacity-60"></div>
+<div class="hero h-[75dvh] rounded-box" style={`background-image: url(${hero})`}>
+	<div class="hero-overlay rounded-box bg-opacity-60"></div>
 	<div class="hero-content text-center text-neutral-content">
 		<div class="max-w-md">
 			<h1 class="mb-4 text-8xl font-black tracking-tighter">Zenith</h1>
 			<p class="mb-4 text-2xl font-medium">everyday planning powered by AI, at your fingertips</p>
 			<div class="flex justify-center gap-6">
-				<a href="/features" class="btn btn-primary">Features</a>
-				<a href="/signin" class="btn shadow-md">Sign In</a>
+				<a href="/features" class="btn">Features</a>
+				<a href="/signin" class="btn btn-primary">Sign In</a>
 			</div>
 		</div>
 	</div>

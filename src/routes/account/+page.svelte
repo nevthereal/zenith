@@ -19,7 +19,8 @@
 	<p><span class="font-medium">Username:</span> {user.username}</p>
 	<p class="flex items-center gap-2">
 		<span class="font-medium">Email:</span>
-		<span class={cn(revealed ? 'blur-0' : 'blur-sm')}>{user.email}</span>
+		<span class={cn(revealed ? 'blur-0' : 'blur-sm', 'duration-200 ease-in-out')}>{user.email}</span
+		>
 		<button class="btn btn-neutral btn-xs font-mono" onclick={() => (revealed = !revealed)}
 			>{revealed ? 'Hide' : 'Show'}</button
 		>

@@ -8,7 +8,7 @@
 	const user = data.user;
 </script>
 
-<nav class="flex h-[10dvh] select-none items-center justify-between p-4">
+<nav class="flex select-none items-center justify-between p-4">
 	<a href={user ? '/' : '/landing'} class="flex items-center"
 		><img src={logo} alt="Logo" class="size-20" /><span class="text-4xl font-bold italic"
 			>{#if user}
@@ -36,6 +36,6 @@
 		{/if}
 	</div>
 </nav>
-<main class="px-8">
+<main class="flex-1 px-8">
 	{@render children()}
 </main>
