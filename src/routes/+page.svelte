@@ -20,18 +20,7 @@
 </script>
 
 <svelte:head>
-	<title>Zenith</title>
-	<meta name="description" content="AI-powered planning. No more annoying interfaces." />
-	<meta property="og:title" content="Zenith" />
-	<meta property="og:description" content="AI-powered planning. No more annoying interfaces." />
-	<meta property="og:url" content="https://www.zenithproductivity.app" />
-	<meta
-		property="twitter:description"
-		content="AI-powered planning. No more annoying interfaces."
-	/>
-	<meta property="twitter:title" content="Zenith" />
-	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:site" content="@BremNeville" />
+	<title>Zenith - Today</title>
 </svelte:head>
 
 <div class="flex flex-col items-center">
