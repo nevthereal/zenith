@@ -20,12 +20,14 @@
 
 <ul class="flex flex-col gap-1 md:text-lg">
 	<li>
-		<span class="font-semibold">Username:</span> <span class="text-gray-400">{user.username}</span>
+		<span class="font-medium">Username:</span>
+		<span class="text-base-content/80">{user.username}</span>
 	</li>
 	<li class="flex items-center gap-2">
-		<span class="font-semibold">Email:</span>
+		<span class="font-medium">Email:</span>
 		{#if user.email}
-			<span class={cn(revealed ? 'blur-0' : 'blur-sm', 'text-gray-400 duration-200 ease-in-out')}
+			<span
+				class={cn(revealed ? 'blur-0' : 'blur-sm', 'text-base-content/80 duration-200 ease-in-out')}
 				>{user.email}</span
 			>
 			<button class="btn btn-neutral btn-xs font-mono" onclick={() => (revealed = !revealed)}
@@ -36,17 +38,18 @@
 		{/if}
 	</li>
 	<li>
-		<span class="font-semibold">Joined:</span>
-		<span class="text-gray-400">{dayjs().to(dayjs(user.joined))}</span>
+		<span class="font-medium">Joined:</span>
+		<span class="text-base-content/80">{dayjs().to(dayjs(user.joined))}</span>
 	</li>
 	<li>
-		<span class="font-semibold">Paid:</span>
-		<a class="link text-gray-400" href="/account/billing">{user.paid ? 'Yes' : 'No'}, See billing</a
+		<span class="font-medium">Paid:</span>
+		<a class="link text-base-content/80" href="/account/billing"
+			>{user.paid ? 'Yes' : 'No'}, See billing</a
 		>
 	</li>
 	{#if user.admin}
 		<li>
-			<a href="/admin" class="link text-gray-400">You are an admin</a>
+			<a href="/admin" class="link text-base-content/80">You are an admin</a>
 		</li>
 	{/if}
 </ul>
