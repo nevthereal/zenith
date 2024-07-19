@@ -73,7 +73,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				status: 400
 			});
 		}
-		console.log(e);
+		console.error(e);
 		return new Response(null, {
 			status: 500
 		});
