@@ -18,12 +18,14 @@
 
 <h1 class="account-title">Account overview</h1>
 
-<div class="flex flex-col gap-2 md:text-lg">
-	<p><span class="font-medium">Username:</span> {user.username}</p>
-	<p class="flex items-center gap-2">
-		<span class="font-medium">Email:</span>
+<ul class="flex flex-col gap-1 md:text-lg">
+	<li>
+		<span class="font-semibold">Username:</span> <span class="text-gray-400">{user.username}</span>
+	</li>
+	<li class="flex items-center gap-2">
+		<span class="font-semibold">Email:</span>
 		{#if user.email}
-			<span class={cn(revealed ? 'blur-0' : 'blur-sm', 'duration-200 ease-in-out')}
+			<span class={cn(revealed ? 'blur-0' : 'blur-sm', 'text-gray-400 duration-200 ease-in-out')}
 				>{user.email}</span
 			>
 			<button class="btn btn-neutral btn-xs font-mono" onclick={() => (revealed = !revealed)}
@@ -32,15 +34,19 @@
 		{:else}
 			<a href="/account/edit" class="link">Please add an email</a>
 		{/if}
-	</p>
-	<p><span class="font-medium">Joined:</span> {dayjs().to(dayjs(user.joined))}</p>
-	<p>
-		<span class="font-medium">Paid:</span>
-		<a class="link link-secondary" href="/account/billing"
-			>{user.paid ? 'Yes' : 'No'}, See billing</a
+	</li>
+	<li>
+		<span class="font-semibold">Joined:</span>
+		<span class="text-gray-400">{dayjs().to(dayjs(user.joined))}</span>
+	</li>
+	<li>
+		<span class="font-semibold">Paid:</span>
+		<a class="link text-gray-400" href="/account/billing">{user.paid ? 'Yes' : 'No'}, See billing</a
 		>
-	</p>
+	</li>
 	{#if user.admin}
-		<a href="/admin" class="link font-mono">You are an admin</a>
+		<li>
+			<a href="/admin" class="link text-gray-400">You are an admin</a>
+		</li>
 	{/if}
-</div>
+</ul>

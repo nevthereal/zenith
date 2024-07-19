@@ -121,10 +121,8 @@
 	</dialog>
 	<dialog class="modal" id={`delete-modal-${event.id}`}>
 		<div class="modal-box">
-			<h2 class="text-xl font-bold">Delete Event?</h2>
-			<p class="pt-6">
-				Deleting "{event.content}" can't be undone!
-			</p>
+			<h2 class="text-xl font-bold">Complete Event?</h2>
+			<p class="pt-6">Completing will delete the event forever!</p>
 			<div class="modal-action">
 				<form method="dialog" class="flex gap-4">
 					<button class="btn">No</button>
