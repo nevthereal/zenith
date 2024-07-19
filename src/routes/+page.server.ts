@@ -14,8 +14,7 @@ import { stripe } from '$lib/stripe';
 import { PRICE_ID, UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
-import { building } from '$app/environment';
-import { dev } from '$app/environment';
+import { building, dev } from '$app/environment';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
 	const user = checkUser(locals);
@@ -36,7 +35,7 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 let redis: Redis;
 let ratelimit: Ratelimit;
 
-if (!building) {
+if (!dev && !building) {
 	redis = new Redis({
 		url: UPSTASH_URL,
 		token: UPSTASH_TOKEN
