@@ -59,16 +59,13 @@
 	$dateInput = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
 </script>
 
-<div class="flex flex-row justify-between gap-4 rounded-box bg-base-200 p-8 md:w-[30vw]">
+<div class="flex w-full flex-row justify-between gap-4 rounded-box bg-base-200 p-8">
 	<div>
-		<h1 class="text-3xl font-bold text-primary">{event.content}</h1>
-		<p>
-			<span class={cn(date.isBefore(dayjs()) && 'text-error')}
-				>{date.format('D MMMM YYYY, HH:mm')}</span
-			>
-			{'·'}
-			<span class="font-medium text-secondary">{event.tag}</span>
-		</p>
+		<h1 class="text-xl font-bold text-primary md:text-3xl">{event.content}</h1>
+		<div class="text-md md:text-base">
+			<p>{date.format('D MMMM YYYY, HH:mm')}</p>
+			<p class="font-medium text-secondary">{event.tag}</p>
+		</div>
 	</div>
 	<div class="flex gap-2">
 		<button class="btn btn-circle my-auto" onclick={() => editModal.showModal()}>

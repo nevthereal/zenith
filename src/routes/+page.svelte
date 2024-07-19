@@ -35,10 +35,10 @@
 </svelte:head>
 
 <div class="flex flex-col items-center">
-	<h3 class="text-xl font-medium">
+	<h3 class="text-lg font-medium md:text-xl">
 		Hi, <span class="font-bold text-primary">{user.username}</span>
 	</h3>
-	<h1 class="text-5xl font-bold">What are your plans?</h1>
+	<h1 class="text-center text-3xl font-bold md:text-5xl">What are your plans?</h1>
 	{#if user.paid}
 		<form action="?/create" method="POST" class="my-12 flex items-center gap-4" use:enhance>
 			<input
@@ -75,6 +75,6 @@
 		{#each events as event (event.id)}
 			<Event {event} editFormData={data.editForm} deleteFormData={data.deleteForm} />
 		{/each}
-		<a href="/upcoming" class="link link-primary font-semibold italic">View all upcoming</a>
+		<a href="/upcoming" class="link link-primary mb-4 font-semibold italic">View all upcoming</a>
 	</section>
 </div>

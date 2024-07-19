@@ -12,8 +12,8 @@
 	const { form, enhance, errors, message } = superForm(data.updateForm);
 </script>
 
-<h1 class="mb-4 text-5xl font-bold tracking-tighter">Edit account</h1>
-<form use:enhance action="?/update_user" method="post" class="mb-8 flex max-w-96 flex-col gap-2">
+<h1 class="account-title">Edit account</h1>
+<form use:enhance action="?/update_user" method="post" class="mb-8 flex max-w-prose flex-col gap-2">
 	<input
 		type="text"
 		bind:value={$form.username}
@@ -33,7 +33,7 @@
 		<span class="text-success">{$message}</span>
 	{/if}
 </form>
-<h2 class="mb-4 text-3xl font-bold tracking-tighter">Danger zone</h2>
+<h2 class="mb-4 text-xl font-bold tracking-tighter md:text-3xl">Danger zone</h2>
 <button class="btn btn-outline btn-error" onclick={() => deleteModal.showModal()}
 	>Delete Account</button
 >

@@ -12,10 +12,9 @@
 	let revealed = $state(false);
 </script>
 
-<div class="mb-4 flex items-center justify-between">
-	<h1 class="text-5xl font-bold tracking-tighter">Account overview</h1>
-</div>
-<div class="debug text-lg leading-8">
+<h1 class="account-title">Account overview</h1>
+
+<div class="leading-8 md:text-lg">
 	<p><span class="font-medium">Username:</span> {user.username}</p>
 	<p class="flex items-center gap-2">
 		<span class="font-medium">Email:</span>

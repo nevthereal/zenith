@@ -13,7 +13,8 @@
 
 <nav class="flex select-none items-center justify-between p-4">
 	<a href={user ? '/' : '/landing'} class="flex items-center"
-		><img src={logo} alt="Logo" class="size-20" /><span class="text-4xl font-bold italic"
+		><img src={logo} alt="Logo" class="size-16 md:size-20" /><span
+			class="text-2xl font-bold italic md:text-4xl"
 			>{#if user}
 				up today
 			{:else}
@@ -39,6 +40,6 @@
 		{/if}
 	</div>
 </nav>
-<main class="flex-1 px-8">
+<main class="mx-4 md:mx-auto md:max-w-[90dwv]">
 	{@render children()}
 </main>

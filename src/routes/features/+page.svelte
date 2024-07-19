@@ -1,4 +1,4 @@
-<section class="prose mx-auto my-8 prose-h1:font-black prose-h1:tracking-tighter">
+<section class="prose mx-auto my-4 prose-h1:font-black prose-h1:tracking-tighter">
 	<h1>Features</h1>
 	<p>Before we talk about the actual features themselves, let's talk about</p>
 	<h2 id="pricing">Pricing</h2>
