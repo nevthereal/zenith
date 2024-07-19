@@ -84,5 +84,5 @@ interface GitHubUser {
 	id: number;
 	login: string;
 	admin: boolean;
-	email: string;
+	email: string | null;
 }

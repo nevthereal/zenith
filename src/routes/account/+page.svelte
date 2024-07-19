@@ -22,11 +22,16 @@
 	<p><span class="font-medium">Username:</span> {user.username}</p>
 	<p class="flex items-center gap-2">
 		<span class="font-medium">Email:</span>
-		<span class={cn(revealed ? 'blur-0' : 'blur-sm', 'duration-200 ease-in-out')}>{user.email}</span
-		>
-		<button class="btn btn-neutral btn-xs font-mono" onclick={() => (revealed = !revealed)}
-			>{revealed ? 'Hide' : 'Show'}</button
-		>
+		{#if user.email}
+			<span class={cn(revealed ? 'blur-0' : 'blur-sm', 'duration-200 ease-in-out')}
+				>{user.email}</span
+			>
+			<button class="btn btn-neutral btn-xs font-mono" onclick={() => (revealed = !revealed)}
+				>{revealed ? 'Hide' : 'Show'}</button
+			>
+		{:else}
+			<a href="/account/edit" class="link">Please add an email</a>
+		{/if}
 	</p>
 	<p><span class="font-medium">Joined:</span> {dayjs().to(dayjs(user.joined))}</p>
 	<p>
