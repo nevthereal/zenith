@@ -59,9 +59,9 @@
 	$dateInput = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
 </script>
 
-<div class="flex w-full flex-row justify-between gap-4 rounded-box bg-base-200 p-8">
+<div class="flex w-full max-w-xl flex-row justify-between gap-4 rounded-box bg-base-200 p-8">
 	<div>
-		<h1 class="text-xl font-bold text-primary md:text-3xl">{event.content}</h1>
+		<h1 class="mb-2 text-xl font-bold text-primary md:text-3xl">{event.content}</h1>
 		<div class="text-md md:text-base">
 			<p>{date.format('D MMMM YYYY, HH:mm')}</p>
 			<p class="font-medium text-secondary">{event.tag}</p>

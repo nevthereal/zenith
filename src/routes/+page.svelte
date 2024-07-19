@@ -7,12 +7,14 @@
 
 	let events = $derived(data.events);
 
+	let rateLimited = $state(false);
+
 	const { form, delayed, enhance, constraints } = superForm(data.createForm, {
 		onUpdated({ form }) {
 			if (form.valid) invalidate('fetch:events');
 		},
-		onError({ result }) {
-			console.error('Something went wrong', result);
+		onResult({ result }) {
+			if (result.status === 429) rateLimited = true;
 		}
 	});
 
@@ -29,21 +31,26 @@
 	</h3>
 	<h1 class="text-center text-3xl font-bold md:text-5xl">What are your plans?</h1>
 	{#if user.paid}
-		<form action="?/create" method="POST" class="my-12 flex items-center gap-4" use:enhance>
-			<input
-				class="input input-bordered input-primary border-2"
-				type="text"
-				placeholder="Event or Task"
-				name="event"
-				bind:value={$form.event}
-				{...$constraints.event}
-			/>
-			<button class="btn btn-primary"
-				>Add!
-				{#if $delayed}
-					<span class="loading loading-spinner loading-xs"></span>
-				{/if}
-			</button>
+		<form action="?/create" method="POST" class="my-12 flex flex-col" use:enhance>
+			<div class="flex items-center gap-4">
+				<input
+					class="input input-bordered input-primary border-2"
+					type="text"
+					placeholder="Event or Task"
+					name="event"
+					bind:value={$form.event}
+					{...$constraints.event}
+				/>
+				<button class="btn btn-primary"
+					>Add!
+					{#if $delayed}
+						<span class="loading loading-spinner loading-xs"></span>
+					{/if}
+				</button>
+			</div>
+			{#if rateLimited}
+				<span class="mt-2 text-error">Too many requests. Try again later</span>
+			{/if}
 		</form>
 	{:else}
 		<div class="my-6">

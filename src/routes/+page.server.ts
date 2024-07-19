@@ -11,7 +11,11 @@ import { eventsTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
 import { checkUser } from '$lib/utils';
 import { stripe } from '$lib/stripe';
-import { PRICE_ID } from '$env/static/private';
+import { PRICE_ID, UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+import { building } from '$app/environment';
+import { dev } from '$app/environment';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
 	const user = checkUser(locals);
@@ -29,8 +33,23 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 	return { createForm, events, editForm, user, deleteForm };
 };
 
+let redis: Redis;
+let ratelimit: Ratelimit;
+
+if (!building) {
+	redis = new Redis({
+		url: UPSTASH_URL,
+		token: UPSTASH_TOKEN
+	});
+
+	ratelimit = new Ratelimit({
+		redis,
+		limiter: Ratelimit.cachedFixedWindow(10, '1h')
+	});
+}
+
 export const actions: Actions = {
-	create: async ({ request, locals }) => {
+	create: async ({ request, locals, getClientAddress }) => {
 		const form = await superValidate(request, zod(createSchema));
 
 		const user = checkUser(locals);
@@ -38,6 +57,16 @@ export const actions: Actions = {
 
 		if (!form.valid) {
 			return fail(400, { form });
+		}
+
+		const ip = getClientAddress();
+		const rateLimitAttempt = await ratelimit.limit(ip);
+
+		if (dev && !rateLimitAttempt.success) {
+			console.log('help');
+			return fail(429, {
+				form
+			});
 		}
 
 		const { object } = await generateObject({
