@@ -18,7 +18,7 @@
 
 <h1 class="account-title">Account overview</h1>
 
-<div class="leading-8 md:text-lg">
+<div class="flex flex-col gap-2 md:text-lg">
 	<p><span class="font-medium">Username:</span> {user.username}</p>
 	<p class="flex items-center gap-2">
 		<span class="font-medium">Email:</span>
