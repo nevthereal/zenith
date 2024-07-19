@@ -10,7 +10,7 @@ export const eventSchema = z.object({
 		.datetime({
 			offset: true,
 			precision: 0,
-			local: true
+			local: false
 		})
 		.describe(
 			'The due date and time of the event, should always be in the future and make sense in regard of the content and human behavior. Time should not be too specific'
