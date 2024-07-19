@@ -5,7 +5,7 @@
 </script>
 
 <div class="flex flex-col px-2 md:flex-row md:px-8">
-	<nav class="p-4 md:p-8">
+	<nav class="rounded-box bg-base-200 p-4 md:p-8">
 		<ul class="flex flex-col gap-4 text-lg text-base-content md:text-xl">
 			<li><a class="flex items-center gap-2" href="/account"><CircleUser />Overview</a></li>
 			<li><a class="flex items-center gap-2" href="/account/edit"><Pencil />Edit</a></li>

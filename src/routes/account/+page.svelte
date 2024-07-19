@@ -41,6 +41,6 @@
 		>
 	</p>
 	{#if user.admin}
-		<p>You are an admin</p>
+		<a href="/admin" class="link font-mono">You are an admin</a>
 	{/if}
 </div>
