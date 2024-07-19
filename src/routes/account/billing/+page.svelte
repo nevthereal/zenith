@@ -32,13 +32,11 @@
 			</li>
 			<li>
 				<span class="font-medium">Invoice:</span>
-				<span class="text-base-content/80"
-					><a href={order.invoiceUrl} class="link">Invoice URL</a></span
-				>
+				<a href={order.invoiceUrl} class="link link-primary">Invoice URL</a>
 			</li>
 			<li>
 				<span class="font-medium">For support contact:</span>
-				<a target="_blank" href="mailto:contact@nevillebrem.com" class="link text-base-content/80"
+				<a target="_blank" href="mailto:contact@nevillebrem.com" class="link link-primary"
 					>contact@nevillebrem.com</a
 				>
 			</li>

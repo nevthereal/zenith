@@ -43,13 +43,11 @@
 	</li>
 	<li>
 		<span class="font-medium">Paid:</span>
-		<a class="link text-base-content/80" href="/account/billing"
-			>{user.paid ? 'Yes' : 'No'}, See billing</a
-		>
+		<a class="link link-primary" href="/account/billing">{user.paid ? 'Yes' : 'No'}, See billing</a>
 	</li>
 	{#if user.admin}
 		<li>
-			<a href="/admin" class="link text-base-content/80">You are an admin</a>
+			<a href="/admin" class="link link-primary">You are an admin</a>
 		</li>
 	{/if}
 </ul>
