@@ -12,6 +12,10 @@
 	const { form, enhance, errors, message } = superForm(data.updateForm);
 </script>
 
+<svelte:head>
+	<title>Account - Edit</title>
+</svelte:head>
+
 <h1 class="account-title">Edit account</h1>
 <form use:enhance action="?/update_user" method="post" class="mb-8 flex max-w-prose flex-col gap-2">
 	<input

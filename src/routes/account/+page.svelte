@@ -12,6 +12,10 @@
 	let revealed = $state(false);
 </script>
 
+<svelte:head>
+	<title>Account - Overview</title>
+</svelte:head>
+
 <h1 class="account-title">Account overview</h1>
 
 <div class="leading-8 md:text-lg">

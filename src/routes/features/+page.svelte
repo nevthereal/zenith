@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>Zenith - Features</title>
+</svelte:head>
+
 <section class="prose mx-auto my-4 prose-h1:font-black prose-h1:tracking-tighter">
 	<h1>Features</h1>
 	<p>Before we talk about the actual features themselves, let's talk about</p>

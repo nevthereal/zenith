@@ -6,6 +6,10 @@
 	const order = data.order;
 </script>
 
+<svelte:head>
+	<title>Account - Billing</title>
+</svelte:head>
+
 <h1 class="account-title">Billing</h1>
 
 <div class="text-lg">

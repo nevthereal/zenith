@@ -8,6 +8,10 @@
 	const invoice = session.invoice as Stripe.Invoice;
 </script>
 
+<svelte:head>
+	<title>Order Success</title>
+</svelte:head>
+
 {#if !session}
 	<p>Session not found</p>
 {:else}

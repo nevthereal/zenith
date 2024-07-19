@@ -6,6 +6,10 @@
 	let events = $derived(data.events);
 </script>
 
+<svelte:head>
+	<title>Upcoming</title>
+</svelte:head>
+
 <div class="flex flex-col items-center">
 	<h1 class="text-center text-3xl font-bold md:text-5xl">Upcoming</h1>
 	<section class="mt-4 flex flex-col items-center gap-4 md:mt-8">
