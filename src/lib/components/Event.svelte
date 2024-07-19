@@ -116,6 +116,9 @@
 				press <kbd class="kbd">esc</kbd> to cancel
 			</p>
 		</div>
+		<form method="dialog" class="modal-backdrop">
+			<button>close</button>
+		</form>
 	</dialog>
 	<dialog class="modal" id={`delete-modal-${event.id}`}>
 		<div class="modal-box">
