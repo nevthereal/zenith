@@ -18,5 +18,6 @@
 	"display": "standalone",
 	"theme_color": "#1a202c",
 	"categories": ["productivity", "utilities"],
-	"description": "AI-powered planning at your fingertips"
+	"description": "AI-powered planning at your fingertips",
+	"orientation": "portrait-primary"
 }

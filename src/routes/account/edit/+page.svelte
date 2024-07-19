@@ -23,12 +23,18 @@
 		bind:value={$form.username}
 		name="username"
 		placeholder="Username"
-		class="input"
+		class="input input-bordered"
 	/>
 	{#if $errors.username}
 		<span class="text-error">{$errors.username}</span>
 	{/if}
-	<input type="text" bind:value={$form.email} name="email" placeholder="Email" class="input" />
+	<input
+		type="text"
+		bind:value={$form.email}
+		name="email"
+		placeholder="Email"
+		class="input input-bordered"
+	/>
 	{#if $errors.email}
 		<span class="text-error">{$errors.email}</span>
 	{/if}
