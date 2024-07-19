@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
 	import { eventsTable, tagEnum } from '$lib/db/schema';
-	import { cn } from '$lib/utils';
 	import type { deleteSchema, editSchema } from '$lib/zod';
 	import dayjs from 'dayjs';
-	import { Pencil, Trash } from 'lucide-svelte';
+	import { CircleCheck, Pencil } from 'lucide-svelte';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 
 	interface Props {
@@ -72,7 +71,7 @@
 			<Pencil stroke-width={2} />
 		</button>
 		<button class="btn btn-circle my-auto" onclick={() => deleteModal.showModal()}>
-			<Trash stroke-width={2} />
+			<CircleCheck stroke-width={2} />
 		</button>
 	</div>
 	<dialog id={`edit-modal-${event.id}`} class="modal">
@@ -122,9 +121,9 @@
 	</dialog>
 	<dialog class="modal" id={`delete-modal-${event.id}`}>
 		<div class="modal-box">
-			<h2 class="text-xl font-bold">Are you sure?</h2>
+			<h2 class="text-xl font-bold">Delete Event?</h2>
 			<p class="pt-6">
-				You are about to delete "{event.content}"
+				Deleting "{event.content}" can't be undone!
 			</p>
 			<div class="modal-action">
 				<form method="dialog" class="flex gap-4">
