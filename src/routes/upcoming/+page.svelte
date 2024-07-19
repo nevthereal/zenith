@@ -12,7 +12,7 @@
 
 <div class="flex flex-col items-center">
 	<h1 class="text-center text-3xl font-bold md:text-5xl">Upcoming</h1>
-	<section class="mt-4 flex flex-col items-center gap-4 md:mt-8">
+	<section class="mt-4 flex w-full max-w-2xl flex-col items-center gap-4 md:mt-8">
 		{#if events.length === 0}
 			<h2 class="font-semibold italic md:text-xl">Nothing upcoming.</h2>
 		{:else}
