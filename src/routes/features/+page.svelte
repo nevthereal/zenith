@@ -20,7 +20,8 @@
 	<p>
 		Why? Because I think clicking through menus after menus is very tedious and has a lot of
 		friction. Just having one text field is much more convenient and with the good understanding
-		capabilities of <em>GPT-4o</em> everything gets done for you.
+		capabilities of <em>GPT-4o</em> everything gets done for you. To not skyrocket my OpenAI bill, I
+		have set the amount of requests to 10 per hour.
 	</p>
 	<h2 id="all-features">Other Features</h2>
 	<ul>

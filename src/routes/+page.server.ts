@@ -62,8 +62,7 @@ export const actions: Actions = {
 		const ip = getClientAddress();
 		const rateLimitAttempt = await ratelimit.limit(ip);
 
-		if (dev && !rateLimitAttempt.success) {
-			console.log('help');
+		if (!dev && !rateLimitAttempt.success) {
 			return fail(429, {
 				form
 			});
