@@ -64,7 +64,7 @@
 		</div>
 	{/if}
 
-	<section class="flex flex-col items-center gap-4">
+	<section class="mt-4 flex w-full max-w-2xl flex-col items-center gap-4 md:mt-8">
 		{#if events.length == 0}
 			<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
 		{/if}

@@ -59,13 +59,15 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const ip = getClientAddress();
-		const rateLimitAttempt = await ratelimit.limit(ip);
+		if (!dev) {
+			const ip = getClientAddress();
+			const rateLimitAttempt = await ratelimit.limit(ip);
 
-		if (!dev && !rateLimitAttempt.success && !user.admin) {
-			return fail(429, {
-				form
-			});
+			if (!rateLimitAttempt.success && !user.admin) {
+				return fail(429, {
+					form
+				});
+			}
 		}
 
 		const { object } = await generateObject({
