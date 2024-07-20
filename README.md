@@ -15,7 +15,6 @@ Zenith is an AI-powered Event/Task Manager for the web. The concept is simple; y
 - Neon DB
 - Lucia
 - dayjs
-- lucide-svelte
 
 # Roadmap
 
@@ -32,14 +31,16 @@ Zenith is an AI-powered Event/Task Manager for the web. The concept is simple; y
 - [x] Success page
 - [x] Orders table
 - [x] Prettier Account page
-- [ ] Edit Account
+- [x] Edit Account
 - [x] Landing page
 - [x] Features/Pricing page
 - [x] Prettier login page
+
+## V2
+
+- [ ] Complete/Delete menu
 - [ ] Admin page
-
-## Future:
-
+- [ ] Table view
 - [ ] Spaces (instead of tags)
 - [ ] Shared Events
 - [ ] Shared Spaces

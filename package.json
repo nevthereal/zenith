@@ -60,7 +60,6 @@
     "dayjs": "^1.11.11",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.31.2",
-    "lucide-svelte": "^0.394.0",
     "pg": "^8.12.0",
     "stripe": "^15.12.0",
     "tailwind-merge": "^2.3.0",

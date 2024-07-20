@@ -15,26 +15,28 @@
 <div class="text-lg">
 	{#if user.paid && order}
 		<ul class="flex flex-col gap-1 text-base md:text-lg">
-			<li class="font-semibold text-success">Your account is paid</li>
+			<li class="font-medium text-success">Your account is paid</li>
 			<li>
-				<span class="font-semibold">Customer ID:</span>
-				<span class="text-gray-400">{order.customerId}</span>
+				<span class="font-medium">Customer ID:</span>
+				<span class="text-base-content/80">{order.customerId}</span>
 			</li>
 			<li>
-				<span class="font-semibold">Order ID:</span>
-				<span class="text-gray-400">{order.orderId}</span>
+				<span class="font-medium">Order ID:</span>
+				<span class="text-base-content/80">{order.orderId}</span>
 			</li>
 			<li>
-				<span class="font-semibold">Completed:</span>
-				<span class="text-gray-400">{dayjs(order.completedAt).format('D MMMM YYYY, hh:mm')}</span>
+				<span class="font-medium">Completed:</span>
+				<span class="text-base-content/80"
+					>{dayjs(order.completedAt).format('D MMMM YYYY, hh:mm')}</span
+				>
 			</li>
 			<li>
-				<span class="font-semibold">Invoice:</span>
-				<span class="text-gray-400"><a href={order.invoiceUrl} class="link">Invoice URL</a></span>
+				<span class="font-medium">Invoice:</span>
+				<a href={order.invoiceUrl} class="link link-primary">Invoice URL</a>
 			</li>
 			<li>
-				<span class="font-semibold">For support contact:</span>
-				<a target="_blank" href="mailto:contact@nevillebrem.com" class="link text-gray-400"
+				<span class="font-medium">For support contact:</span>
+				<a target="_blank" href="mailto:contact@nevillebrem.com" class="link link-primary"
 					>contact@nevillebrem.com</a
 				>
 			</li>

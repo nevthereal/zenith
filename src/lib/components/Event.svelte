@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
-	import { eventsTable, tagEnum } from '$lib/db/schema';
+	import { eventsTable, spaceEnum } from '$lib/db/schema';
+	import { cn } from '$lib/utils';
 	import type { deleteSchema, editSchema } from '$lib/zod';
 	import dayjs from 'dayjs';
-	import { CircleCheck, Pencil } from 'lucide-svelte';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 
 	interface Props {
@@ -17,7 +17,7 @@
 	let editModal: HTMLDialogElement = $state() as HTMLDialogElement;
 	let deleteModal: HTMLDialogElement = $state() as HTMLDialogElement;
 
-	const tags = tagEnum.enumValues;
+	const spaces = spaceEnum.enumValues;
 
 	$effect(() => {
 		editModal = document.getElementById(`edit-modal-${event.id}`) as HTMLDialogElement;
@@ -40,7 +40,7 @@
 		id: `editForm-${event.id}`
 	});
 
-	const { enhance: deleteEnhance } = superForm(deleteFormData, {
+	const { enhance: deleteEnhance, form: deleteForm } = superForm(deleteFormData, {
 		onSubmit({ formData }) {
 			formData.set('id', event.id.toString());
 			deleteModal.close();
@@ -63,15 +63,15 @@
 		<h1 class="mb-2 text-2xl font-bold text-primary md:text-3xl">{event.content}</h1>
 		<div class="text-md md:text-base">
 			<p>{date.format('D MMMM YYYY, HH:mm')}</p>
-			<p class="font-medium text-secondary">{event.tag}</p>
+			<p class="font-medium text-secondary">{event.space}</p>
 		</div>
 	</div>
 	<div class="flex gap-2">
 		<button class="btn btn-circle my-auto" onclick={() => editModal.showModal()}>
-			<Pencil stroke-width={2} />
+			<i class="iconoir-edit-pencil before:text-2xl"></i>
 		</button>
 		<button class="btn btn-circle my-auto" onclick={() => deleteModal.showModal()}>
-			<CircleCheck stroke-width={2} />
+			<i class="iconoir-check-circle before:text-2xl"></i>
 		</button>
 	</div>
 	<dialog id={`edit-modal-${event.id}`} class="modal">
@@ -95,10 +95,10 @@
 						placeholder="When?"
 						class="input input-bordered w-full"
 					/>
-					<select name="tag" bind:value={$editForm.tag} class="select select-bordered">
-						<option disabled selected>Select a Tag</option>
-						{#each tags as tag}
-							<option class="option" value={tag}>{tag}</option>
+					<select name="space" bind:value={$editForm.space} class="select select-bordered">
+						<option disabled selected>Select a Space</option>
+						{#each spaces as space}
+							<option class="option" value={space}>{space}</option>
 						{/each}
 					</select>
 				</div>
@@ -111,8 +111,10 @@
 					</button>
 				</div>
 			</form>
-			<p class="mt-8 select-none text-center font-mono text-xs text-base-content/75">
-				press <kbd class="kbd">esc</kbd> to cancel
+			<p
+				class="mt-8 hidden select-none text-center font-mono text-xs text-base-content/75 md:block"
+			>
+				press <kbd class="kbd">esc</kbd> or click outside to cancel
 			</p>
 		</div>
 		<form method="dialog" class="modal-backdrop">
@@ -121,17 +123,27 @@
 	</dialog>
 	<dialog class="modal" id={`delete-modal-${event.id}`}>
 		<div class="modal-box">
-			<h2 class="text-xl font-bold">Complete Event?</h2>
-			<p class="pt-6">Completing will delete the event forever!</p>
+			<h2 class="text-xl font-bold">Complete or Delete Event?</h2>
+			<p class="pt-6">
+				Either of these actions will delete the event <span class="font-medium text-error"
+					>forever</span
+				>
+			</p>
 			<div class="modal-action">
-				<form method="dialog" class="flex gap-4">
-					<button class="btn">No</button>
-				</form>
-				<form method="POST" action="/?/delete" use:deleteEnhance>
-					<button class="btn btn-error">Yes</button>
+				<form method="POST" action="/?/delete" use:deleteEnhance class="flex gap-2">
+					<select name="action" id="action" bind:value={$deleteForm.action} class="select">
+						<option value="complete">Complete</option>
+						<option value="delete">Delete</option>
+					</select>
+					<button class={cn('btn', $deleteForm.action === 'delete' ? 'btn-error' : 'btn-success')}
+						>Yes</button
+					>
 				</form>
 			</div>
 		</div>
+		<form method="dialog" class="modal-backdrop">
+			<button>close</button>
+		</form>
 	</dialog>
 </div>
 
