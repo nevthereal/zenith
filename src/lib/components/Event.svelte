@@ -124,7 +124,11 @@
 	<dialog class="modal" id={`delete-modal-${event.id}`}>
 		<div class="modal-box">
 			<h2 class="text-xl font-bold">Complete or Delete Event?</h2>
-			<p class="pt-6">Completing will delete the event forever!</p>
+			<p class="pt-6">
+				Either of these actions will delete the event <span class="font-medium text-error"
+					>forever</span
+				>
+			</p>
 			<div class="modal-action">
 				<form method="POST" action="/?/delete" use:deleteEnhance class="flex gap-2">
 					<select name="action" id="action" bind:value={$deleteForm.action} class="select">

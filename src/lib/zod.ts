@@ -13,7 +13,7 @@ export const eventSchema = z.object({
 			local: false
 		})
 		.describe(
-			'The due date and time of the event, should always be in the future and make sense in regard of the content and human behavior. In ISO 8601 Format.'
+			'The due date and time of the event, should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific In ISO 8601 Format.'
 		),
 	content: z.string().describe('The activity or event.'),
 	space: zSpaceEnum.describe('A suitable space for the event. Essentially a categorys')
