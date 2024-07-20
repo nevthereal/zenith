@@ -81,7 +81,7 @@ export const actions: Actions = {
 			content: object.content,
 			date: new Date(object.date),
 			userId: user.id,
-			tag: object.tag
+			space: object.space
 		});
 		return { form };
 	},
@@ -101,7 +101,7 @@ export const actions: Actions = {
 			.set({
 				content: form.data.event,
 				date: dayjs(form.data.date).toDate(),
-				tag: form.data.tag
+				space: form.data.space
 			})
 			.where(eq(eventsTable.id, form.data.id));
 		return { form };

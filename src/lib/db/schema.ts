@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { boolean, integer, pgEnum, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
-export const tagEnum = pgEnum('tag', ['Private', 'Work', 'Fitness', 'Events', 'Productivity']);
+export const spaceEnum = pgEnum('spaces', ['Private', 'Work', 'Fitness', 'Events', 'Productivity']);
 
 export const eventsTable = pgTable('events', {
 	id: serial('id').primaryKey(),
@@ -10,7 +10,7 @@ export const eventsTable = pgTable('events', {
 	userId: text('userId')
 		.references(() => usersTable.id)
 		.notNull(),
-	tag: tagEnum('tag').notNull()
+	space: spaceEnum('space').notNull()
 });
 
 export const usersTable = pgTable('users', {
