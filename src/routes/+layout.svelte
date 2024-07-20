@@ -2,11 +2,8 @@
 	import logo from '$lib/assets/zenith-logo.svg';
 	import { CalendarDays, CircleUser, LogIn, Sparkles } from 'lucide-svelte';
 	import '../app.css';
-	import { inject } from '@vercel/analytics';
 
-	inject();
-
-	const { data, children } = $props();
+	const { children, data } = $props();
 
 	const user = data.user;
 </script>

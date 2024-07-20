@@ -7,6 +7,7 @@ import { db } from '$lib/db/db';
 import { eventsTable, ordersTable, sessionsTable, usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { redirect } from '@sveltejs/kit';
+import { lucia } from '$lib/auth/lucia';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
@@ -48,13 +49,24 @@ export const actions: Actions = {
 		}
 		return { form };
 	},
-	delete_user: async ({ locals }) => {
+	delete_user: async ({ locals, cookies }) => {
 		const user = checkUser(locals);
+
+		if (!locals.session) {
+			return new Response('Failed', { status: 405 });
+		}
 
 		await db.delete(sessionsTable).where(eq(sessionsTable.userId, user.id));
 		await db.delete(eventsTable).where(eq(eventsTable.userId, user.id));
 		await db.delete(ordersTable).where(eq(ordersTable.userId, user.id));
 		await db.delete(usersTable).where(eq(usersTable.id, user.id));
+		await lucia.invalidateSession(locals.session.id);
+		const sessionCookie = lucia.createBlankSessionCookie();
+		cookies.set(sessionCookie.name, sessionCookie.value, {
+			path: '.',
+			...sessionCookie.attributes
+		});
+
 		redirect(302, '/signin');
 	}
 };

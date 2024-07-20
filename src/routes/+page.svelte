@@ -32,7 +32,7 @@
 	<h1 class="text-center text-3xl font-bold md:text-5xl">What are your plans?</h1>
 	{#if user.paid}
 		<form action="?/create" method="POST" class="my-12 flex flex-col" use:enhance>
-			<div class="flex items-center gap-4">
+			<div class="flex items-center justify-center gap-4">
 				<input
 					class="input input-bordered input-primary border-2"
 					type="text"
