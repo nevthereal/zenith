@@ -7,7 +7,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
-import { eventsTable } from '$lib/db/schema';
+import { eventsTable, usersTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
 import { checkUser } from '$lib/utils';
 import { stripe } from '$lib/stripe';
@@ -115,17 +115,19 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const qEvent = await db.query.eventsTable.findFirst({
-			where: eq(eventsTable.id, form.data.id)
-		});
+		const compCountInit = user.completeCount;
 
-		if (!qEvent) {
-			return fail(404, { form });
-		} else if (qEvent.userId != user.id) {
-			return fail(401, { form });
-		} else if (user.admin || qEvent.userId === user.id) {
-			await db.delete(eventsTable).where(eq(eventsTable.id, form.data.id));
-		} else return fail(400, { form });
+		if (form.data.action === 'complete')
+			await db
+				.update(usersTable)
+				.set({
+					completeCount: compCountInit + 1
+				})
+				.where(eq(usersTable.id, user.id));
+
+		await db
+			.delete(eventsTable)
+			.where(and(eq(eventsTable.id, form.data.id), eq(eventsTable.userId, user.id)));
 		return { form };
 	},
 	purchase: async ({ locals, url }) => {

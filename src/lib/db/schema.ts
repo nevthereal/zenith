@@ -21,7 +21,8 @@ export const usersTable = pgTable('users', {
 	admin: boolean('admin').default(false),
 	joined: timestamp('joined').notNull(),
 	stripeId: text('stripe_id'),
-	paid: boolean('paid').default(false)
+	paid: boolean('paid').default(false),
+	completeCount: integer('complete_count').default(0)
 });
 
 export const sessionsTable = pgTable('sessions', {
