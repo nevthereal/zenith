@@ -4,7 +4,6 @@
 	import { cn } from '$lib/utils';
 	import type { deleteSchema, editSchema } from '$lib/zod';
 	import dayjs from 'dayjs';
-	import { CircleCheck, Pencil } from 'lucide-svelte';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 
 	interface Props {
@@ -69,10 +68,10 @@
 	</div>
 	<div class="flex gap-2">
 		<button class="btn btn-circle my-auto" onclick={() => editModal.showModal()}>
-			<Pencil stroke-width={2} />
+			<i class="iconoir-edit-pencil before:text-2xl"></i>
 		</button>
 		<button class="btn btn-circle my-auto" onclick={() => deleteModal.showModal()}>
-			<CircleCheck stroke-width={2} />
+			<i class="iconoir-check-circle before:text-2xl"></i>
 		</button>
 	</div>
 	<dialog id={`edit-modal-${event.id}`} class="modal">

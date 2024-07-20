@@ -1,6 +1,5 @@
 <script>
 	import logo from '$lib/assets/zenith-logo.svg';
-	import { CalendarDays, CircleUser, LogIn, Sparkles } from 'lucide-svelte';
 	import '../app.css';
 
 	const { children, data } = $props();
@@ -22,17 +21,21 @@
 	<div class="flex gap-6 md:gap-8">
 		{#if user}
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/upcoming"
-				><CalendarDays /> <span class="hidden md:block">Upcoming</span></a
+				><i class="iconoir-calendar before:text-2xl"></i>
+				<span class="hidden md:block">Upcoming</span></a
 			>
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/account"
-				><CircleUser /> <span class="hidden md:block">Account</span></a
+				><i class="iconoir-user before:text-2xl"></i>
+				<span class="hidden md:block">Account</span></a
 			>
 		{:else}
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/features"
-				><Sparkles /> <span class="hidden md:block">Features</span></a
+				><i class="iconoir-sparks before:text-2xl"></i>
+				<span class="hidden md:block">Features</span></a
 			>
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/signin"
-				><LogIn /> <span class="hidden md:block">Sign In</span></a
+				><i class="iconoir-peace-hand before:text-2xl"></i>
+				<span class="hidden md:block">Sign In</span></a
 			>
 		{/if}
 	</div>
