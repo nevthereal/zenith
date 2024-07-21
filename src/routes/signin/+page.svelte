@@ -12,9 +12,7 @@
 		<p class="font-medium md:text-lg">
 			Not convinced yet? <br /> Check out the <a href="/features" class="link">Features</a>.
 		</p>
-		<button
-			class="btn btn-primary tooltip tooltip-bottom my-auto ml-auto flex gap-2"
-			data-tip="Create an account and sign in with GitHub"
+		<button class="btn btn-primary my-auto ml-auto flex gap-2"
 			><i class="iconoir-github before:text-xl"></i>Sign in</button
 		>
 	</form>

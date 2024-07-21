@@ -39,7 +39,6 @@
 					placeholder="Event or Task"
 					name="event"
 					bind:value={$form.event}
-					{...$constraints.event}
 				/>
 				<button class="btn btn-primary"
 					>Add!
