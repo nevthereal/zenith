@@ -1,21 +1,17 @@
-<script lang="ts">
-	import Blob from '$lib/assets/blob.svg';
-</script>
-
 <svelte:head>
 	<title>Zenith - Sign in</title>
 </svelte:head>
 
-<div class="flex h-[75dvh] select-none flex-col items-center justify-center gap-4">
-	<h1 class="mb-8 text-3xl font-black tracking-tighter md:text-6xl">Sign in</h1>
-	<form action="?/signin" method="post" class="mx-4 grid grid-cols-2 md:mx-0">
-		<p class="font-medium md:text-lg">
+<div class="grid h-[75dvh] md:grid-cols-2">
+	<div class="flex flex-col items-center justify-center">
+		<h1 class="mb-8 text-3xl font-black tracking-tighter md:text-6xl">Sign in</h1>
+		<p class="text-center font-medium md:text-lg">
 			Not convinced yet? <br /> Check out the <a href="/features" class="link">Features</a>.
 		</p>
-		<button
-			class="btn btn-primary tooltip tooltip-bottom my-auto ml-auto flex gap-2"
-			data-tip="Create an account and sign in with GitHub"
-			><i class="iconoir-github before:text-xl"></i>Sign in</button
+	</div>
+	<form method="post" class="flex flex-col items-center justify-center gap-4">
+		<button formaction="?/github" class="btn flex gap-4 text-lg"
+			><i class="fa-brands fa-github"></i>Sign in with GitHub</button
 		>
 	</form>
 </div>
