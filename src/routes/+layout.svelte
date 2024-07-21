@@ -11,7 +11,7 @@
 </script>
 
 <nav class="flex select-none items-center justify-between p-4">
-	<a href={user ? '/' : '/landing'} class="flex items-center"
+	<a href="/" class="flex items-center"
 		><img src={logo} alt="Logo" class="size-16 md:size-20" /><span
 			class="text-2xl font-bold italic md:text-4xl"
 			>{#if user}
@@ -21,23 +21,23 @@
 			{/if}</span
 		></a
 	>
-	<div class="flex gap-6 md:gap-8">
+	<div class="flex gap-8">
 		{#if user}
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/upcoming"
-				><i class="fa-regular fa-calendar"></i>
+				><i class="fa-regular fa-calendar text-xl"></i>
 				<span class="hidden md:block">Upcoming</span></a
 			>
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/account"
-				><i class="fa-solid fa-user"></i>
+				><i class="fa-solid fa-user text-xl"></i>
 				<span class="hidden md:block">Account</span></a
 			>
 		{:else}
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/features"
-				><i class="fa-solid fa-gears"></i>
+				><i class="fa-solid fa-wand-magic-sparkles"></i>
 				<span class="hidden md:block">Features</span></a
 			>
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/signin"
-				><i class="fa-regular fa-hand-peace"></i>
+				><i class="fa-regular fa-hand-peace text-xl"></i>
 				<span class="hidden md:block">Sign In</span></a
 			>
 		{/if}

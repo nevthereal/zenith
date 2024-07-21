@@ -66,12 +66,12 @@
 			<p class="font-medium text-secondary">{event.space}</p>
 		</div>
 	</div>
-	<div class="flex gap-2">
+	<div class="flex md:gap-2">
 		<button class="btn btn-circle my-auto" onclick={() => editModal.showModal()}>
-			<i class="fa-solid fa-pencil"></i>
+			<i class="fa-solid fa-pencil text-lg md:text-xl"></i>
 		</button>
 		<button class="btn btn-circle my-auto" onclick={() => deleteModal.showModal()}>
-			<i class="fa-regular fa-circle-check"></i>
+			<i class="fa-regular fa-circle-check text-lg md:text-xl"></i>
 		</button>
 	</div>
 	<dialog id={`edit-modal-${event.id}`} class="modal">
