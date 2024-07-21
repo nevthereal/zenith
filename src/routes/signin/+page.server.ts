@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-	signin: async ({ cookies }) => {
+	github: async ({ cookies }) => {
 		const state = generateState();
 		const url = await github.createAuthorizationURL(state);
 

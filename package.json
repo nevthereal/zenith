@@ -11,8 +11,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"generate": "drizzle-kit generate",
-		"push": "drizzle-kit push --config=drizzle.dev.ts",
-		"push:prod": "drizzle-kit push --config=drizzle.prod.ts",
+		"push": "drizzle-kit push",
 		"studio": "drizzle-kit studio --verbose"
 	},
 	"devDependencies": {
