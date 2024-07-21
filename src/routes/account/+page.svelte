@@ -27,7 +27,7 @@
 		<span class="font-medium">Email:</span>
 		{#if user.email}
 			<span
-				class={cn(revealed ? 'blur-0' : 'blur-sm', 'text-base-content/80 duration-200 ease-in-out')}
+				class={cn(revealed ? 'blur-0' : 'blur-sm', 'text-base-content/80 duration-100 ease-in-out')}
 				>{user.email}</span
 			>
 			<button class="btn btn-neutral btn-xs font-mono" onclick={() => (revealed = !revealed)}
