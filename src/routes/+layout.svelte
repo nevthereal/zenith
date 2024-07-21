@@ -21,20 +21,20 @@
 	<div class="flex gap-6 md:gap-8">
 		{#if user}
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/upcoming"
-				><i class="iconoir-calendar before:text-2xl"></i>
+				><i class="fa-regular fa-calendar"></i>
 				<span class="hidden md:block">Upcoming</span></a
 			>
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/account"
-				><i class="iconoir-user before:text-2xl"></i>
+				><i class="fa-solid fa-user"></i>
 				<span class="hidden md:block">Account</span></a
 			>
 		{:else}
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/features"
-				><i class="iconoir-sparks before:text-2xl"></i>
+				><i class="fa-solid fa-gears"></i>
 				<span class="hidden md:block">Features</span></a
 			>
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/signin"
-				><i class="iconoir-peace-hand before:text-2xl"></i>
+				><i class="fa-regular fa-hand-peace"></i>
 				<span class="hidden md:block">Sign In</span></a
 			>
 		{/if}

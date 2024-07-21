@@ -10,8 +10,8 @@
 		</p>
 	</div>
 	<form method="post" class="flex flex-col items-center justify-center gap-4">
-		<button formaction="?/github" class="btn flex gap-2"
-			><i class="iconoir-github before:text-xl"></i>Sign in with GitHub</button
+		<button formaction="?/github" class="btn flex gap-4 text-lg"
+			><i class="fa-brands fa-github"></i>Sign in with GitHub</button
 		>
 	</form>
 </div>

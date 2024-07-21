@@ -7,24 +7,24 @@
 		<ul class="flex flex-col gap-4 text-lg text-base-content md:text-xl">
 			<li>
 				<a class="flex items-center gap-2" href="/account">
-					<i class="iconoir-user before:text-2xl"></i>
+					<i class="fa-solid fa-user"></i>
 					Overview</a
 				>
 			</li>
 			<li>
 				<a class="flex items-center gap-2" href="/account/edit"
-					><i class="iconoir-edit-pencil before:text-2xl"></i>Edit</a
+					><i class="fa-solid fa-pencil"></i>Edit</a
 				>
 			</li>
 			<li>
 				<a class="flex items-center gap-2" href="/account/billing"
-					><i class="iconoir-coins before:text-2xl"></i>Billing</a
+					><i class="fa-solid fa-file-invoice-dollar"></i>Billing</a
 				>
 			</li>
 			<li>
 				<form action="/account/?/signout" method="post">
 					<button class="flex items-center gap-2 text-error"
-						><i class="iconoir-log-out before:text-2xl"></i>Log out</button
+						><i class="fa-solid fa-right-from-bracket"></i>Log out</button
 					>
 				</form>
 			</li>

@@ -68,10 +68,10 @@
 	</div>
 	<div class="flex gap-2">
 		<button class="btn btn-circle my-auto" onclick={() => editModal.showModal()}>
-			<i class="iconoir-edit-pencil before:text-2xl"></i>
+			<i class="fa-solid fa-pencil"></i>
 		</button>
 		<button class="btn btn-circle my-auto" onclick={() => deleteModal.showModal()}>
-			<i class="iconoir-check-circle before:text-2xl"></i>
+			<i class="fa-regular fa-circle-check"></i>
 		</button>
 	</div>
 	<dialog id={`edit-modal-${event.id}`} class="modal">
