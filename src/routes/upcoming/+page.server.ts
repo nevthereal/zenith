@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 	const user = checkUser(locals);
 
 	depends('fetch:events');
-	const events = await db.query.eventsTable.findMany({
+	const events = db.query.eventsTable.findMany({
 		where: and(
 			gt(eventsTable.date, dayjs().endOf('day').toDate()),
 			eq(eventsTable.userId, user.id)
