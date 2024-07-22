@@ -62,7 +62,7 @@
 		</div>
 	{/if}
 
-	<section class="mt-4 flex w-full max-w-2xl flex-col items-center gap-4 md:mt-8">
+	<section class="mb-8 flex w-full max-w-2xl flex-col items-center gap-4">
 		{#await data.events}
 			<span class="font-mono">Loading events...</span>
 		{:then events}
@@ -73,6 +73,6 @@
 				<Event {event} editFormData={data.editForm} deleteFormData={data.deleteForm} />
 			{/each}
 		{/await}
-		<a href="/upcoming" class="link link-primary mb-4 font-semibold italic">View all upcoming</a>
+		<a href="/upcoming" class="link link-primary mt-4 font-semibold italic">View all upcoming</a>
 	</section>
 </div>
