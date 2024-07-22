@@ -5,8 +5,6 @@
 
 	let { data } = $props();
 
-	let events = $derived(data.events);
-
 	let rateLimited = $state(false);
 
 	const { form, delayed, enhance, constraints } = superForm(data.createForm, {
@@ -65,12 +63,16 @@
 	{/if}
 
 	<section class="mt-4 flex w-full max-w-2xl flex-col items-center gap-4 md:mt-8">
-		{#if events.length == 0}
-			<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
-		{/if}
-		{#each events as event (event.id)}
-			<Event {event} editFormData={data.editForm} deleteFormData={data.deleteForm} />
-		{/each}
+		{#await data.events}
+			<span class="font-mono">Loading events...</span>
+		{:then events}
+			{#if events.length == 0}
+				<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
+			{/if}
+			{#each events as event (event.id)}
+				<Event {event} editFormData={data.editForm} deleteFormData={data.deleteForm} />
+			{/each}
+		{/await}
 		<a href="/upcoming" class="link link-primary mb-4 font-semibold italic">View all upcoming</a>
 	</section>
 </div>

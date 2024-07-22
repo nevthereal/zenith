@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 	const deleteForm = await superValidate(zod(deleteSchema));
 
 	depends('fetch:events');
-	const events = await db.query.eventsTable.findMany({
+	const events = db.query.eventsTable.findMany({
 		orderBy: asc(eventsTable.date),
 		where: and(lt(eventsTable.date, dayjs().endOf('day').toDate()), eq(eventsTable.userId, user.id))
 	});
