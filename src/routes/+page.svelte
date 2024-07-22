@@ -72,6 +72,8 @@
 			{#each events as event (event.id)}
 				<Event {event} editFormData={data.editForm} deleteFormData={data.deleteForm} />
 			{/each}
+		{:catch}
+			<span class="font-mono text-error">Something went wrong. Try again later</span>
 		{/await}
 		<a href="/upcoming" class="link link-primary mt-4 font-semibold italic">View all upcoming</a>
 	</section>

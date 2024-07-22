@@ -21,6 +21,8 @@
 					<Event deleteFormData={data.deleteForm} editFormData={data.editForm} {event} />
 				{/each}
 			{/if}
+		{:catch}
+			<span class="font-mono text-error">Something went wrong. Try again later</span>
 		{/await}
 	</section>
 </div>
