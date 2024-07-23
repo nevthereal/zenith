@@ -20,9 +20,9 @@
 	>
 	<div class="flex gap-8">
 		{#if user}
-			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/spaces"
+			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/projects"
 				><i class="fa-regular fa-window-restore text-xl"></i>
-				<span class="hidden md:block">Spaces</span></a
+				<span class="hidden md:block">Projects</span></a
 			>
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/account"
 				><i class="fa-solid fa-user text-xl"></i>

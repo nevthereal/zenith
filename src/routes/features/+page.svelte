@@ -34,9 +34,9 @@
 		is definitely going in the direction of collaboration.
 	</p>
 	<ul>
-		<li>"Spaces" (Replacement for Tags, essentially a container for related events)</li>
+		<li>Projects (containers for many events)</li>
+		<li>Shared Projects</li>
 		<li>Shared Events</li>
-		<li>Shared Spaces</li>
 	</ul>
 	<p>
 		Suggest a feature? Hit me up at <a href="mailto:contact@nevillebrem.com"
