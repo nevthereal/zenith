@@ -9,7 +9,7 @@
 
 <nav class="flex select-none items-center justify-between p-4">
 	<a href="/" class="flex items-center"
-		><img src={logo} alt="Logo" class="size-16 md:size-20" /><span
+		><img src={logo} alt="Logo" class="size-16" /><span
 			class="text-2xl font-bold italic md:text-4xl"
 			>{#if user}
 				up today
@@ -20,8 +20,12 @@
 	>
 	<div class="flex gap-8">
 		{#if user}
+			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/upcoming"
+				><i class="fa-solid fa-calendar-days text-xl"></i>
+				<span class="hidden md:block">Upcoming</span></a
+			>
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/projects"
-				><i class="fa-regular fa-window-restore text-xl"></i>
+				><i class="fa-solid fa-server text-xl"></i>
 				<span class="hidden md:block">Projects</span></a
 			>
 			<a class="my-auto flex items-center gap-2 text-lg font-medium" href="/account"
