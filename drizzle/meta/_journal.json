@@ -155,6 +155,34 @@
       "when": 1721744366516,
       "tag": "0021_parallel_manta",
       "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1721749412345,
+      "tag": "0022_uneven_stardust",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1721750221329,
+      "tag": "0023_happy_northstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1721757008497,
+      "tag": "0024_glamorous_bloodscream",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1721758304491,
+      "tag": "0025_broken_war_machine",
+      "breakpoints": true
     }
   ]
 }

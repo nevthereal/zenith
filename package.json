@@ -11,6 +11,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"generate": "drizzle-kit generate",
+		"drop": "drizzle-kit drop",
 		"push": "drizzle-kit push",
 		"studio": "drizzle-kit studio --verbose"
 	},

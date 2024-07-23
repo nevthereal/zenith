@@ -1,27 +1,26 @@
 import { db } from '$lib/db/db';
-import { and, asc, eq, gt } from 'drizzle-orm';
+import { and, asc, eq } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
-import { eventsTable } from '$lib/db/schema';
-import dayjs from 'dayjs';
-import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
-import { toggleSchema, editSchema } from '$lib/zod';
+import { projectsTable } from '$lib/db/schema';
 import { checkUser } from '$lib/utils';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
+export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	depends('fetch:events');
-	const events = db.query.eventsTable.findMany({
-		where: and(
-			gt(eventsTable.date, dayjs().endOf('day').toDate()),
-			eq(eventsTable.userId, user.id)
-		),
-		orderBy: asc(eventsTable.date)
+	const myProjects = await db.query.projectsTable.findMany({
+		where: and(eq(projectsTable.userId, user.id)),
+		orderBy: asc(projectsTable.deadline),
+		with: {
+			collaborators: {
+				with: {
+					user: {
+						columns: {
+							username: true
+						}
+					}
+				}
+			}
+		}
 	});
-
-	const editForm = await superValidate(zod(editSchema));
-	const toggleForm = await superValidate(zod(toggleSchema));
-
-	return { events, editForm, toggleForm };
+	return { myProjects };
 };

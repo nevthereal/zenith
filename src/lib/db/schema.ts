@@ -26,6 +26,12 @@ export const projectsTable = pgTable('projects', {
 	deadline: timestamp('deadline')
 });
 
+export const projectCollaboratorsTable = pgTable('project_collaborators', {
+	id: serial('id').primaryKey(),
+	userId: text('user_id').references(() => usersTable.id),
+	projectId: integer('project_id').references(() => projectsTable.id)
+});
+
 export const usersTable = pgTable('users', {
 	id: text('id').notNull().primaryKey(),
 	username: text('username').notNull(),
@@ -59,6 +65,19 @@ export const ordersTable = pgTable('orders', {
 
 export const userRelation = relations(usersTable, ({ many }) => ({
 	events: many(eventsTable)
+}));
+
+export const projectRelation = relations(projectsTable, ({ one, many }) => ({
+	user: one(usersTable, { fields: [projectsTable.userId], references: [usersTable.id] }),
+	collaborators: many(projectCollaboratorsTable)
+}));
+
+export const projectCollaboratorRelation = relations(projectCollaboratorsTable, ({ one }) => ({
+	project: one(projectsTable, {
+		fields: [projectCollaboratorsTable.projectId],
+		references: [projectsTable.id]
+	}),
+	user: one(usersTable, { fields: [projectCollaboratorsTable.userId], references: [usersTable.id] })
 }));
 
 export const eventRelation = relations(eventsTable, ({ one }) => ({
