@@ -2,26 +2,26 @@
 	import { invalidate } from '$app/navigation';
 	import { eventsTable, tagEnum } from '$lib/db/schema';
 	import { cn } from '$lib/utils';
-	import type { deleteSchema, editSchema } from '$lib/zod';
+	import type { toggleSchema, editSchema } from '$lib/zod';
 	import dayjs from 'dayjs';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 
 	interface Props {
 		editFormData: SuperValidated<Infer<typeof editSchema>>;
-		deleteFormData: SuperValidated<Infer<typeof deleteSchema>>;
+		toggleFormData: SuperValidated<Infer<typeof toggleSchema>>;
 		event: typeof eventsTable.$inferSelect;
 	}
 
-	let { editFormData, deleteFormData, event }: Props = $props();
+	let { editFormData, toggleFormData, event }: Props = $props();
 
 	let editModal: HTMLDialogElement = $state() as HTMLDialogElement;
-	let deleteModal: HTMLDialogElement = $state() as HTMLDialogElement;
+	let toggleModal: HTMLDialogElement = $state() as HTMLDialogElement;
 
 	const tags = tagEnum.enumValues;
 
 	$effect(() => {
 		editModal = document.getElementById(`edit-modal-${event.id}`) as HTMLDialogElement;
-		deleteModal = document.getElementById(`delete-modal-${event.id}`) as HTMLDialogElement;
+		toggleModal = document.getElementById(`toggle-modal-${event.id}`) as HTMLDialogElement;
 	});
 
 	const {
@@ -40,15 +40,15 @@
 		id: `editForm-${event.id}`
 	});
 
-	const { enhance: deleteEnhance, form: deleteForm } = superForm(deleteFormData, {
+	const { enhance: toggleEnhance, form: toggleForm } = superForm(toggleFormData, {
 		onSubmit({ formData }) {
 			formData.set('id', event.id.toString());
-			deleteModal.close();
+			toggleModal.close();
 		},
 		onUpdated() {
 			invalidate('fetch:events');
 		},
-		id: `deleteForm-${event.id}`
+		id: `toggleForm-${event.id}`
 	});
 
 	const date = $derived(dayjs(event.date));
@@ -70,7 +70,7 @@
 		<button class="btn btn-circle my-auto" onclick={() => editModal.showModal()}>
 			<i class="fa-solid fa-pencil text-lg md:text-xl"></i>
 		</button>
-		<button class="btn btn-circle my-auto" onclick={() => deleteModal.showModal()}>
+		<button class="btn btn-circle my-auto" onclick={() => toggleModal.showModal()}>
 			<i class="fa-regular fa-circle-check text-lg md:text-xl"></i>
 		</button>
 	</div>
@@ -121,7 +121,7 @@
 			<button>close</button>
 		</form>
 	</dialog>
-	<dialog class="modal" id={`delete-modal-${event.id}`}>
+	<dialog class="modal" id={`toggle-modal-${event.id}`}>
 		<div class="modal-box">
 			<h2 class="text-xl font-bold">Complete or Delete Event?</h2>
 			<p class="pt-6">
@@ -130,12 +130,12 @@
 				>
 			</p>
 			<div class="modal-action">
-				<form method="POST" action="/?/delete" use:deleteEnhance class="flex gap-2">
-					<select name="action" id="action" bind:value={$deleteForm.action} class="select">
+				<form method="POST" action="/?/toggle" use:toggleEnhance class="flex gap-2">
+					<select name="action" id="action" bind:value={$toggleForm.action} class="select">
 						<option value="complete">Complete</option>
 						<option value="delete">Delete</option>
 					</select>
-					<button class={cn('btn', $deleteForm.action === 'delete' ? 'btn-error' : 'btn-success')}
+					<button class={cn('btn', $toggleForm.action === 'delete' ? 'btn-error' : 'btn-success')}
 						>Yes</button
 					>
 				</form>

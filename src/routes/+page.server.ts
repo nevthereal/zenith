@@ -1,4 +1,4 @@
-import { eventSchema, createSchema, editSchema, deleteSchema } from '$lib/zod';
+import { eventSchema, createSchema, editSchema, toggleSchema } from '$lib/zod';
 import { model } from '$lib/ai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
@@ -7,7 +7,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
-import { eventsTable, usersTable } from '$lib/db/schema';
+import { eventsTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
 import { checkUser } from '$lib/utils';
 import { stripe } from '$lib/stripe';
@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 
 	const createForm = await superValidate(zod(createSchema));
 	const editForm = await superValidate(zod(editSchema));
-	const deleteForm = await superValidate(zod(deleteSchema));
+	const toggleForm = await superValidate(zod(toggleSchema));
 
 	depends('fetch:events');
 	const events = db.query.eventsTable.findMany({
@@ -29,7 +29,7 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 		where: and(lt(eventsTable.date, dayjs().endOf('day').toDate()), eq(eventsTable.userId, user.id))
 	});
 
-	return { createForm, events, editForm, user, deleteForm };
+	return { createForm, events, editForm, user, toggleForm };
 };
 
 let redis: Redis;
@@ -106,28 +106,28 @@ export const actions: Actions = {
 			.where(eq(eventsTable.id, form.data.id));
 		return { form };
 	},
-	delete: async ({ request, locals }) => {
+	toggle: async ({ request, locals }) => {
 		const user = checkUser(locals);
 
-		const form = await superValidate(request, zod(deleteSchema));
+		const form = await superValidate(request, zod(toggleSchema));
 
 		if (!form.valid) {
 			return fail(400, { form });
 		}
 
-		const compCountInit = user.completeCount;
-
-		if (form.data.action === 'complete')
+		if (form.data.action === 'complete') {
 			await db
-				.update(usersTable)
+				.update(eventsTable)
 				.set({
-					completeCount: compCountInit + 1
+					completed: true
 				})
-				.where(eq(usersTable.id, user.id));
+				.where(eq(eventsTable.id, form.data.id));
+		} else {
+			await db
+				.delete(eventsTable)
+				.where(and(eq(eventsTable.id, form.data.id), eq(eventsTable.userId, user.id)));
+		}
 
-		await db
-			.delete(eventsTable)
-			.where(and(eq(eventsTable.id, form.data.id), eq(eventsTable.userId, user.id)));
 		return { form };
 	},
 	purchase: async ({ locals, url }) => {

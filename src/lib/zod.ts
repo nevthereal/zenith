@@ -32,7 +32,7 @@ export const editSchema = z.object({
 
 export const actionEnum = z.enum(['complete', 'delete']);
 
-export const deleteSchema = z.object({
+export const toggleSchema = z.object({
 	id: z.number(),
 	action: actionEnum
 });

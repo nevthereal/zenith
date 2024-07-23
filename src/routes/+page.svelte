@@ -70,7 +70,7 @@
 				<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
 			{/if}
 			{#each events as event (event.id)}
-				<Event {event} editFormData={data.editForm} deleteFormData={data.deleteForm} />
+				<Event {event} editFormData={data.editForm} toggleFormData={data.toggleForm} />
 			{/each}
 		{:catch}
 			<span class="font-mono text-error">Something went wrong. Try again later</span>

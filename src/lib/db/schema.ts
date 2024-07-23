@@ -12,7 +12,7 @@ export const eventsTable = pgTable('events', {
 		.references(() => usersTable.id)
 		.notNull(),
 	tag: tagEnum('tag').notNull(),
-	status: statusEnum('status').default('active'),
+	completed: boolean('completed').default(false),
 	projectId: integer('project_id').references(() => projectsTable.id)
 });
 
@@ -34,8 +34,7 @@ export const usersTable = pgTable('users', {
 	admin: boolean('admin').default(false),
 	joined: timestamp('joined').notNull(),
 	stripeId: text('stripe_id'),
-	paid: boolean('paid').default(false),
-	completeCount: integer('complete_count').default(0)
+	paid: boolean('paid').default(false)
 });
 
 export const sessionsTable = pgTable('sessions', {

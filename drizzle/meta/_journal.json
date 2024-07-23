@@ -141,6 +141,20 @@
       "when": 1721743923488,
       "tag": "0019_rapid_steve_rogers",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1721744109263,
+      "tag": "0020_lazy_scarlet_spider",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1721744366516,
+      "tag": "0021_parallel_manta",
+      "breakpoints": true
     }
   ]
 }
