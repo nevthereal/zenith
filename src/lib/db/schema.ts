@@ -2,15 +2,28 @@ import { relations } from 'drizzle-orm';
 import { boolean, integer, pgEnum, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const tagEnum = pgEnum('tags', ['Private', 'Work', 'Fitness', 'Events', 'Productivity']);
+export const statusEnum = pgEnum('status', ['active', 'archived', 'completed']);
 
 export const eventsTable = pgTable('events', {
 	id: serial('id').primaryKey(),
 	date: timestamp('date').notNull(),
 	content: text('content').notNull(),
-	userId: text('userId')
+	userId: text('user_id')
 		.references(() => usersTable.id)
 		.notNull(),
-	tag: tagEnum('tag').notNull()
+	tag: tagEnum('tag').notNull(),
+	status: statusEnum('status').default('active'),
+	projectId: integer('project_id').references(() => projectsTable.id)
+});
+
+export const projectsTable = pgTable('projects', {
+	id: serial('id').primaryKey(),
+	name: text('name').notNull(),
+	userId: text('user_id')
+		.references(() => usersTable.id)
+		.notNull(),
+	status: statusEnum('status').default('active'),
+	deadline: timestamp('deadline')
 });
 
 export const usersTable = pgTable('users', {
