@@ -12,6 +12,11 @@ export const load: PageServerLoad = async ({ locals }) => {
 		orderBy: asc(projectsTable.deadline),
 		with: {
 			collaborators: {
+				columns: {
+					id: false,
+					projectId: false,
+					userId: false
+				},
 				with: {
 					user: {
 						columns: {

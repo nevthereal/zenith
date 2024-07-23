@@ -9,18 +9,18 @@ export const eventsTable = pgTable('events', {
 	date: timestamp('date').notNull(),
 	content: text('content').notNull(),
 	userId: text('user_id')
-		.references(() => usersTable.id)
+		.references(() => usersTable.id, { onDelete: 'cascade' })
 		.notNull(),
 	tag: tagEnum('tag').notNull(),
 	completed: boolean('completed').default(false),
-	projectId: integer('project_id').references(() => projectsTable.id)
+	projectId: integer('project_id').references(() => projectsTable.id, { onDelete: 'set null' })
 });
 
 export const projectsTable = pgTable('projects', {
 	id: serial('id').primaryKey(),
 	name: text('name').notNull(),
 	userId: text('user_id')
-		.references(() => usersTable.id)
+		.references(() => usersTable.id, { onDelete: 'cascade' })
 		.notNull(),
 	status: statusEnum('status').default('active'),
 	deadline: timestamp('deadline')
@@ -28,8 +28,8 @@ export const projectsTable = pgTable('projects', {
 
 export const projectCollaboratorsTable = pgTable('project_collaborators', {
 	id: serial('id').primaryKey(),
-	userId: text('user_id').references(() => usersTable.id),
-	projectId: integer('project_id').references(() => projectsTable.id)
+	userId: text('user_id').references(() => usersTable.id, { onDelete: 'cascade' }),
+	projectId: integer('project_id').references(() => projectsTable.id, { onDelete: 'cascade' })
 });
 
 export const usersTable = pgTable('users', {
@@ -47,7 +47,7 @@ export const sessionsTable = pgTable('sessions', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.notNull()
-		.references(() => usersTable.id),
+		.references(() => usersTable.id, { onDelete: 'cascade' }),
 	expiresAt: timestamp('expires_at', {
 		withTimezone: true,
 		mode: 'date'
@@ -59,7 +59,7 @@ export const ordersTable = pgTable('orders', {
 	customerId: text('cus_id').notNull(),
 	sessionId: text('session_id').notNull(),
 	completedAt: timestamp('completed_at').notNull(),
-	userId: text('user_id').references(() => usersTable.id),
+	userId: text('user_id').references(() => usersTable.id, { onDelete: 'set null' }),
 	invoiceUrl: text('invoice_url').notNull()
 });
 

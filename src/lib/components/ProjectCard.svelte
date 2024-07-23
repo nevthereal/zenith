@@ -5,7 +5,7 @@
 	interface Props {
 		name: string;
 		deadline: Date | null;
-		collaborators: { userId: string; projectId: number | null; user: { username: string } }[];
+		collaborators: { user: { username: string } }[];
 	}
 
 	let { name, deadline, collaborators }: Props = $props();
