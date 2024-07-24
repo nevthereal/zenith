@@ -9,7 +9,7 @@
 </svelte:head>
 
 <div class="flex flex-col items-center">
-	<h1 class="text-center text-3xl font-bold md:text-5xl">All Projects</h1>
+	<h1 class="mb-6 text-center text-3xl font-bold md:text-5xl">All Projects</h1>
 	<section class="mx-4 grid w-full max-w-[70vw] grid-cols-3 gap-2">
 		<a
 			href="/projects/create"

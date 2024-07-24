@@ -4,7 +4,7 @@ import { tagEnum } from '$lib/db/schema';
 const zTagEnum = z.enum(tagEnum.enumValues);
 
 // for LLM
-export const eventSchema = z.object({
+export const zEventLLM = z.object({
 	date: z
 		.string()
 		.datetime({
@@ -19,25 +19,30 @@ export const eventSchema = z.object({
 	tag: zTagEnum.describe('A suitable tag for the event.')
 });
 
-export const createSchema = z.object({
+export const zCreateEvent = z.object({
 	event: z.string().min(1)
 });
 
-export const editSchema = z.object({
+export const zEditEvent = z.object({
 	event: z.string().min(1),
 	date: z.date(),
 	id: z.number(),
 	tag: zTagEnum
 });
 
-export const actionEnum = z.enum(['complete', 'delete']);
+export const zActionEnum = z.enum(['complete', 'delete']);
 
-export const toggleSchema = z.object({
+export const zToggleEvent = z.object({
 	id: z.number(),
-	action: actionEnum
+	action: zActionEnum
 });
 
-export const updateUserSchema = z.object({
+export const zCreateProject = z.object({
+	name: z.string().min(4).max(16),
+	deadline: z.date().optional()
+});
+
+export const zUpdateUser = z.object({
 	username: z
 		.string()
 		.min(3, 'Username too short')

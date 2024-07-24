@@ -2,13 +2,13 @@
 	import { invalidate } from '$app/navigation';
 	import { eventsTable, tagEnum } from '$lib/db/schema';
 	import { cn } from '$lib/utils';
-	import type { toggleSchema, editSchema } from '$lib/zod';
+	import type { zToggleEvent, zEditEvent } from '$lib/zod';
 	import dayjs from 'dayjs';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 
 	interface Props {
-		editFormData: SuperValidated<Infer<typeof editSchema>>;
-		toggleFormData: SuperValidated<Infer<typeof toggleSchema>>;
+		editFormData: SuperValidated<Infer<typeof zEditEvent>>;
+		toggleFormData: SuperValidated<Infer<typeof zToggleEvent>>;
 		event: typeof eventsTable.$inferSelect;
 	}
 
@@ -16,7 +16,6 @@
 
 	let editModal: HTMLDialogElement = $state() as HTMLDialogElement;
 	let toggleModal: HTMLDialogElement = $state() as HTMLDialogElement;
-
 	const tags = tagEnum.enumValues;
 
 	$effect(() => {

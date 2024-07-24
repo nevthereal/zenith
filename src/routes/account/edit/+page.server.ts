@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { checkUser } from '$lib/utils';
 import { superValidate, fail, setMessage } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { updateUserSchema } from '$lib/zod';
+import { zUpdateUser } from '$lib/zod';
 import { db } from '$lib/db/db';
 import { eventsTable, ordersTable, sessionsTable, usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
@@ -12,7 +12,7 @@ import { lucia } from '$lib/auth/lucia';
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	const updateForm = await superValidate(zod(updateUserSchema));
+	const updateForm = await superValidate(zod(zUpdateUser));
 
 	return { user, updateForm };
 };
@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	update_user: async ({ request, locals }) => {
 		const user = checkUser(locals);
-		const form = await superValidate(request, zod(updateUserSchema));
+		const form = await superValidate(request, zod(zUpdateUser));
 
 		if (!form.valid) return fail(400, { form });
 

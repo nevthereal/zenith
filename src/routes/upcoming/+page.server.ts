@@ -5,7 +5,7 @@ import { eventsTable } from '$lib/db/schema';
 import dayjs from 'dayjs';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { toggleSchema, editSchema } from '$lib/zod';
+import { zToggleEvent, zEditEvent } from '$lib/zod';
 import { checkUser } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
@@ -20,8 +20,8 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 		orderBy: asc(eventsTable.date)
 	});
 
-	const editForm = await superValidate(zod(editSchema));
-	const toggleForm = await superValidate(zod(toggleSchema));
+	const editForm = await superValidate(zod(zEditEvent));
+	const toggleForm = await superValidate(zod(zToggleEvent));
 
 	return { events, editForm, toggleForm };
 };

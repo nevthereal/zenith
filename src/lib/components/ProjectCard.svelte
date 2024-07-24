@@ -1,20 +1,17 @@
 <script lang="ts">
-	import type { projectsTable } from '$lib/db/schema';
 	import dayjs from 'dayjs';
 
 	interface Props {
 		name: string;
 		deadline: Date | null;
-		collaborators: { user: { username: string } }[];
+		collaborators: { user: { username: string } | null }[];
 	}
 
 	let { name, deadline, collaborators }: Props = $props();
 
 	let collaboratorlist = $state('');
 
-	if (collaborators.length != 0) {
-		collaboratorlist = collaborators.map((collaborator) => collaborator.user.username).join(', ');
-	}
+	collaboratorlist = collaborators.map(({ user }) => user && user.username).join(', ');
 </script>
 
 <div class="card flex h-36 flex-col justify-between bg-base-200 p-6">

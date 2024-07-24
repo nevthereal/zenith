@@ -1,4 +1,4 @@
-import { eventSchema, createSchema, editSchema, toggleSchema } from '$lib/zod';
+import { zEventLLM, zCreateEvent, zEditEvent, zToggleEvent } from '$lib/zod';
 import { model } from '$lib/ai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
@@ -19,9 +19,9 @@ import { building, dev } from '$app/environment';
 export const load: PageServerLoad = async ({ locals, depends }) => {
 	const user = checkUser(locals);
 
-	const createForm = await superValidate(zod(createSchema));
-	const editForm = await superValidate(zod(editSchema));
-	const toggleForm = await superValidate(zod(toggleSchema));
+	const createForm = await superValidate(zod(zCreateEvent));
+	const editForm = await superValidate(zod(zEditEvent));
+	const toggleForm = await superValidate(zod(zToggleEvent));
 
 	depends('fetch:events');
 	const events = db.query.eventsTable.findMany({
@@ -49,7 +49,7 @@ if (!dev && !building) {
 
 export const actions: Actions = {
 	create: async ({ request, locals, getClientAddress }) => {
-		const form = await superValidate(request, zod(createSchema));
+		const form = await superValidate(request, zod(zCreateEvent));
 
 		const user = checkUser(locals);
 		if (!user.paid) redirect(302, '/account');
@@ -71,7 +71,7 @@ export const actions: Actions = {
 
 		const { object } = await generateObject({
 			model: model,
-			schema: eventSchema,
+			schema: zEventLLM,
 			mode: 'tool',
 			system: `Right now is the ${dayjs().toDate()}. You are an assistant who processes the users input to an event.`,
 			prompt: form.data.event
@@ -90,7 +90,7 @@ export const actions: Actions = {
 
 		if (!user.paid) redirect(302, '/account');
 
-		const form = await superValidate(request, zod(editSchema));
+		const form = await superValidate(request, zod(zEditEvent));
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -109,7 +109,7 @@ export const actions: Actions = {
 	toggle: async ({ request, locals }) => {
 		const user = checkUser(locals);
 
-		const form = await superValidate(request, zod(toggleSchema));
+		const form = await superValidate(request, zod(zToggleEvent));
 
 		if (!form.valid) {
 			return fail(400, { form });
