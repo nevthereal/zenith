@@ -1,5 +1,14 @@
 import { relations } from 'drizzle-orm';
-import { boolean, integer, pgEnum, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import {
+	boolean,
+	date,
+	integer,
+	pgEnum,
+	pgTable,
+	serial,
+	text,
+	timestamp
+} from 'drizzle-orm/pg-core';
 
 export const tagEnum = pgEnum('tags', ['Private', 'Work', 'Fitness', 'Events', 'Productivity']);
 export const statusEnum = pgEnum('status', ['active', 'archived', 'completed']);
@@ -23,7 +32,7 @@ export const projectsTable = pgTable('projects', {
 		.references(() => usersTable.id, { onDelete: 'cascade' })
 		.notNull(),
 	status: statusEnum('status').default('active'),
-	deadline: timestamp('deadline')
+	deadline: date('deadline')
 });
 
 export const projectCollaboratorsTable = pgTable('project_collaborators', {

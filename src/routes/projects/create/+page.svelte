@@ -5,7 +5,7 @@
 
 	const { form, errors, enhance, constraints } = superForm(data.createProjectForm);
 
-	const dateInput = dateProxy(form, 'deadline', { format: 'datetime' });
+	const dateInput = dateProxy(form, 'deadline', { format: 'date' });
 </script>
 
 <section class="mx-auto w-full max-w-xl">
@@ -28,7 +28,7 @@
 			<label for="dealine" class="font-medium">Deadline (optional):</label>
 			<input
 				{...$constraints.deadline}
-				type="datetime-local"
+				type="date"
 				class="input input-primary"
 				name="deadline"
 				bind:value={$dateInput}
