@@ -4,7 +4,7 @@ import { superValidate, fail, setMessage } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { zUpdateUser } from '$lib/zod';
 import { db } from '$lib/db/db';
-import { eventsTable, ordersTable, sessionsTable, usersTable } from '$lib/db/schema';
+import { usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { redirect } from '@sveltejs/kit';
 import { lucia } from '$lib/auth/lucia';
@@ -55,17 +55,13 @@ export const actions: Actions = {
 		if (!locals.session) {
 			return new Response('Failed', { status: 405 });
 		}
-
-		await db.delete(sessionsTable).where(eq(sessionsTable.userId, user.id));
-		await db.delete(eventsTable).where(eq(eventsTable.userId, user.id));
-		await db.delete(ordersTable).where(eq(ordersTable.userId, user.id));
-		await db.delete(usersTable).where(eq(usersTable.id, user.id));
 		await lucia.invalidateSession(locals.session.id);
 		const sessionCookie = lucia.createBlankSessionCookie();
 		cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: '.',
 			...sessionCookie.attributes
 		});
+		await db.delete(usersTable).where(eq(usersTable.id, user.id));
 
 		redirect(302, '/signin');
 	}
