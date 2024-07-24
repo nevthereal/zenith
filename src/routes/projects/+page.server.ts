@@ -13,7 +13,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 		with: {
 			collaborators: {
 				columns: {
-					id: false,
 					projectId: false,
 					userId: false
 				},

@@ -38,7 +38,7 @@ export const zToggleEvent = z.object({
 });
 
 export const zCreateProject = z.object({
-	name: z.string().min(4).max(16),
+	name: z.string().min(4).max(32),
 	deadline: z.date().optional()
 });
 

@@ -22,6 +22,7 @@
 		</a>
 		{#each data.myProjects as project}
 			<ProjectCard
+				id={project.id}
 				collaborators={project.collaborators}
 				name={project.name}
 				deadline={project.deadline}

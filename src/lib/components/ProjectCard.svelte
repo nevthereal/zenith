@@ -5,16 +5,17 @@
 		name: string;
 		deadline: Date | null;
 		collaborators: { user: { username: string } | null }[];
+		id: number;
 	}
 
-	let { name, deadline, collaborators }: Props = $props();
+	let { name, deadline, collaborators, id }: Props = $props();
 
 	let collaboratorlist = $state('');
 
 	collaboratorlist = collaborators.map(({ user }) => user && user.username).join(', ');
 </script>
 
-<div class="card flex h-36 flex-col justify-between bg-base-200 p-6">
+<a href={`/projects/${id}`} class="card flex h-36 flex-col justify-between bg-base-200 p-6">
 	<h1 class="text-2xl font-bold">{name}</h1>
 	<div>
 		<p class="font-medium text-base-content/80">
@@ -30,4 +31,4 @@
 			{/if}
 		</p>
 	</div>
-</div>
+</a>
