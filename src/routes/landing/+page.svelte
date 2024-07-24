@@ -1,5 +1,7 @@
 <script lang="ts">
 	import hero from '$lib/assets/zenith-hero.png';
+
+	export const prerender = true;
 </script>
 
 <svelte:head>
