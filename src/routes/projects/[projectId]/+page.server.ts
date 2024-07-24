@@ -3,12 +3,19 @@ import { checkUser } from '$lib/utils';
 import { eq } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 import { projectsTable } from '$lib/db/schema';
-import { redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const user = checkUser(locals);
+
+	const projectId = Number(params.projectId);
+
+	if (Number.isNaN(projectId)) {
+		error(404, 'Project not found');
+	}
+
 	const qProject = await db.query.projectsTable.findFirst({
-		where: eq(projectsTable.id, Number(params.projectId)),
+		where: eq(projectsTable.id, projectId),
 		with: {
 			collaborators: {
 				with: {
@@ -24,7 +31,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	});
 
 	if (!qProject || qProject.userId != user.id) {
-		return redirect(302, '/projects');
+		error(404, 'Project not found');
 	}
 	return { qProject };
 };

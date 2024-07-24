@@ -2,4 +2,4 @@
 	let { data } = $props();
 </script>
 
-{data.qProject?.name}
+<h1>{data.qProject.name}</h1>
