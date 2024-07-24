@@ -36,7 +36,6 @@
 	<ul>
 		<li>Projects (containers for many events)</li>
 		<li>Shared Projects</li>
-		<li>Shared Events</li>
 	</ul>
 	<p>
 		Suggest a feature? Hit me up at <a href="mailto:contact@nevillebrem.com"
