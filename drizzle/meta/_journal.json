@@ -197,6 +197,13 @@
       "when": 1721829121001,
       "tag": "0027_tired_shadowcat",
       "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1721924133401,
+      "tag": "0028_magical_richard_fisk",
+      "breakpoints": true
     }
   ]
 }

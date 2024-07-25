@@ -80,8 +80,7 @@ export const actions: Actions = {
 		await db.insert(eventsTable).values({
 			content: object.content,
 			date: new Date(object.date),
-			userId: user.id,
-			tag: object.tag
+			userId: user.id
 		});
 		return { form };
 	},
@@ -100,8 +99,7 @@ export const actions: Actions = {
 			.update(eventsTable)
 			.set({
 				content: form.data.event,
-				date: dayjs(form.data.date).toDate(),
-				tag: form.data.tag
+				date: dayjs(form.data.date).toDate()
 			})
 			.where(eq(eventsTable.id, form.data.id));
 		return { form };

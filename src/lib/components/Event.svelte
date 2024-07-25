@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
-	import { eventsTable, tagEnum } from '$lib/db/schema';
+	import { eventsTable } from '$lib/db/schema';
 	import { cn } from '$lib/utils';
 	import type { zToggleEvent, zEditEvent } from '$lib/zod';
 	import dayjs from 'dayjs';
@@ -16,7 +16,6 @@
 
 	let editModal: HTMLDialogElement = $state() as HTMLDialogElement;
 	let toggleModal: HTMLDialogElement = $state() as HTMLDialogElement;
-	const tags = tagEnum.enumValues;
 
 	$effect(() => {
 		editModal = document.getElementById(`edit-modal-${event.id}`) as HTMLDialogElement;
@@ -62,7 +61,6 @@
 		<h1 class="mb-2 text-2xl font-bold text-primary md:text-3xl">{event.content}</h1>
 		<div class="text-md md:text-base">
 			<p>{date.format('D MMMM YYYY, HH:mm')}</p>
-			<p class="font-medium text-secondary">{event.tag}</p>
 		</div>
 	</div>
 	<div class="flex md:gap-2">
@@ -94,12 +92,6 @@
 						placeholder="When?"
 						class="input input-bordered w-full"
 					/>
-					<select name="tag" bind:value={$editForm.tag} class="select select-bordered">
-						<option disabled selected>Select a Tag</option>
-						{#each tags as tag}
-							<option class="option" value={tag}>{tag}</option>
-						{/each}
-					</select>
 				</div>
 				<div class="flex">
 					<button class="btn btn-primary mx-auto" type="submit">

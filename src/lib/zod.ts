@@ -1,7 +1,4 @@
 import { z } from 'zod';
-import { tagEnum } from '$lib/db/schema';
-
-const zTagEnum = z.enum(tagEnum.enumValues);
 
 // for LLM
 export const zEventLLM = z.object({
@@ -15,8 +12,7 @@ export const zEventLLM = z.object({
 		.describe(
 			'The due date and time of the event, should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific In ISO 8601 Format.'
 		),
-	content: z.string().describe('The activity or event.'),
-	tag: zTagEnum.describe('A suitable tag for the event.')
+	content: z.string().describe('The activity or event.')
 });
 
 export const zCreateEvent = z.object({
@@ -26,8 +22,7 @@ export const zCreateEvent = z.object({
 export const zEditEvent = z.object({
 	event: z.string().min(1),
 	date: z.date(),
-	id: z.number(),
-	tag: zTagEnum
+	id: z.number()
 });
 
 export const zActionEnum = z.enum(['complete', 'delete']);
