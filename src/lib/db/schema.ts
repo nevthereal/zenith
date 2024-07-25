@@ -88,5 +88,6 @@ export const projectCollaboratorRelation = relations(projectCollaboratorsTable, 
 }));
 
 export const eventRelation = relations(eventsTable, ({ one }) => ({
-	user: one(usersTable, { fields: [eventsTable.userId], references: [usersTable.id] })
+	user: one(usersTable, { fields: [eventsTable.userId], references: [usersTable.id] }),
+	project: one(projectsTable, { fields: [eventsTable.projectId], references: [projectsTable.id] })
 }));

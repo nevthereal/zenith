@@ -7,7 +7,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
-import { eventsTable } from '$lib/db/schema';
+import { eventsTable, projectsTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
 import { checkUser } from '$lib/utils';
 import { stripe } from '$lib/stripe';
@@ -19,17 +19,31 @@ import { building, dev } from '$app/environment';
 export const load: PageServerLoad = async ({ locals, depends }) => {
 	const user = checkUser(locals);
 
+	depends('fetch:events');
 	const createForm = await superValidate(zod(zCreateEvent));
 	const editForm = await superValidate(zod(zEditEvent));
 	const toggleForm = await superValidate(zod(zToggleEvent));
 
-	depends('fetch:events');
 	const events = db.query.eventsTable.findMany({
 		orderBy: asc(eventsTable.date),
-		where: and(lt(eventsTable.date, dayjs().endOf('day').toDate()), eq(eventsTable.userId, user.id))
+		where: and(
+			lt(eventsTable.date, dayjs().endOf('day').toDate()),
+			eq(eventsTable.userId, user.id)
+		),
+		with: {
+			project: true
+		}
 	});
 
-	return { createForm, events, editForm, user, toggleForm };
+	const projects = await db.query.projectsTable.findMany({
+		where: eq(projectsTable.userId, user.id),
+		columns: {
+			id: true,
+			name: true
+		}
+	});
+
+	return { createForm, events, editForm, user, toggleForm, projects };
 };
 
 let redis: Redis;

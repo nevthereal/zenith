@@ -22,7 +22,8 @@ export const zCreateEvent = z.object({
 export const zEditEvent = z.object({
 	event: z.string().min(1),
 	date: z.date(),
-	id: z.number()
+	id: z.number(),
+	projectId: z.number().optional()
 });
 
 export const zActionEnum = z.enum(['complete', 'delete']);

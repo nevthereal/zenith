@@ -1,18 +1,29 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
-	import { eventsTable } from '$lib/db/schema';
+	import { eventsTable, projectsTable } from '$lib/db/schema';
 	import { cn } from '$lib/utils';
 	import type { zToggleEvent, zEditEvent } from '$lib/zod';
 	import dayjs from 'dayjs';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 
+	type Event = typeof eventsTable.$inferSelect;
+	type Project = typeof projectsTable.$inferSelect;
+
+	interface EventWithProject extends Event {
+		project: Project | null;
+	}
+
 	interface Props {
 		editFormData: SuperValidated<Infer<typeof zEditEvent>>;
 		toggleFormData: SuperValidated<Infer<typeof zToggleEvent>>;
-		event: typeof eventsTable.$inferSelect;
+		event: EventWithProject;
+		projects: {
+			id: number;
+			name: string;
+		}[];
 	}
 
-	let { editFormData, toggleFormData, event }: Props = $props();
+	let { editFormData, toggleFormData, event, projects }: Props = $props();
 
 	let editModal: HTMLDialogElement = $state() as HTMLDialogElement;
 	let toggleModal: HTMLDialogElement = $state() as HTMLDialogElement;
@@ -50,10 +61,13 @@
 	});
 
 	const date = $derived(dayjs(event.date));
-	const dateInput = dateProxy(editForm, 'date', { format: 'datetime' });
+	const dateInput = dateProxy(editForm, 'date', { format: 'datetime-local' });
 
 	$editForm.event = event.content;
 	$dateInput = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
+	if (event.projectId) {
+		$editForm.projectId = event.projectId;
+	}
 </script>
 
 <div class="flex w-full flex-row justify-between gap-4 rounded-box bg-base-200 p-8">
@@ -75,23 +89,43 @@
 		<div class="modal-box">
 			<h1 class="mb-4 text-xl font-medium">Edit Event</h1>
 			<form method="POST" action="/?/edit" use:editEnhance class="flex flex-col gap-4">
-				<input
-					{...$editConstraints.event}
-					bind:value={$editForm.event}
-					type="text"
-					name="event"
-					placeholder="What?"
-					class="input input-bordered w-full"
-				/>
-				<div class="grid grid-cols-2 gap-4">
-					<input
-						{...$editConstraints.date}
-						bind:value={$dateInput}
-						name="date"
-						type="datetime-local"
-						placeholder="When?"
-						class="input input-bordered w-full"
-					/>
+				<div class="grid gap-4 md:grid-cols-2">
+					<div>
+						<label for="event" class="mb-2 text-sm text-base-content/80">Event name</label>
+						<input
+							{...$editConstraints.event}
+							bind:value={$editForm.event}
+							type="text"
+							name="event"
+							placeholder="What?"
+							class="input input-bordered w-full"
+						/>
+					</div>
+					<div>
+						<label for="date" class="mb-2 text-sm text-base-content/80">Date</label>
+						<input
+							{...$editConstraints.date}
+							bind:value={$dateInput}
+							name="date"
+							type="datetime-local"
+							placeholder="When?"
+							class="input input-bordered w-full"
+						/>
+					</div>
+					<div class="flex flex-col md:col-span-2">
+						<label for="project" class="mb-2 text-sm text-base-content/80">Project</label>
+						<select
+							name="project"
+							id="project"
+							class="select select-bordered"
+							bind:value={$editForm.projectId}
+						>
+							<option value={0} disabled>Select a project</option>
+							{#each projects as project}
+								<option value={project.id}>{project.name}</option>
+							{/each}
+						</select>
+					</div>
 				</div>
 				<div class="flex">
 					<button class="btn btn-primary mx-auto" type="submit">

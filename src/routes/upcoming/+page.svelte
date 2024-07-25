@@ -18,7 +18,12 @@
 				<h2 class="font-semibold italic md:text-xl">Nothing upcoming.</h2>
 			{:else}
 				{#each events as event (event.id)}
-					<Event toggleFormData={data.toggleForm} editFormData={data.editForm} {event} />
+					<Event
+						projects={data.projects}
+						{event}
+						editFormData={data.editForm}
+						toggleFormData={data.toggleForm}
+					/>
 				{/each}
 			{/if}
 		{:catch}
