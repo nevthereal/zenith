@@ -108,12 +108,29 @@ export const actions: Actions = {
 		if (!form.valid) {
 			return fail(400, { form });
 		}
+		console.log(form.data.id);
+		let projectId: number | null = null;
+
+		if (form.data.projectId != 0) {
+			const requestedProject = await db.query.projectsTable.findFirst({
+				where: eq(projectsTable.id, form.data.projectId)
+			});
+			if (!requestedProject) {
+				return fail(404, { form });
+			} else if (requestedProject.userId === user.id) {
+				projectId = form.data.projectId;
+			} else {
+				return fail(429, { form });
+			}
+		}
+		console.log(projectId);
 
 		await db
 			.update(eventsTable)
 			.set({
 				content: form.data.event,
-				date: dayjs(form.data.date).toDate()
+				date: dayjs(form.data.date).toDate(),
+				projectId: projectId
 			})
 			.where(eq(eventsTable.id, form.data.id));
 		return { form };

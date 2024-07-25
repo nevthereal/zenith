@@ -67,6 +67,8 @@
 	$dateInput = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
 	if (event.projectId) {
 		$editForm.projectId = event.projectId;
+	} else {
+		$editForm.projectId = 0;
 	}
 </script>
 
@@ -74,7 +76,12 @@
 	<div>
 		<h1 class="mb-2 text-2xl font-bold text-primary md:text-3xl">{event.content}</h1>
 		<div class="text-md md:text-base">
-			<p>{date.format('D MMMM YYYY, HH:mm')}</p>
+			<p>
+				{date.format('D MMMM YYYY, HH:mm')}
+				{#if event.project}
+					• <span class="text-secondary">{event.project.name}</span>
+				{/if}
+			</p>
 		</div>
 	</div>
 	<div class="flex md:gap-2">
@@ -90,7 +97,7 @@
 			<h1 class="mb-4 text-xl font-medium">Edit Event</h1>
 			<form method="POST" action="/?/edit" use:editEnhance class="flex flex-col gap-4">
 				<div class="grid gap-4 md:grid-cols-2">
-					<div>
+					<div class="flex flex-col">
 						<label for="event" class="mb-2 text-sm text-base-content/80">Event name</label>
 						<input
 							{...$editConstraints.event}
@@ -98,10 +105,10 @@
 							type="text"
 							name="event"
 							placeholder="What?"
-							class="input input-bordered w-full"
+							class="input input-bordered"
 						/>
 					</div>
-					<div>
+					<div class="flex flex-col">
 						<label for="date" class="mb-2 text-sm text-base-content/80">Date</label>
 						<input
 							{...$editConstraints.date}
@@ -109,14 +116,13 @@
 							name="date"
 							type="datetime-local"
 							placeholder="When?"
-							class="input input-bordered w-full"
+							class="input input-bordered"
 						/>
 					</div>
 					<div class="flex flex-col md:col-span-2">
 						<label for="project" class="mb-2 text-sm text-base-content/80">Project</label>
 						<select
-							name="project"
-							id="project"
+							name="projectId"
 							class="select select-bordered"
 							bind:value={$editForm.projectId}
 						>
