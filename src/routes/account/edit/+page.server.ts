@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	return { user, updateForm };
 };
 
-export const actions: Actions = {
+export const actions = {
 	update_user: async ({ request, locals }) => {
 		const user = checkUser(locals);
 		const form = await superValidate(request, zod(zUpdateUser));
@@ -65,4 +65,4 @@ export const actions: Actions = {
 
 		redirect(302, '/signin');
 	}
-};
+} satisfies Actions;

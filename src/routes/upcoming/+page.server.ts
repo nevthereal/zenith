@@ -9,9 +9,20 @@ import { zToggleEvent, zEditEvent } from '$lib/zod';
 import { checkUser } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
+	depends('fetch:events');
 	const user = checkUser(locals);
 
-	depends('fetch:events');
+	const editForm = await superValidate(zod(zEditEvent));
+	const toggleForm = await superValidate(zod(zToggleEvent));
+
+	const projects = await db.query.projectsTable.findMany({
+		where: eq(projectsTable.userId, user.id),
+		columns: {
+			id: true,
+			name: true
+		}
+	});
+
 	const events = db.query.eventsTable.findMany({
 		where: and(
 			gt(eventsTable.date, dayjs().endOf('day').toDate()),
@@ -22,17 +33,6 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 			project: true
 		}
 	});
-
-	const projects = await db.query.projectsTable.findMany({
-		where: eq(projectsTable.userId, user.id),
-		columns: {
-			id: true,
-			name: true
-		}
-	});
-
-	const editForm = await superValidate(zod(zEditEvent));
-	const toggleForm = await superValidate(zod(zToggleEvent));
 
 	return { events, editForm, toggleForm, projects };
 };

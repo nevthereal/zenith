@@ -8,8 +8,6 @@
 	let { data } = $props();
 
 	const user = data.user;
-
-	let revealed = $state(false);
 </script>
 
 <svelte:head>
@@ -26,13 +24,7 @@
 	<li class="flex items-center gap-2">
 		<span class="font-medium">Email:</span>
 		{#if user.email}
-			<span
-				class={cn(revealed ? 'blur-0' : 'blur-sm', 'text-base-content/80 duration-100 ease-in-out')}
-				>{user.email}</span
-			>
-			<button class="btn btn-neutral btn-xs font-mono" onclick={() => (revealed = !revealed)}
-				>{revealed ? 'Hide' : 'Show'}</button
-			>
+			<span class="text-base-content/80">{user.email}</span>
 		{:else}
 			<a href="/account/edit" class="link">Please add an email</a>
 		{/if}

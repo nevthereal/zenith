@@ -10,7 +10,9 @@
 
 <div class="flex flex-col items-center">
 	<h1 class="mb-6 text-center text-3xl font-bold md:text-5xl">All Projects</h1>
-	<section class="mx-4 grid w-full max-w-[70vw] grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+	<section
+		class="mx-4 mb-12 grid w-full max-w-[70vw] grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3"
+	>
 		<a
 			href="/projects/create"
 			class="card flex h-48 flex-col items-center justify-center bg-base-200"

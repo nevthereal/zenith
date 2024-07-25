@@ -17,12 +17,20 @@ import { Redis } from '@upstash/redis';
 import { building, dev } from '$app/environment';
 
 export const load: PageServerLoad = async ({ locals, depends }) => {
+	depends('fetch:events');
 	const user = checkUser(locals);
 
-	depends('fetch:events');
 	const createForm = await superValidate(zod(zCreateEvent));
 	const editForm = await superValidate(zod(zEditEvent));
 	const toggleForm = await superValidate(zod(zToggleEvent));
+
+	const projects = await db.query.projectsTable.findMany({
+		where: eq(projectsTable.userId, user.id),
+		columns: {
+			id: true,
+			name: true
+		}
+	});
 
 	const events = db.query.eventsTable.findMany({
 		orderBy: asc(eventsTable.date),
@@ -32,14 +40,6 @@ export const load: PageServerLoad = async ({ locals, depends }) => {
 		),
 		with: {
 			project: true
-		}
-	});
-
-	const projects = await db.query.projectsTable.findMany({
-		where: eq(projectsTable.userId, user.id),
-		columns: {
-			id: true,
-			name: true
 		}
 	});
 
@@ -61,7 +61,7 @@ if (!dev && !building) {
 	});
 }
 
-export const actions: Actions = {
+export const actions = {
 	create: async ({ request, locals, getClientAddress }) => {
 		const form = await superValidate(request, zod(zCreateEvent));
 
@@ -108,9 +108,8 @@ export const actions: Actions = {
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-		console.log(form.data.id);
-		let projectId: number | null = null;
 
+		let projectId: number | null = null;
 		if (form.data.projectId != 0) {
 			const requestedProject = await db.query.projectsTable.findFirst({
 				where: eq(projectsTable.id, form.data.projectId)
@@ -123,7 +122,6 @@ export const actions: Actions = {
 				return fail(429, { form });
 			}
 		}
-		console.log(projectId);
 
 		await db
 			.update(eventsTable)
@@ -179,4 +177,4 @@ export const actions: Actions = {
 		});
 		redirect(302, session.url as string);
 	}
-};
+} satisfies Actions;

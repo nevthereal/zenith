@@ -44,6 +44,7 @@
 		},
 		onUpdated() {
 			invalidate('fetch:events');
+
 			editModal.close();
 		},
 		id: `editForm-${event.id}`
@@ -52,10 +53,10 @@
 	const { enhance: toggleEnhance, form: toggleForm } = superForm(toggleFormData, {
 		onSubmit({ formData }) {
 			formData.set('id', event.id.toString());
-			toggleModal.close();
 		},
 		onUpdated() {
 			invalidate('fetch:events');
+			toggleModal.close();
 		},
 		id: `toggleForm-${event.id}`
 	});
@@ -126,7 +127,7 @@
 							class="select select-bordered"
 							bind:value={$editForm.projectId}
 						>
-							<option value={0} disabled>Select a project</option>
+							<option value={0}>No project</option>
 							{#each projects as project}
 								<option value={project.id}>{project.name}</option>
 							{/each}

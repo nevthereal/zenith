@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	return { createProjectForm };
 };
 
-export const actions: Actions = {
+export const actions = {
 	default: async ({ locals, request }) => {
 		const user = checkUser(locals);
 
@@ -29,7 +29,7 @@ export const actions: Actions = {
 			.values({
 				name: form.data.name,
 				userId: user.id,
-				deadline: form.data.deadline
+				deadline: form.data.deadline?.toDateString()
 			})
 			.returning({
 				projectId: projectsTable.id
@@ -37,4 +37,4 @@ export const actions: Actions = {
 
 		return redirect(302, `/projects/${insertedProject.projectId}`);
 	}
-};
+} satisfies Actions;

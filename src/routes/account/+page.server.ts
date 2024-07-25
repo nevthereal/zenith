@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	return { user, completedCount };
 };
-export const actions: Actions = {
+export const actions = {
 	signout: async ({ locals, cookies }) => {
 		if (!locals.session) {
 			return new Response('Failed', { status: 405 });
@@ -29,4 +29,4 @@ export const actions: Actions = {
 
 		redirect(302, '/signin');
 	}
-};
+} satisfies Actions;
