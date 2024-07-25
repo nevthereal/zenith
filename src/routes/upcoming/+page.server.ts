@@ -8,8 +8,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { zToggleEvent, zEditEvent } from '$lib/zod';
 import { checkUser } from '$lib/utils';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
-	depends('fetch:events');
+export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
 	const editForm = await superValidate(zod(zEditEvent));

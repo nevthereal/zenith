@@ -16,8 +16,7 @@ import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { building, dev } from '$app/environment';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
-	depends('fetch:events');
+export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
 	const createForm = await superValidate(zod(zCreateEvent));

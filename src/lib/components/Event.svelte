@@ -43,10 +43,9 @@
 			formData.set('id', event.id.toString());
 		},
 		onUpdated() {
-			invalidate('fetch:events');
-
 			editModal.close();
 		},
+		invalidateAll: true,
 		id: `editForm-${event.id}`
 	});
 
@@ -55,9 +54,9 @@
 			formData.set('id', event.id.toString());
 		},
 		onUpdated() {
-			invalidate('fetch:events');
 			toggleModal.close();
 		},
+		invalidateAll: true,
 		id: `toggleForm-${event.id}`
 	});
 
