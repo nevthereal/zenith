@@ -25,7 +25,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const events = db.query.eventsTable.findMany({
 		where: and(
 			gt(eventsTable.date, dayjs().endOf('day').toDate()),
-			eq(eventsTable.userId, user.id)
+			eq(eventsTable.userId, user.id),
+			eq(eventsTable.completed, false)
 		),
 		orderBy: asc(eventsTable.date),
 		with: {

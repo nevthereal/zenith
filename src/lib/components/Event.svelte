@@ -51,8 +51,6 @@
 	const { enhance: toggleEnhance, form: toggleForm } = superForm(toggleFormData, {
 		onSubmit({ formData }) {
 			formData.set('id', event.id.toString());
-		},
-		onUpdated() {
 			toggleModal.close();
 		},
 		invalidateAll: true,

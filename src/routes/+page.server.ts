@@ -35,7 +35,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 		orderBy: asc(eventsTable.date),
 		where: and(
 			lt(eventsTable.date, dayjs().endOf('day').toDate()),
-			eq(eventsTable.userId, user.id)
+			eq(eventsTable.userId, user.id),
+			eq(eventsTable.completed, false)
 		),
 		with: {
 			project: true
