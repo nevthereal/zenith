@@ -1,19 +1,16 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
 	import Event from '$lib/components/Event.svelte';
-	import { invalidate } from '$app/navigation';
 
 	let { data } = $props();
 
 	let rateLimited = $state(false);
 
 	const { form, delayed, enhance, constraints } = superForm(data.createForm, {
-		onUpdated({ form }) {
-			if (form.valid) invalidate('fetch:events');
-		},
 		onResult({ result }) {
 			if (result.status === 429) rateLimited = true;
-		}
+		},
+		invalidateAll: true
 	});
 
 	const user = data.user;

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { invalidate } from '$app/navigation';
 	import { eventsTable, projectsTable } from '$lib/db/schema';
 	import { cn } from '$lib/utils';
 	import type { zToggleEvent, zEditEvent } from '$lib/zod';
