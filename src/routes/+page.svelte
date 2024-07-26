@@ -77,6 +77,10 @@
 		{:catch}
 			<span class="font-mono text-error">Something went wrong. Try again later</span>
 		{/await}
-		<a href="/upcoming" class="link link-primary mt-4 font-semibold italic">View all upcoming</a>
+		<div class="mt-4 flex flex-col items-center justify-center gap-2 md:flex-row">
+			<a href="/upcoming" class="link link-primary font-semibold italic">Upcoming</a>
+			<span class="hidden md:block">•</span>
+			<a href="/completed" class="link link-success font-semibold italic">Completed</a>
+		</div>
 	</section>
 </div>

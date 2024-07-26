@@ -1,6 +1,6 @@
 import { db } from '$lib/db/db';
 import { checkUser, initializeEventForms } from '$lib/utils';
-import { and, eq } from 'drizzle-orm';
+import { and, asc, eq } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 import { eventsTable, projectCollaboratorsTable, projectsTable } from '$lib/db/schema';
 import { error } from '@sveltejs/kit';
@@ -22,14 +22,16 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		where: and(eq(eventsTable.projectId, projectId), eq(eventsTable.completed, false)),
 		with: {
 			project: true
-		}
+		},
+		orderBy: asc(eventsTable.date)
 	});
 
 	const completedEvents = await db.query.eventsTable.findMany({
 		where: and(eq(eventsTable.projectId, projectId), eq(eventsTable.completed, true)),
 		with: {
 			project: true
-		}
+		},
+		orderBy: asc(eventsTable.date)
 	});
 
 	if (!project || project.userId != user.id) {

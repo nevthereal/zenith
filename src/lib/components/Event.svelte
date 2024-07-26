@@ -77,7 +77,8 @@
 			<p>
 				{date.format('D MMMM YYYY, HH:mm')}
 				{#if event.project}
-					• <span class="text-secondary">{event.project.name}</span>
+					• <a href={`/projects/${event.project.id}`} class="text-secondary">{event.project.name}</a
+					>
 				{/if}
 			</p>
 		</div>
