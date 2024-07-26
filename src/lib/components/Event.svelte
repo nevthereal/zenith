@@ -67,6 +67,7 @@
 	} else {
 		$editForm.projectId = 0;
 	}
+	$toggleForm.action = event.completed ? 'uncomplete' : 'complete';
 </script>
 
 <div class="flex w-full flex-row justify-between gap-4 rounded-box bg-base-200 p-8">
@@ -152,15 +153,12 @@
 	<dialog class="modal" id={`toggle-modal-${event.id}`}>
 		<div class="modal-box">
 			<h2 class="text-xl font-bold">Complete or Delete Event?</h2>
-			<p class="pt-6">
-				Either of these actions will delete the event <span class="font-medium text-error"
-					>forever</span
-				>
-			</p>
 			<div class="modal-action">
 				<form method="POST" action="/?/toggle" use:toggleEnhance class="flex gap-2">
 					<select name="action" id="action" bind:value={$toggleForm.action} class="select">
-						<option value="complete">Complete</option>
+						<option value={event.completed ? 'uncomplete' : 'complete'}
+							>{event.completed ? 'Uncomplete' : 'Complete'}</option
+						>
 						<option value="delete">Delete</option>
 					</select>
 					<button class={cn('btn', $toggleForm.action === 'delete' ? 'btn-error' : 'btn-success')}

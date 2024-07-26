@@ -15,7 +15,7 @@
 			<span class="font-mono">Loading events...</span>
 		{:then events}
 			{#if events.length === 0}
-				<h2 class="font-semibold italic md:text-xl">Nothing upcoming.</h2>
+				<h2 class="heading-small italic">Nothing upcoming.</h2>
 			{:else}
 				{#each events as event (event.id)}
 					<Event

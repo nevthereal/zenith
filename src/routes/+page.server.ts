@@ -142,11 +142,13 @@ export const actions = {
 			return fail(400, { form });
 		}
 
-		if (form.data.action === 'complete') {
+		const action = form.data.action;
+
+		if (action === 'complete' || action === 'uncomplete') {
 			await db
 				.update(eventsTable)
 				.set({
-					completed: true
+					completed: action === 'complete' ? true : false
 				})
 				.where(eq(eventsTable.id, form.data.id));
 		} else {

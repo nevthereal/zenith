@@ -64,7 +64,7 @@
 			<span class="font-mono">Loading events...</span>
 		{:then events}
 			{#if events.length == 0}
-				<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
+				<h2 class="heading-small italic">Nothing planned today.</h2>
 			{/if}
 			{#each events as event (event.id)}
 				<Event

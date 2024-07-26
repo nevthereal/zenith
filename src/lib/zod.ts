@@ -26,7 +26,7 @@ export const zEditEvent = z.object({
 	projectId: z.number()
 });
 
-export const zActionEnum = z.enum(['complete', 'delete']);
+export const zActionEnum = z.enum(['complete', 'uncomplete', 'delete']);
 
 export const zToggleEvent = z.object({
 	id: z.number(),

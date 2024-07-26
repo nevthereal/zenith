@@ -1,8 +1,8 @@
 import { db } from '$lib/db/db';
 import { checkUser, initializeEventForms } from '$lib/utils';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
-import { projectCollaboratorsTable, projectsTable } from '$lib/db/schema';
+import { eventsTable, projectCollaboratorsTable, projectsTable } from '$lib/db/schema';
 import { error } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -15,13 +15,20 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	}
 
 	const project = await db.query.projectsTable.findFirst({
-		where: eq(projectsTable.id, projectId),
+		where: eq(projectsTable.id, projectId)
+	});
+
+	const events = await db.query.eventsTable.findMany({
+		where: and(eq(eventsTable.projectId, projectId), eq(eventsTable.completed, false)),
 		with: {
-			events: {
-				with: {
-					project: true
-				}
-			}
+			project: true
+		}
+	});
+
+	const completedEvents = await db.query.eventsTable.findMany({
+		where: and(eq(eventsTable.projectId, projectId), eq(eventsTable.completed, true)),
+		with: {
+			project: true
 		}
 	});
 
@@ -46,5 +53,5 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const { editForm, toggleForm } = await initializeEventForms();
 
-	return { project, collaborators, editForm, toggleForm, userProjects };
+	return { project, collaborators, editForm, toggleForm, userProjects, events, completedEvents };
 };

@@ -15,6 +15,9 @@
 	.heading-small {
 		@apply text-base font-medium tracking-tight md:text-xl;
 	}
+	.heading-muted {
+		@apply mb-2 text-base font-medium tracking-tight text-base-content/80 md:text-xl;
+	}
 	.text-muted {
 		@apply text-base-content/80;
 	}
