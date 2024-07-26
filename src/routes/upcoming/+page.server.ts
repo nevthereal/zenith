@@ -3,16 +3,12 @@ import { and, asc, eq, gt } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 import { eventsTable, projectsTable } from '$lib/db/schema';
 import dayjs from 'dayjs';
-import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
-import { zToggleEvent, zEditEvent } from '$lib/zod';
-import { checkUser } from '$lib/utils';
+import { checkUser, initializeEventForms } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	const editForm = await superValidate(zod(zEditEvent));
-	const toggleForm = await superValidate(zod(zToggleEvent));
+	const { editForm, toggleForm } = await initializeEventForms();
 
 	const projects = await db.query.projectsTable.findMany({
 		where: eq(projectsTable.userId, user.id),

@@ -1,5 +1,5 @@
 import { db } from '$lib/db/db';
-import { checkUser } from '$lib/utils';
+import { checkUser, initializeEventForms } from '$lib/utils';
 import { eq } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 import { projectCollaboratorsTable, projectsTable } from '$lib/db/schema';
@@ -14,20 +14,37 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		error(404, 'Project not found');
 	}
 
-	const qProject = await db.query.projectsTable.findFirst({
-		where: eq(projectsTable.id, projectId)
+	const project = await db.query.projectsTable.findFirst({
+		where: eq(projectsTable.id, projectId),
+		with: {
+			events: {
+				with: {
+					project: true
+				}
+			}
+		}
 	});
 
-	if (!qProject || qProject.userId != user.id) {
+	if (!project || project.userId != user.id) {
 		error(404, 'Project not found');
 	}
 
 	const collaborators = await db.query.projectCollaboratorsTable.findMany({
-		where: eq(projectCollaboratorsTable.userId, qProject.userId),
+		where: eq(projectCollaboratorsTable.userId, project.userId),
 		with: {
 			user: true
 		}
 	});
 
-	return { qProject, collaborators };
+	const userProjects = await db.query.projectsTable.findMany({
+		where: eq(projectsTable.userId, user.id),
+		columns: {
+			id: true,
+			name: true
+		}
+	});
+
+	const { editForm, toggleForm } = await initializeEventForms();
+
+	return { project, collaborators, editForm, toggleForm, userProjects };
 };

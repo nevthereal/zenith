@@ -71,7 +71,7 @@
 
 <div class="flex w-full flex-row justify-between gap-4 rounded-box bg-base-200 p-8">
 	<div>
-		<h1 class="mb-2 text-2xl font-bold text-primary md:text-3xl">{event.content}</h1>
+		<h1 class="heading-sub">{event.content}</h1>
 		<div class="text-md md:text-base">
 			<p>
 				{date.format('D MMMM YYYY, HH:mm')}
@@ -95,7 +95,7 @@
 			<form method="POST" action="/?/edit" use:editEnhance class="flex flex-col gap-4">
 				<div class="grid gap-4 md:grid-cols-2">
 					<div class="flex flex-col">
-						<label for="event" class="mb-2 text-sm text-base-content/80">Event name</label>
+						<label for="event" class="text-muted mb-2 text-sm">Event name</label>
 						<input
 							{...$editConstraints.event}
 							bind:value={$editForm.event}
@@ -106,7 +106,7 @@
 						/>
 					</div>
 					<div class="flex flex-col">
-						<label for="date" class="mb-2 text-sm text-base-content/80">Date</label>
+						<label for="date" class="text-muted mb-2 text-sm">Date</label>
 						<input
 							{...$editConstraints.date}
 							bind:value={$dateInput}
@@ -117,7 +117,7 @@
 						/>
 					</div>
 					<div class="flex flex-col md:col-span-2">
-						<label for="project" class="mb-2 text-sm text-base-content/80">Project</label>
+						<label for="project" class="text-muted mb-2 text-sm">Project</label>
 						<select
 							name="projectId"
 							class="select select-bordered"

@@ -21,10 +21,10 @@
 </svelte:head>
 
 <div class="flex flex-col items-center">
-	<h3 class="text-lg font-medium md:text-xl">
+	<h3 class="heading-small">
 		Hi, <span class="font-bold text-primary">{user.username}</span>
 	</h3>
-	<h1 class="text-center text-3xl font-bold md:text-5xl">What are your plans?</h1>
+	<h1 class="heading-main text-center">What are your plans?</h1>
 	{#if user.paid}
 		<form action="?/create" method="POST" class="my-12 flex flex-col" use:enhance>
 			<div class="flex items-center justify-center gap-4">

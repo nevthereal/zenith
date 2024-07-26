@@ -9,7 +9,7 @@
 </svelte:head>
 
 <div class="flex flex-col items-center">
-	<h1 class="text-center text-3xl font-bold md:text-5xl">Upcoming</h1>
+	<h1 class="heading-main text-center">Upcoming</h1>
 	<section class="mt-4 flex w-full max-w-2xl flex-col items-center gap-4 md:mt-8">
 		{#await data.events}
 			<span class="font-mono">Loading events...</span>

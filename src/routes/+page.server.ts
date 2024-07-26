@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
 import { eventsTable, projectsTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
-import { checkUser } from '$lib/utils';
+import { checkUser, initializeEventForms } from '$lib/utils';
 import { stripe } from '$lib/stripe';
 import { PRICE_ID, UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
@@ -20,8 +20,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
 	const createForm = await superValidate(zod(zCreateEvent));
-	const editForm = await superValidate(zod(zEditEvent));
-	const toggleForm = await superValidate(zod(zToggleEvent));
+
+	const { editForm, toggleForm } = await initializeEventForms();
 
 	const projects = await db.query.projectsTable.findMany({
 		where: eq(projectsTable.userId, user.id),

@@ -21,8 +21,8 @@
 	<div class="hero-overlay rounded-box bg-opacity-60"></div>
 	<div class="hero-content text-center text-neutral-content">
 		<div class="max-w-md">
-			<h1 class="mb-4 text-8xl font-black tracking-tighter">Zenith</h1>
-			<p class="mb-4 text-2xl font-medium">everyday planning powered by AI, at your fingertips</p>
+			<h1 class="heading-super-big">Zenith</h1>
+			<p class="heading-sub">everyday planning powered by AI, at your fingertips</p>
 			<div class="flex justify-center gap-6">
 				<a href="/features" class="btn">Features</a>
 				<a href="/signin" class="btn btn-primary">Sign In</a>

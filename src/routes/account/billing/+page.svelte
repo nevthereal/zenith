@@ -10,7 +10,7 @@
 	<title>Account - Billing</title>
 </svelte:head>
 
-<h1 class="account-title">Billing</h1>
+<h1 class="heading-main">Billing</h1>
 
 <div class="text-lg">
 	{#if user.paid && order}
@@ -18,17 +18,15 @@
 			<li class="font-medium text-success">Your account is paid</li>
 			<li>
 				<span class="font-medium">Customer ID:</span>
-				<span class="text-base-content/80">{order.customerId}</span>
+				<span class="text-muted">{order.customerId}</span>
 			</li>
 			<li>
 				<span class="font-medium">Order ID:</span>
-				<span class="text-base-content/80">{order.orderId}</span>
+				<span class="text-muted">{order.orderId}</span>
 			</li>
 			<li>
 				<span class="font-medium">Completed:</span>
-				<span class="text-base-content/80"
-					>{dayjs(order.completedAt).format('D MMMM YYYY, hh:mm')}</span
-				>
+				<span class="text-muted">{dayjs(order.completedAt).format('D MMMM YYYY, hh:mm')}</span>
 			</li>
 			<li>
 				<span class="font-medium">Invoice:</span>

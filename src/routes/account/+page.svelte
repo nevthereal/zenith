@@ -14,24 +14,24 @@
 	<title>Account - Overview</title>
 </svelte:head>
 
-<h1 class="account-title">Account overview</h1>
+<h1 class="heading-main">Account overview</h1>
 
 <ul class="flex flex-col gap-1 md:text-lg">
 	<li>
 		<span class="font-medium">Username:</span>
-		<span class="text-base-content/80">{user.username}</span>
+		<span class="text-muted">{user.username}</span>
 	</li>
 	<li class="flex items-center gap-2">
 		<span class="font-medium">Email:</span>
 		{#if user.email}
-			<span class="text-base-content/80">{user.email}</span>
+			<span class="text-muted">{user.email}</span>
 		{:else}
 			<a href="/account/edit" class="link">Please add an email</a>
 		{/if}
 	</li>
 	<li>
 		<span class="font-medium">Joined:</span>
-		<span class="text-base-content/80">{dayjs().to(dayjs(user.joined))}</span>
+		<span class="text-muted">{dayjs().to(dayjs(user.joined))}</span>
 	</li>
 	<li>
 		<span class="font-medium">Paid:</span>
@@ -39,7 +39,7 @@
 	</li>
 	<li>
 		<span class="font-medium">Completed Tasks:</span>
-		<span class="text-base-content/80">{data.completedCount.length}</span>
+		<span class="text-muted">{data.completedCount.length}</span>
 	</li>
 	{#if user.admin}
 		<li>

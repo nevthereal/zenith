@@ -11,10 +11,10 @@
 	let { name, deadline, collaborators, id }: Props = $props();
 </script>
 
-<a href={`/projects/${id}`} class="card flex h-48 flex-col justify-between bg-base-200 p-6">
-	<h1 class="text-2xl font-bold">{name}</h1>
+<a href={`/projects/${id}`} class="card flex h-48 flex-col justify-between bg-base-200 p-8">
+	<h1 class="heading-sub">{name}</h1>
 	<div>
-		<p class="font-medium text-base-content/80">
+		<p class="text-muted font-medium">
 			{#if collaborators.length != 0}
 				<span
 					>Shared with {collaborators[0].user?.username}
@@ -24,7 +24,7 @@
 				>
 			{/if}
 		</p>
-		<p class="font-medium">
+		<p class="text-muted font-medium">
 			{#if deadline}
 				<span>Deadline: {dayjs(deadline).format('D MMMM YYYY')}</span>
 			{:else}

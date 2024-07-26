@@ -9,7 +9,7 @@
 </script>
 
 <section class="mx-auto w-full max-w-xl">
-	<h1 class="mb-6 text-center text-3xl font-bold md:text-5xl">Create a project</h1>
+	<h1 class="heading-main text-center">Create a project</h1>
 	<form method="post" class="flex flex-col gap-2 md:mx-16" use:enhance>
 		<div class="flex flex-col">
 			<label for="name" class="font-medium">Project name:</label>

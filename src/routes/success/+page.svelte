@@ -16,9 +16,9 @@
 	<p>Session not found</p>
 {:else}
 	<div class="text-center">
-		<h1 class="mb-8 text-3xl font-bold md:text-5xl">Thank you for your order!</h1>
+		<h1 class="heading-main">Thank you for your order!</h1>
 		<div class="flex flex-col">
-			<h1 class="mb-2 text-xl font-medium">Order details:</h1>
+			<h1 class="heading-small">Order details:</h1>
 			<table class="table mx-auto max-w-[80vw] text-left">
 				<tbody>
 					<tr>

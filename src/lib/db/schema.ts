@@ -76,7 +76,8 @@ export const userRelation = relations(usersTable, ({ many }) => ({
 
 export const projectRelation = relations(projectsTable, ({ one, many }) => ({
 	user: one(usersTable, { fields: [projectsTable.userId], references: [usersTable.id] }),
-	collaborators: many(projectCollaboratorsTable)
+	collaborators: many(projectCollaboratorsTable),
+	events: many(eventsTable)
 }));
 
 export const projectCollaboratorRelation = relations(projectCollaboratorsTable, ({ one }) => ({
