@@ -71,7 +71,9 @@ export const ordersTable = pgTable('orders', {
 });
 
 export const userRelation = relations(usersTable, ({ many }) => ({
-	events: many(eventsTable)
+	events: many(eventsTable),
+	projects: many(projectsTable),
+	collaboratingProjects: many(projectCollaboratorsTable)
 }));
 
 export const projectRelation = relations(projectsTable, ({ one, many }) => ({
