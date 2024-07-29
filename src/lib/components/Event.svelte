@@ -75,9 +75,13 @@
 		<h1 class="heading-sub">{event.content}</h1>
 		<div class="text-md md:text-base">
 			<p>
-				{date.format('D MMMM YYYY, HH:mm')}
+				<span class={cn(date.isBefore(dayjs().startOf('day')) && !event.completed && 'text-error')}>
+					{date.format('D MMMM YYYY, HH:mm')}
+				</span>
 				{#if event.project}
-					• <a href={`/projects/${event.project.id}`} class="text-secondary">{event.project.name}</a
+					<a href={`/projects/${event.project.id}`} class="text-secondary"
+						><i class="fa-solid fa-arrow-right max-md:hidden"></i>
+						<span class="whitespace-nowrap">{event.project.name}</span></a
 					>
 				{/if}
 			</p>
@@ -136,7 +140,7 @@
 					<button class="btn btn-primary mx-auto" type="submit">
 						Update
 						{#if $editDelayed}
-							<span class="loading loading-spinner loading-xs"></span>
+							<i class="fa-solid fa-spinner animate-spin text-lg"></i>
 						{/if}
 					</button>
 				</div>

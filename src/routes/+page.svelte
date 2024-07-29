@@ -39,7 +39,7 @@
 				<button class="btn btn-primary"
 					>Add!
 					{#if $delayed}
-						<span class="loading loading-spinner loading-xs"></span>
+						<i class="fa-solid fa-spinner animate-spin text-lg"></i>
 					{/if}
 				</button>
 			</div>
