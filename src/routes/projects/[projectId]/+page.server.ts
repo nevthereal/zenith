@@ -4,6 +4,9 @@ import { and, asc, eq } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 import { eventsTable, projectCollaboratorsTable, projectsTable } from '$lib/db/schema';
 import { error } from '@sveltejs/kit';
+import { superValidate } from 'sveltekit-superforms';
+import { zDeleteProject, zEditProject } from '$lib/zod';
+import { zod } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const user = checkUser(locals);
@@ -55,5 +58,18 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const { editForm, toggleForm } = await initializeEventForms();
 
-	return { project, collaborators, editForm, toggleForm, userProjects, events, completedEvents };
+	const projectEditForm = await superValidate(zod(zEditProject));
+	const projectDeleteForm = await superValidate(zod(zDeleteProject));
+
+	return {
+		project,
+		collaborators,
+		editForm,
+		toggleForm,
+		userProjects,
+		events,
+		completedEvents,
+		projectEditForm,
+		projectDeleteForm
+	};
 };

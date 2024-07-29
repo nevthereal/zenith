@@ -33,11 +33,6 @@ export const zToggleEvent = z.object({
 	action: zActionEnum
 });
 
-export const zCreateProject = z.object({
-	name: z.string().min(4).max(32),
-	deadline: z.date().optional()
-});
-
 export const zUpdateUser = z.object({
 	username: z
 		.string()
@@ -48,4 +43,19 @@ export const zUpdateUser = z.object({
 		})
 		.optional(),
 	email: z.string().email('Is this really an email?').optional()
+});
+
+export const zCreateProject = z.object({
+	name: z.string().min(4).max(32),
+	deadline: z.date().optional()
+});
+
+export const zEditProject = z.object({
+	projectId: z.number(),
+	deadline: z.date().optional(),
+	name: z.string().optional()
+});
+
+export const zDeleteProject = z.object({
+	projectId: z.number()
 });

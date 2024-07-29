@@ -14,27 +14,30 @@
 
 <div class="mx-auto w-full md:max-w-2xl">
 	<section class="text-center">
-		<h1 class="mb-4 text-4xl font-bold md:text-6xl">{data.project.name}</h1>
+		<h1 class="mb-12 text-4xl font-bold md:text-6xl">{data.project.name}</h1>
 	</section>
 	<div class="flex flex-col">
-		<div>
-			<h1 class="heading-sub text-muted mt-8">Project details</h1>
-			<ul>
-				<li class="flex gap-1">
-					<span class="font-medium">Deadline:</span>
-					<span class="text-muted"
-						>{#if data.project.deadline}
-							{dayjs().to(dayjs(data.project.deadline))}
-						{:else}
-							No deadline
-						{/if}
-					</span>
-				</li>
-			</ul>
+		<div class="flex max-md:flex-col md:justify-between">
+			<div>
+				<h1 class="heading-sub text-muted">Project details</h1>
+				<ul>
+					<li class="flex gap-1">
+						<span class="font-medium">Deadline:</span>
+						<span class="text-muted"
+							>{#if data.project.deadline}
+								{dayjs().to(dayjs(data.project.deadline))}
+							{:else}
+								No deadline
+							{/if}
+						</span>
+					</li>
+				</ul>
+			</div>
+			<button class="btn btn-primary my-auto">Edit Project</button>
 		</div>
 		<div>
 			{#if data.events.length != 0}
-				<section class="mt-8 flex flex-col items-center gap-4">
+				<section class="mt-4 flex flex-col items-center gap-4">
 					<h3 class="heading-muted mb-4">Due events ({data.events.length})</h3>
 					{#each data.events as event}
 						<Event
