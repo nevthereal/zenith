@@ -88,10 +88,18 @@
 		</div>
 	</div>
 	<div class="flex md:gap-2">
-		<button class="btn btn-circle my-auto" onclick={() => editModal.showModal()}>
+		<button
+			class="btn btn-circle my-auto"
+			aria-label="Edit Project"
+			onclick={() => editModal.showModal()}
+		>
 			<i class="fa-solid fa-pencil text-lg md:text-xl"></i>
 		</button>
-		<button class="btn btn-circle my-auto" onclick={() => toggleModal.showModal()}>
+		<button
+			class="btn btn-circle my-auto"
+			aria-label="Delete or Complete Project"
+			onclick={() => toggleModal.showModal()}
+		>
 			<i class="fa-regular fa-circle-check text-lg md:text-xl"></i>
 		</button>
 	</div>

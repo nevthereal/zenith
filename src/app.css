@@ -22,3 +22,7 @@
 		@apply text-base-content/80;
 	}
 }
+
+html {
+	@apply scroll-smooth;
+}

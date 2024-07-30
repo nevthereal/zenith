@@ -1,9 +1,14 @@
+<script>
+	import EventDemo from '$lib/components/EventDemo.svelte';
+</script>
+
 <svelte:head>
 	<title>Zenith - Features</title>
 </svelte:head>
 
+<h1 class="heading-super-big text-center">Features</h1>
+<EventDemo />
 <section class="prose-h1:heading-main prose-h2:heading-sub prose mx-auto my-4">
-	<h1>Features</h1>
 	<p>Before we talk about the actual features themselves, let's talk about</p>
 	<h2 id="pricing">Pricing</h2>
 	<p>
