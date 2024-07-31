@@ -9,7 +9,7 @@
 			Not convinced yet? <br /> Check out the <a href="/features" class="link">Features</a>.
 		</p>
 	</div>
-	<form method="post" class="flex flex-col items-center justify-center gap-4">
+	<form method="post" class="flex flex-col items-center gap-4 md:justify-center">
 		<button formaction="?/github" class="btn flex gap-4 text-lg"
 			><i class="fa-brands fa-github"></i>Sign in with GitHub</button
 		>

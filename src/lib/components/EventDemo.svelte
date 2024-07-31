@@ -1,7 +1,5 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
-
-	let { project = false } = $props();
 </script>
 
 <div class="flex flex-col items-center justify-center gap-4">
@@ -23,12 +21,6 @@
 							.set('second', 0)
 							.format('D MMMM YYYY, HH:mm')}
 					</span>
-					{#if project}
-						<span class="text-secondary"
-							><i class="fa-solid fa-arrow-right max-md:hidden"></i>
-							<span class="whitespace-nowrap">In a project</span></span
-						>
-					{/if}
 				</p>
 			</div>
 		</div>

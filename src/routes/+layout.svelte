@@ -49,6 +49,6 @@
 		{/if}
 	</div>
 </nav>
-<main class="mx-4 md:mx-auto md:max-w-[90dwv]">
+<main class="mx-8 md:mx-auto md:max-w-[90dwv]">
 	{@render children()}
 </main>

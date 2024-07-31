@@ -25,7 +25,7 @@
 >
 	<div class="hero-overlay rounded-box bg-opacity-70"></div>
 	<div class="hero-content w-[80%] text-center">
-		<div class="max-w-md">
+		<div class="md:max-w-md">
 			<h1 class="heading-super-big">Zenith</h1>
 			<p class="heading-small mb-4">everyday planning powered by AI, at your fingertips</p>
 			<div class="flex justify-center gap-6">
