@@ -7,7 +7,7 @@ import { checkUser } from '$lib/utils';
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	const myProjects = await db.query.projectsTable.findMany({
+	const myProjects = db.query.projectsTable.findMany({
 		where: and(eq(projectsTable.userId, user.id)),
 		orderBy: asc(projectsTable.deadline),
 		with: {

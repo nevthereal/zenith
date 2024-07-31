@@ -2,6 +2,8 @@
 	import EventDemo from '$lib/components/EventDemo.svelte';
 	import EarthImage from '$lib/assets/earth.jpg';
 	import dayjs from 'dayjs';
+	import Loading from '$lib/components/Loading.svelte';
+	import Error from '$lib/components/Error.svelte';
 </script>
 
 <svelte:head>
@@ -35,3 +37,5 @@
 		</div>
 	</div>
 </section>
+<Loading text="events" />
+<Error />

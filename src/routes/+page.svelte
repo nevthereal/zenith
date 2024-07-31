@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
 	import Event from '$lib/components/Event.svelte';
+	import Error from '$lib/components/Error.svelte';
+	import Loading from '$lib/components/Loading.svelte';
 
 	let { data } = $props();
 
@@ -61,7 +63,7 @@
 
 	<section class="mb-8 flex w-full max-w-2xl flex-col items-center gap-4">
 		{#await data.events}
-			<span class="font-mono">Loading events...</span>
+			<Loading text="events" />
 		{:then events}
 			{#if events.length == 0}
 				<h2 class="heading-small italic">Nothing planned today.</h2>
@@ -75,7 +77,7 @@
 				/>
 			{/each}
 		{:catch}
-			<span class="font-mono text-error">Something went wrong. Try again later</span>
+			<Error />
 		{/await}
 		<div class="mt-4 flex flex-col items-center justify-center gap-2 md:flex-row">
 			<a href="/upcoming" class="link link-primary font-semibold italic">Upcoming</a>

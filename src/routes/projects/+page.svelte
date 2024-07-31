@@ -1,5 +1,7 @@
 <script lang="ts">
+	import Loading from '$lib/components/Loading.svelte';
 	import ProjectCard from '$lib/components/ProjectCard.svelte';
+	import Error from '../+error.svelte';
 
 	let { data } = $props();
 </script>
@@ -22,13 +24,19 @@
 			></i>
 			<p class="text-xl font-medium">Create a space</p>
 		</a>
-		{#each data.myProjects as project}
-			<ProjectCard
-				id={project.id}
-				collaborators={project.collaborators}
-				name={project.name}
-				deadline={project.deadline}
-			/>
-		{/each}
+		{#await data.myProjects}
+			<Loading text="project" />
+		{:then projects}
+			{#each projects as project}
+				<ProjectCard
+					id={project.id}
+					collaborators={project.collaborators}
+					name={project.name}
+					deadline={project.deadline}
+				/>
+			{/each}
+		{:catch}
+			<Error />
+		{/await}
 	</section>
 </div>
