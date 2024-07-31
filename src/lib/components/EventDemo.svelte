@@ -4,7 +4,7 @@
 	let { project = false } = $props();
 </script>
 
-<div class="my-16 flex flex-col items-center justify-center gap-4">
+<div class="flex flex-col items-center justify-center gap-4">
 	<p class="heading-small select-none">
 		"<span class="bg-primary/50">Dinner with Stacy</span>
 		<span class="bg-secondary/50">tomorrow</span> at <span class="bg-secondary/50">6PM</span>"

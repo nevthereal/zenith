@@ -23,18 +23,15 @@
 	class="hero mx-auto my-8 h-[75dvh] w-11/12 rounded-box bg-base-100 bg-blend-color-dodge"
 	style="background-image: url({EarthImage});"
 >
-	<div class="hero-overlay rounded-box bg-opacity-75"></div>
-	<div class="hero-content grid w-[80%] text-center md:grid-cols-2">
-		<div class="max-w-md md:text-left">
+	<div class="hero-overlay rounded-box bg-opacity-70"></div>
+	<div class="hero-content w-[80%] text-center">
+		<div class="max-w-md">
 			<h1 class="heading-super-big">Zenith</h1>
 			<p class="heading-small mb-4">everyday planning powered by AI, at your fingertips</p>
-			<div class="flex gap-6 max-md:justify-center">
+			<div class="flex justify-center gap-6">
 				<a href="/features" class="btn">Features</a>
 				<a href="/signin" class="btn btn-primary">Sign In</a>
 			</div>
-		</div>
-		<div class="max-md:hidden">
-			<EventDemo />
 		</div>
 	</div>
 </section>

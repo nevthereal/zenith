@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.project.name}</title>
+	<title>Project - {data.project.name}</title>
 </svelte:head>
 
 <div class="mx-auto w-full md:max-w-2xl">

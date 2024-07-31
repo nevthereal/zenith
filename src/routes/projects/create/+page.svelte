@@ -8,6 +8,10 @@
 	const dateInput = dateProxy(form, 'deadline', { format: 'date' });
 </script>
 
+<svelte:head>
+	<title>Create a project</title>
+</svelte:head>
+
 <section class="mx-auto w-full max-w-xl">
 	<h1 class="heading-main text-center">Create a project</h1>
 	<form method="post" class="flex flex-col gap-2 md:mx-16" use:enhance>
