@@ -24,13 +24,5 @@
 				</p>
 			</div>
 		</div>
-		<div class="flex md:gap-2">
-			<button class="btn btn-circle my-auto">
-				<i class="fa-solid fa-pencil text-lg md:text-xl"></i>
-			</button>
-			<button class="btn btn-circle my-auto">
-				<i class="fa-regular fa-circle-check text-lg md:text-xl"></i>
-			</button>
-		</div>
 	</div>
 </div>
