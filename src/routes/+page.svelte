@@ -3,6 +3,7 @@
 	import Event from '$lib/components/Event.svelte';
 	import Error from '$lib/components/Error.svelte';
 	import Loading from '$lib/components/Loading.svelte';
+	import Spinner from '$lib/components/Spinner.svelte';
 
 	let { data } = $props();
 
@@ -41,7 +42,7 @@
 				<button class="btn btn-primary"
 					>Add!
 					{#if $delayed}
-						<i class="fa-solid fa-spinner animate-spin text-lg"></i>
+						<Spinner />
 					{/if}
 				</button>
 			</div>
@@ -79,10 +80,6 @@
 		{:catch}
 			<Error />
 		{/await}
-		<div class="mt-4 flex flex-col items-center justify-center gap-2 md:flex-row">
-			<a href="/upcoming" class="link link-primary font-semibold italic">Upcoming</a>
-			<span class="hidden md:block">•</span>
-			<a href="/completed" class="link link-success font-semibold italic">Completed</a>
-		</div>
+		<a href="/upcoming" class="link link-primary font-semibold italic">See all upcoming</a>
 	</section>
 </div>

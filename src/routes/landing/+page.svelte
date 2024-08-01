@@ -37,5 +37,3 @@
 		</div>
 	</div>
 </section>
-<Loading text="events" />
-<Error />

@@ -1,11 +1,42 @@
 <script lang="ts">
 	import Event from '$lib/components/Event.svelte';
+	import Spinner from '$lib/components/Spinner.svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime.js';
+	import { dateProxy, superForm } from 'sveltekit-superforms';
 
 	dayjs.extend(relativeTime);
 
 	let { data } = $props();
+
+	let editModal: HTMLDialogElement = $state();
+
+	$effect(() => {
+		editModal = document.getElementById('editModal') as HTMLDialogElement;
+	});
+
+	const {
+		form: editForm,
+		enhance: editEnhance,
+		constraints: editConstraints,
+		delayed: editDelayed,
+		message: editMessage
+	} = superForm(data.projectEditForm, {
+		onSubmit: ({ formData }) => {
+			formData.set('projectId', data.project.id.toString());
+		},
+		invalidateAll: true
+	});
+
+	const { enhance: deleteEnhance, delayed: deleteDelayed } = superForm(data.projectDeleteForm, {
+		onSubmit: ({ formData }) => {
+			formData.set('projectId', data.project.id.toString());
+		}
+	});
+
+	const dateInput = dateProxy(editForm, 'deadline', { format: 'date' });
+
+	let deleteConfirmation = $state('');
 </script>
 
 <svelte:head>
@@ -25,7 +56,9 @@
 						<span class="font-medium">Deadline:</span>
 						<span class="text-muted"
 							>{#if data.project.deadline}
-								{dayjs().to(dayjs(data.project.deadline))}
+								{dayjs().to(dayjs(data.project.deadline))} ({dayjs(data.project.deadline).format(
+									'D MMMM YYYY'
+								)})
 							{:else}
 								No deadline
 							{/if}
@@ -33,7 +66,9 @@
 					</li>
 				</ul>
 			</div>
-			<button class="btn btn-primary my-auto">Edit Project</button>
+			<button class="btn btn-primary my-auto" onclick={() => editModal.showModal()}
+				>Edit Project</button
+			>
 		</div>
 		<div>
 			{#if data.events.length != 0}
@@ -70,3 +105,68 @@
 		</div>
 	</div>
 </div>
+
+<dialog id="editModal" class="modal">
+	<div class="modal-box">
+		<h1 class="heading-main">Edit Project</h1>
+		<form action="?/edit" method="post" class="flex flex-col gap-4" use:editEnhance>
+			<div class="flex flex-col gap-2">
+				<label for="name">Name</label>
+				<input
+					type="text"
+					class="input input-primary"
+					name="name"
+					{...$editConstraints.name}
+					bind:value={$editForm.name}
+				/>
+			</div>
+			<div class="flex flex-col gap-2">
+				<label for="deadline">Deadline</label>
+				<input
+					type="date"
+					class="input input-primary"
+					name="deadline"
+					{...$editConstraints.deadline}
+					bind:value={$dateInput}
+				/>
+			</div>
+			<button disabled={!$editForm.deadline && !$editForm.name} class="btn btn-primary"
+				>Edit {#if $editDelayed}
+					<Spinner />
+				{/if}</button
+			>
+		</form>
+		<form action="?/delete" class="mt-4" use:deleteEnhance method="post">
+			<h1 class="heading-small mb-4 text-error">Delete project?</h1>
+			<div class="flex flex-col gap-2">
+				<label for="confirmation"
+					>Type <span class="font-mono italic">delete my project</span> below</label
+				>
+				<input
+					id="confirmation"
+					type="text"
+					bind:value={deleteConfirmation}
+					class="input input-error"
+				/>
+				<button disabled={deleteConfirmation != 'delete my project'} class="btn btn-error"
+					>Delete {#if $deleteDelayed}
+						<Spinner />
+					{/if}</button
+				>
+			</div>
+		</form>
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
+</dialog>
+
+<style>
+	input::-webkit-calendar-picker-indicator {
+		display: none;
+	}
+
+	input[type='date']::-webkit-input-placeholder {
+		visibility: hidden !important;
+	}
+</style>

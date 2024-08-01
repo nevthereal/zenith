@@ -31,5 +31,6 @@
 		{:catch}
 			<Error />
 		{/await}
+		<a href="/completed" class="link link-success font-semibold italic">See Completed</a>
 	</section>
 </div>

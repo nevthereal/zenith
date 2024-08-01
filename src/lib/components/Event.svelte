@@ -4,6 +4,7 @@
 	import type { zToggleEvent, zEditEvent } from '$lib/zod';
 	import dayjs from 'dayjs';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
+	import Spinner from './Spinner.svelte';
 
 	type Event = typeof eventsTable.$inferSelect;
 	type Project = typeof projectsTable.$inferSelect;
@@ -148,7 +149,7 @@
 					<button class="btn btn-primary mx-auto" type="submit">
 						Update
 						{#if $editDelayed}
-							<i class="fa-solid fa-spinner animate-spin text-lg"></i>
+							<Spinner />
 						{/if}
 					</button>
 				</div>

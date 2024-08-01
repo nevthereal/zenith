@@ -53,7 +53,7 @@ export const zCreateProject = z.object({
 export const zEditProject = z.object({
 	projectId: z.number(),
 	deadline: z.date().optional(),
-	name: z.string().optional()
+	name: z.string().min(4).max(32).optional()
 });
 
 export const zDeleteProject = z.object({
