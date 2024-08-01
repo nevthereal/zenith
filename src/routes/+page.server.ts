@@ -1,4 +1,4 @@
-import { eventSchema, createSchema, editSchema, deleteSchema } from '$lib/zod';
+import { zEventLLM, zCreateEvent, zEditEvent, zToggleEvent } from '$lib/zod';
 import { model } from '$lib/ai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
@@ -7,29 +7,43 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
-import { eventsTable, usersTable } from '$lib/db/schema';
+import { eventsTable, projectsTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
-import { checkUser } from '$lib/utils';
+import { checkUser, initializeEventForms } from '$lib/utils';
 import { stripe } from '$lib/stripe';
 import { PRICE_ID, UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { building, dev } from '$app/environment';
 
-export const load: PageServerLoad = async ({ locals, depends }) => {
+export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	const createForm = await superValidate(zod(createSchema));
-	const editForm = await superValidate(zod(editSchema));
-	const deleteForm = await superValidate(zod(deleteSchema));
+	const createForm = await superValidate(zod(zCreateEvent));
 
-	depends('fetch:events');
-	const events = db.query.eventsTable.findMany({
-		orderBy: asc(eventsTable.date),
-		where: and(lt(eventsTable.date, dayjs().endOf('day').toDate()), eq(eventsTable.userId, user.id))
+	const { editForm, toggleForm } = await initializeEventForms();
+
+	const projects = await db.query.projectsTable.findMany({
+		where: eq(projectsTable.userId, user.id),
+		columns: {
+			id: true,
+			name: true
+		}
 	});
 
-	return { createForm, events, editForm, user, deleteForm };
+	const events = db.query.eventsTable.findMany({
+		orderBy: asc(eventsTable.date),
+		where: and(
+			lt(eventsTable.date, dayjs().endOf('day').toDate()),
+			eq(eventsTable.userId, user.id),
+			eq(eventsTable.completed, false)
+		),
+		with: {
+			project: true
+		}
+	});
+
+	return { createForm, events, editForm, user, toggleForm, projects };
 };
 
 let redis: Redis;
@@ -47,9 +61,9 @@ if (!dev && !building) {
 	});
 }
 
-export const actions: Actions = {
+export const actions = {
 	create: async ({ request, locals, getClientAddress }) => {
-		const form = await superValidate(request, zod(createSchema));
+		const form = await superValidate(request, zod(zCreateEvent));
 
 		const user = checkUser(locals);
 		if (!user.paid) redirect(302, '/account');
@@ -71,7 +85,7 @@ export const actions: Actions = {
 
 		const { object } = await generateObject({
 			model: model,
-			schema: eventSchema,
+			schema: zEventLLM,
 			mode: 'tool',
 			system: `Right now is the ${dayjs().toDate()}. You are an assistant who processes the users input to an event.`,
 			prompt: form.data.event
@@ -80,8 +94,7 @@ export const actions: Actions = {
 		await db.insert(eventsTable).values({
 			content: object.content,
 			date: new Date(object.date),
-			userId: user.id,
-			space: object.space
+			userId: user.id
 		});
 		return { form };
 	},
@@ -90,10 +103,24 @@ export const actions: Actions = {
 
 		if (!user.paid) redirect(302, '/account');
 
-		const form = await superValidate(request, zod(editSchema));
+		const form = await superValidate(request, zod(zEditEvent));
 
 		if (!form.valid) {
 			return fail(400, { form });
+		}
+
+		let projectId: number | null = null;
+		if (form.data.projectId != 0) {
+			const requestedProject = await db.query.projectsTable.findFirst({
+				where: eq(projectsTable.id, form.data.projectId)
+			});
+			if (!requestedProject) {
+				return fail(404, { form });
+			} else if (requestedProject.userId === user.id) {
+				projectId = form.data.projectId;
+			} else {
+				return fail(429, { form });
+			}
 		}
 
 		await db
@@ -101,33 +128,35 @@ export const actions: Actions = {
 			.set({
 				content: form.data.event,
 				date: dayjs(form.data.date).toDate(),
-				space: form.data.space
+				projectId: projectId
 			})
 			.where(eq(eventsTable.id, form.data.id));
 		return { form };
 	},
-	delete: async ({ request, locals }) => {
+	toggle: async ({ request, locals }) => {
 		const user = checkUser(locals);
 
-		const form = await superValidate(request, zod(deleteSchema));
+		const form = await superValidate(request, zod(zToggleEvent));
 
 		if (!form.valid) {
 			return fail(400, { form });
 		}
 
-		const compCountInit = user.completeCount;
+		const action = form.data.action;
 
-		if (form.data.action === 'complete')
+		if (action === 'complete' || action === 'uncomplete') {
 			await db
-				.update(usersTable)
+				.update(eventsTable)
 				.set({
-					completeCount: compCountInit + 1
+					completed: action === 'complete' ? true : false
 				})
-				.where(eq(usersTable.id, user.id));
+				.where(eq(eventsTable.id, form.data.id));
+		} else {
+			await db
+				.delete(eventsTable)
+				.where(and(eq(eventsTable.id, form.data.id), eq(eventsTable.userId, user.id)));
+		}
 
-		await db
-			.delete(eventsTable)
-			.where(and(eq(eventsTable.id, form.data.id), eq(eventsTable.userId, user.id)));
 		return { form };
 	},
 	purchase: async ({ locals, url }) => {
@@ -150,4 +179,4 @@ export const actions: Actions = {
 		});
 		redirect(302, session.url as string);
 	}
-};
+} satisfies Actions;

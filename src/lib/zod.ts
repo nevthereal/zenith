@@ -1,10 +1,7 @@
 import { z } from 'zod';
-import { spaceEnum } from '$lib/db/schema';
-
-const zSpaceEnum = z.enum(spaceEnum.enumValues);
 
 // for LLM
-export const eventSchema = z.object({
+export const zEventLLM = z.object({
 	date: z
 		.string()
 		.datetime({
@@ -15,29 +12,28 @@ export const eventSchema = z.object({
 		.describe(
 			'The due date and time of the event, should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific In ISO 8601 Format.'
 		),
-	content: z.string().describe('The activity or event.'),
-	space: zSpaceEnum.describe('A suitable space for the event. Essentially a categorys')
+	content: z.string().describe('The activity or event.')
 });
 
-export const createSchema = z.object({
+export const zCreateEvent = z.object({
 	event: z.string().min(1)
 });
 
-export const editSchema = z.object({
+export const zEditEvent = z.object({
 	event: z.string().min(1),
 	date: z.date(),
 	id: z.number(),
-	space: zSpaceEnum
+	projectId: z.number()
 });
 
-export const actionEnum = z.enum(['complete', 'delete']);
+export const zActionEnum = z.enum(['complete', 'uncomplete', 'delete']);
 
-export const deleteSchema = z.object({
+export const zToggleEvent = z.object({
 	id: z.number(),
-	action: actionEnum
+	action: zActionEnum
 });
 
-export const updateUserSchema = z.object({
+export const zUpdateUser = z.object({
 	username: z
 		.string()
 		.min(3, 'Username too short')
@@ -47,4 +43,19 @@ export const updateUserSchema = z.object({
 		})
 		.optional(),
 	email: z.string().email('Is this really an email?').optional()
+});
+
+export const zCreateProject = z.object({
+	name: z.string().min(4).max(32),
+	deadline: z.date().optional()
+});
+
+export const zEditProject = z.object({
+	projectId: z.number(),
+	deadline: z.date().optional(),
+	name: z.string().min(4).max(32).optional()
+});
+
+export const zDeleteProject = z.object({
+	projectId: z.number()
 });

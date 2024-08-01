@@ -1,0 +1,1 @@
+ALTER TABLE "projects" ALTER COLUMN "deadline" SET DATA TYPE date;

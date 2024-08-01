@@ -3,7 +3,26 @@
 @tailwind utilities;
 
 @layer base {
-	.account-title {
+	.heading-super-big {
+		@apply mb-4 text-5xl font-black tracking-tighter md:text-7xl;
+	}
+	.heading-main {
 		@apply mb-4 text-3xl font-bold tracking-tighter md:text-5xl;
 	}
+	.heading-sub {
+		@apply mb-2 text-xl font-semibold tracking-tight md:text-3xl;
+	}
+	.heading-small {
+		@apply text-base font-medium tracking-tight md:text-xl;
+	}
+	.heading-muted {
+		@apply mb-2 text-base font-medium tracking-tight text-base-content/80 md:text-xl;
+	}
+	.text-muted {
+		@apply text-base-content/80;
+	}
+}
+
+html {
+	@apply scroll-smooth;
 }

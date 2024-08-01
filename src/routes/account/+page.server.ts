@@ -2,13 +2,20 @@ import type { Actions, PageServerLoad } from './$types';
 import { checkUser } from '$lib/utils';
 import { lucia } from '$lib/auth/lucia';
 import { redirect } from '@sveltejs/kit';
+import { db } from '$lib/db/db';
+import { and, eq } from 'drizzle-orm';
+import { eventsTable } from '$lib/db/schema';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	return { user };
+	const completedCount = await db.query.eventsTable.findMany({
+		where: and(eq(eventsTable.completed, true), eq(eventsTable.userId, user.id))
+	});
+
+	return { user, completedCount };
 };
-export const actions: Actions = {
+export const actions = {
 	signout: async ({ locals, cookies }) => {
 		if (!locals.session) {
 			return new Response('Failed', { status: 405 });
@@ -22,4 +29,4 @@ export const actions: Actions = {
 
 		redirect(302, '/signin');
 	}
-};
+} satisfies Actions;

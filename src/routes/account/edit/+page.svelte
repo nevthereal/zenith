@@ -16,7 +16,7 @@
 	<title>Account - Edit</title>
 </svelte:head>
 
-<h1 class="account-title">Edit account</h1>
+<h1 class="heading-main">Edit account</h1>
 <form use:enhance action="?/update_user" method="post" class="mb-8 flex max-w-prose flex-col gap-2">
 	<input
 		type="text"
@@ -43,7 +43,7 @@
 		<span class="text-success">{$message}</span>
 	{/if}
 </form>
-<h2 class="mb-4 text-xl font-bold tracking-tighter md:text-3xl">Danger zone</h2>
+<h2 class="heading-sub">Danger zone</h2>
 <button class="btn btn-outline btn-error" onclick={() => deleteModal.showModal()}
 	>Delete Account</button
 >

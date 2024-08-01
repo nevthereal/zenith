@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
 	import Event from '$lib/components/Event.svelte';
-	import { invalidate } from '$app/navigation';
+	import Error from '$lib/components/Error.svelte';
+	import Loading from '$lib/components/Loading.svelte';
+	import Spinner from '$lib/components/Spinner.svelte';
 
 	let { data } = $props();
 
 	let rateLimited = $state(false);
 
 	const { form, delayed, enhance, constraints } = superForm(data.createForm, {
-		onUpdated({ form }) {
-			if (form.valid) invalidate('fetch:events');
-		},
 		onResult({ result }) {
 			if (result.status === 429) rateLimited = true;
-		}
+		},
+		invalidateAll: true
 	});
 
 	const user = data.user;
@@ -24,10 +24,10 @@
 </svelte:head>
 
 <div class="flex flex-col items-center">
-	<h3 class="text-lg font-medium md:text-xl">
+	<h3 class="heading-small">
 		Hi, <span class="font-bold text-primary">{user.username}</span>
 	</h3>
-	<h1 class="text-center text-3xl font-bold md:text-5xl">What are your plans?</h1>
+	<h1 class="heading-main text-center">What are your plans?</h1>
 	{#if user.paid}
 		<form action="?/create" method="POST" class="my-12 flex flex-col" use:enhance>
 			<div class="flex items-center justify-center gap-4">
@@ -42,7 +42,7 @@
 				<button class="btn btn-primary"
 					>Add!
 					{#if $delayed}
-						<span class="loading loading-spinner loading-xs"></span>
+						<Spinner />
 					{/if}
 				</button>
 			</div>
@@ -62,17 +62,24 @@
 		</div>
 	{/if}
 
-	<section class="mt-4 flex w-full max-w-2xl flex-col items-center gap-4 md:mt-8">
+	<section class="mb-8 flex w-full max-w-2xl flex-col items-center gap-4">
 		{#await data.events}
-			<span class="font-mono">Loading events...</span>
+			<Loading text="events" />
 		{:then events}
 			{#if events.length == 0}
-				<h2 class="text-xl font-semibold italic">Nothing planned today.</h2>
+				<h2 class="heading-small italic">Nothing planned today.</h2>
 			{/if}
 			{#each events as event (event.id)}
-				<Event {event} editFormData={data.editForm} deleteFormData={data.deleteForm} />
+				<Event
+					projects={data.projects}
+					{event}
+					editFormData={data.editForm}
+					toggleFormData={data.toggleForm}
+				/>
 			{/each}
+		{:catch}
+			<Error />
 		{/await}
-		<a href="/upcoming" class="link link-primary mb-4 font-semibold italic">View all upcoming</a>
+		<a href="/upcoming" class="link link-primary font-semibold italic">See all upcoming</a>
 	</section>
 </div>

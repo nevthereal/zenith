@@ -2,9 +2,9 @@ import type { Actions, PageServerLoad } from './$types';
 import { checkUser } from '$lib/utils';
 import { superValidate, fail, setMessage } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { updateUserSchema } from '$lib/zod';
+import { zUpdateUser } from '$lib/zod';
 import { db } from '$lib/db/db';
-import { eventsTable, ordersTable, sessionsTable, usersTable } from '$lib/db/schema';
+import { usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { redirect } from '@sveltejs/kit';
 import { lucia } from '$lib/auth/lucia';
@@ -12,15 +12,15 @@ import { lucia } from '$lib/auth/lucia';
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	const updateForm = await superValidate(zod(updateUserSchema));
+	const updateForm = await superValidate(zod(zUpdateUser));
 
 	return { user, updateForm };
 };
 
-export const actions: Actions = {
+export const actions = {
 	update_user: async ({ request, locals }) => {
 		const user = checkUser(locals);
-		const form = await superValidate(request, zod(updateUserSchema));
+		const form = await superValidate(request, zod(zUpdateUser));
 
 		if (!form.valid) return fail(400, { form });
 
@@ -55,18 +55,14 @@ export const actions: Actions = {
 		if (!locals.session) {
 			return new Response('Failed', { status: 405 });
 		}
-
-		await db.delete(sessionsTable).where(eq(sessionsTable.userId, user.id));
-		await db.delete(eventsTable).where(eq(eventsTable.userId, user.id));
-		await db.delete(ordersTable).where(eq(ordersTable.userId, user.id));
-		await db.delete(usersTable).where(eq(usersTable.id, user.id));
 		await lucia.invalidateSession(locals.session.id);
 		const sessionCookie = lucia.createBlankSessionCookie();
 		cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: '.',
 			...sessionCookie.attributes
 		});
+		await db.delete(usersTable).where(eq(usersTable.id, user.id));
 
 		redirect(302, '/signin');
 	}
-};
+} satisfies Actions;

@@ -11,6 +11,7 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "generate": "drizzle-kit generate",
+    "drop": "drizzle-kit drop",
     "push": "drizzle-kit push",
     "studio": "drizzle-kit studio --verbose"
   },
@@ -34,7 +35,7 @@
     "prettier": "^3.1.1",
     "prettier-plugin-svelte": "^3.1.2",
     "prettier-plugin-tailwindcss": "^0.5.14",
-    "svelte": "5.0.0-next.175",
+    "svelte": "^5.0.0-next.203",
     "svelte-check": "^3.6.0",
     "sveltekit-superforms": "^2.15.1",
     "tailwindcss": "^3.4.3",
@@ -46,7 +47,6 @@
   "type": "module",
   "dependencies": {
     "@ai-sdk/openai": "^0.0.27",
-    "@libsql/client": "^0.6.2",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@neondatabase/serverless": "^0.9.3",
     "@sveltejs/adapter-vercel": "^5.4.1",
@@ -54,6 +54,7 @@
     "@upstash/ratelimit": "^2.0.0",
     "@upstash/redis": "^1.33.0",
     "@vercel/analytics": "^1.3.1",
+    "@vercel/speed-insights": "^1.0.12",
     "ai": "^3.2.16",
     "arctic": "^1.9.1",
     "clsx": "^2.1.1",
