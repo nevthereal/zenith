@@ -122,5 +122,8 @@ export const actions = {
 		} else {
 			return fail(429, { form });
 		}
+	},
+	action: async ({ request }) => {
+		console.log(await request.formData());
 	}
 } satisfies Actions;

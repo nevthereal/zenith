@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import Event from '$lib/components/Event.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
+	import { cn } from '$lib/utils.js';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime.js';
 	import { dateProxy, superForm } from 'sveltekit-superforms';
@@ -37,6 +39,17 @@
 		invalidateAll: true
 	});
 
+	const {
+		enhance: toggleEnhance,
+		delayed: toggleDelayed,
+		form: toggleForm
+	} = superForm(data.toggleForm, {
+		onSubmit: ({ formData }) => {
+			formData.set('projectId', data.project.id.toString());
+		},
+		invalidateAll: true
+	});
+
 	const dateInput = dateProxy(editForm, 'deadline', { format: 'date' });
 
 	let deleteConfirmation = $state('');
@@ -51,11 +64,11 @@
 		<h1 class="mb-12 text-4xl font-bold md:text-6xl">{data.project.name}</h1>
 	</section>
 	<div class="flex flex-col">
-		<div class="flex max-md:flex-col md:justify-between">
+		<div class="flex max-md:flex-col max-md:gap-4 md:justify-between">
 			<div>
 				<h1 class="heading-sub text-muted">Project details</h1>
 				<ul>
-					<li class="flex gap-1">
+					<li>
 						<span class="font-medium">Deadline:</span>
 						<span class="text-muted"
 							>{#if data.project.deadline}
@@ -67,11 +80,25 @@
 							{/if}
 						</span>
 					</li>
+					<li>
+						<span class="font-medium">Status:</span>
+						<span
+							class={cn(
+								data.project.status === 'active'
+									? 'text-success'
+									: data.project.status === 'archived'
+										? 'text-secondary'
+										: 'text-muted'
+							)}>{data.project.status}</span
+						>
+					</li>
 				</ul>
 			</div>
-			<button class="btn btn-primary my-auto" onclick={() => editModal.showModal()}
-				>Edit Project</button
-			>
+			<div>
+				<button class="btn btn-primary my-auto" onclick={() => editModal.showModal()}
+					>Edit Project</button
+				>
+			</div>
 		</div>
 		<div>
 			{#if data.events.length != 0}
@@ -163,6 +190,15 @@
 		<button>close</button>
 	</form>
 </dialog>
+
+<form
+	action="?/action"
+	id="actionForm"
+	use:enhance={({ formData }) => {
+		formData.set('projectId', data.project.id.toString());
+	}}
+	method="post"
+></form>
 
 <style>
 	input::-webkit-calendar-picker-indicator {

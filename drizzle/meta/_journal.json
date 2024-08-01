@@ -204,6 +204,27 @@
       "when": 1721924133401,
       "tag": "0028_magical_richard_fisk",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1722502223765,
+      "tag": "0029_organic_rhodey",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1722502524262,
+      "tag": "0030_wet_shotgun",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1722502598582,
+      "tag": "0031_fluffy_ironclad",
+      "breakpoints": true
     }
   ]
 }

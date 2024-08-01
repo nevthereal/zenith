@@ -10,7 +10,7 @@ import {
 	timestamp
 } from 'drizzle-orm/pg-core';
 
-export const statusEnum = pgEnum('status', ['active', 'archived', 'completed']);
+export const statusEnum = pgEnum('status', ['active', 'archived']);
 
 export const eventsTable = pgTable('events', {
 	id: serial('id').primaryKey(),
@@ -29,7 +29,7 @@ export const projectsTable = pgTable('projects', {
 	userId: text('user_id')
 		.references(() => usersTable.id, { onDelete: 'cascade' })
 		.notNull(),
-	status: statusEnum('status').default('active'),
+	status: statusEnum('status').default('active').notNull(),
 	deadline: date('deadline')
 });
 
