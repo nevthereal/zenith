@@ -9,7 +9,7 @@
 
 	let { data } = $props();
 
-	let editModal: HTMLDialogElement = $state();
+	let editModal = $state() as HTMLDialogElement;
 
 	$effect(() => {
 		editModal = document.getElementById('editModal') as HTMLDialogElement;
@@ -19,11 +19,13 @@
 		form: editForm,
 		enhance: editEnhance,
 		constraints: editConstraints,
-		delayed: editDelayed,
-		message: editMessage
+		delayed: editDelayed
 	} = superForm(data.projectEditForm, {
 		onSubmit: ({ formData }) => {
 			formData.set('projectId', data.project.id.toString());
+		},
+		onUpdated: ({}) => {
+			editModal.close();
 		},
 		invalidateAll: true
 	});
@@ -31,7 +33,8 @@
 	const { enhance: deleteEnhance, delayed: deleteDelayed } = superForm(data.projectDeleteForm, {
 		onSubmit: ({ formData }) => {
 			formData.set('projectId', data.project.id.toString());
-		}
+		},
+		invalidateAll: true
 	});
 
 	const dateInput = dateProxy(editForm, 'deadline', { format: 'date' });

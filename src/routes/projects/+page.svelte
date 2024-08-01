@@ -25,16 +25,24 @@
 			<p class="text-xl font-medium">Create a space</p>
 		</a>
 		{#await data.myProjects}
-			<Loading text="project" />
+			<div class="flex items-center justify-center">
+				<Loading text="project" />
+			</div>
 		{:then projects}
-			{#each projects as project}
-				<ProjectCard
-					id={project.id}
-					collaborators={project.collaborators}
-					name={project.name}
-					deadline={project.deadline}
-				/>
-			{/each}
+			{#if projects.length === 0}
+				<div class="flex items-center justify-center">
+					<p>No projects</p>
+				</div>
+			{:else}
+				{#each projects as project}
+					<ProjectCard
+						id={project.id}
+						collaborators={project.collaborators}
+						name={project.name}
+						deadline={project.deadline}
+					/>
+				{/each}
+			{/if}
 		{:catch}
 			<Error />
 		{/await}
