@@ -18,7 +18,7 @@
 
 	const user = data.user;
 
-	let remaining = $derived(3 - user.quota);
+	console.log(data.remaining);
 </script>
 
 <svelte:head>
@@ -30,7 +30,7 @@
 		Hi, <span class="font-bold text-primary">{user.username}</span>
 	</h3>
 	<h1 class="heading-main text-center">What are your plans?</h1>
-	{#if user.quota < 3 || user.paid}
+	{#if data.remaining != 0 || user.paid}
 		<form action="?/create" method="POST" class="my-12 flex flex-col" use:enhance>
 			<div class="flex items-center justify-center gap-4">
 				<input
@@ -49,15 +49,15 @@
 				</button>
 			</div>
 			{#if !user.paid}
-				<p class="text-muted mt-2">Free remaining: {remaining}</p>
+				<p class="text-muted mt-2">Free remaining: {data.remaining}</p>
 			{/if}
 			{#if rateLimited}
 				<span class="mt-2 text-error">Too many requests. Try again later</span>
 			{/if}
 		</form>
 	{:else}
-		<p class="my-6 text-warning">
-			You have used all of your free creations. <a href="/account/billing">purchase</a> the product to
+		<p class="heading-small my-8 text-warning">
+			You have used all of your free queries. <a href="/account/billing">purchase</a> the product to
 			continue.
 		</p>
 	{/if}
