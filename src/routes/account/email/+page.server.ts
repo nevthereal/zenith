@@ -25,7 +25,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 const resend = new Resend(RESEND_KEY);
 
 export const actions = {
-	default: async ({ locals, request }) => {
+	default: async ({ locals, request, url }) => {
 		const user = checkUser(locals);
 
 		const form = await superValidate(request, zod(zAddEmail));
@@ -61,7 +61,8 @@ export const actions = {
 				from: 'no-reply@zenithproductivity.app',
 				to: form.data.email,
 				subject: 'Verification Code for Zenith',
-				text: `Hey, ${form.data.email}, your verification code for Zenith is ${code}`
+				text: `Hey, ${form.data.email}, your verification code for Zenith is ${code}.
+				You can verify it on ${url.origin}/account/email/verify`
 			});
 		} catch (error) {
 			console.error('Resend Error', error);
