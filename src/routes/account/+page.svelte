@@ -26,7 +26,7 @@
 		{#if user.email}
 			<span class="text-muted">{user.email}</span>
 		{:else}
-			<a href="/account/edit" class="link">Please add an email</a>
+			<a href="/account/email" class="link link-primary">Please add an email</a>
 		{/if}
 	</li>
 	<li>

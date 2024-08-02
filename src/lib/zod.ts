@@ -57,3 +57,11 @@ export const zEditProject = z.object({
 export const zDeleteProject = z.object({
 	projectId: z.number()
 });
+
+export const zAddEmail = z.object({
+	email: z.string().email()
+});
+
+export const zVerifyEmail = z.object({
+	code: z.string()
+});

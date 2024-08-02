@@ -49,7 +49,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				githubId: githubUser.id,
 				id: userId,
 				username: githubUser.login,
-				joined: new Date()
+				joined: new Date(),
+				emailVerified: githubUser.email ? true : false
 			});
 
 			const session = await lucia.createSession(userId, {});

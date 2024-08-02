@@ -232,6 +232,41 @@
       "when": 1722583340860,
       "tag": "0032_natural_enchantress",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1722586415035,
+      "tag": "0033_bouncy_hammerhead",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1722587059300,
+      "tag": "0034_nifty_tyrannus",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1722589171549,
+      "tag": "0035_thin_nomad",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1722591079821,
+      "tag": "0036_empty_kylun",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1722592816669,
+      "tag": "0037_fast_spacker_dave",
+      "breakpoints": true
     }
   ]
 }

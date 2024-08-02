@@ -33,9 +33,10 @@
 	</p>
 	<h2 id="pricing">Pricing</h2>
 	<p>
-		Since using AI and storing Data somewhere isn't free, especially not at scale, you can purchase
-		this product for <strong>$20</strong>. It is a one-time purchase with no subscription tied to it
-		and you have full access to all features. Your payment is securely processed with
+		You have 3 free queries to use. Since using AI and storing Data somewhere isn't free, especially
+		not at scale, you have to purchase this product for <strong>$20</strong> to use all of it's
+		features. It is a one-time purchase with no subscription tied to it and you have full access to
+		all features. Your payment is securely processed with
 		<strong>Stripe</strong>. You can pay with every popular credit card, as well as with
 		<strong>Apple Pay</strong> and <strong>Google Pay</strong>.
 	</p>
