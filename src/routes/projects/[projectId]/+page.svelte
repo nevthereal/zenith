@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Event from '$lib/components/Event.svelte';
+	import Label from '$lib/components/Label.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import { cn } from '$lib/utils.js';
 	import dayjs from 'dayjs';
@@ -140,8 +141,8 @@
 	<div class="modal-box">
 		<h1 class="heading-main">Edit Project</h1>
 		<form action="?/edit" method="post" class="flex flex-col gap-4" use:editEnhance>
-			<div class="flex flex-col gap-2">
-				<label for="name">Name</label>
+			<div class="flex flex-col">
+				<Label forAttr="name">Name</Label>
 				<input
 					type="text"
 					class="input input-primary"
@@ -150,8 +151,8 @@
 					bind:value={$editForm.name}
 				/>
 			</div>
-			<div class="flex flex-col gap-2">
-				<label for="deadline">Deadline</label>
+			<div class="flex flex-col">
+				<Label forAttr="deadline">Deadline</Label>
 				<input
 					type="date"
 					class="input input-primary"
@@ -168,9 +169,9 @@
 		</form>
 		<form action="?/delete" class="mt-4" use:deleteEnhance method="post">
 			<h1 class="heading-small mb-4 text-error">Delete project?</h1>
-			<div class="flex flex-col gap-2">
-				<label for="confirmation"
-					>Type <span class="font-mono italic">delete my project</span> below</label
+			<div class="flex flex-col">
+				<Label forAttr="confirmation"
+					>Type <span class="font-mono italic">delete my project</span> below</Label
 				>
 				<input
 					id="confirmation"

@@ -225,6 +225,13 @@
       "when": 1722502598582,
       "tag": "0031_fluffy_ironclad",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1722583340860,
+      "tag": "0032_natural_enchantress",
+      "breakpoints": true
     }
   ]
 }

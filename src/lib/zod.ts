@@ -39,10 +39,8 @@ export const zUpdateUser = z.object({
 		.min(3, 'Username too short')
 		.max(16, 'Username too long')
 		.regex(new RegExp('^[a-zA-Z0-9_]*$'), {
-			message: 'Username can only contain letters, numbers. Replace spaces with underscores'
+			message: 'Username can only contain letters and numbers. Replace spaces with underscores'
 		})
-		.optional(),
-	email: z.string().email('Is this really an email?').optional()
 });
 
 export const zCreateProject = z.object({
