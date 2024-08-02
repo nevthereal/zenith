@@ -7,11 +7,10 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
-import { eventsTable, projectsTable } from '$lib/db/schema';
+import { eventsTable, projectsTable, usersTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
 import { checkUser, initializeEventForms } from '$lib/utils';
-import { stripe } from '$lib/stripe';
-import { PRICE_ID, UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
+import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { building, dev } from '$app/environment';
@@ -66,7 +65,6 @@ export const actions = {
 		const form = await superValidate(request, zod(zCreateEvent));
 
 		const user = checkUser(locals);
-		if (!user.paid) redirect(302, '/account');
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -96,6 +94,13 @@ export const actions = {
 			date: new Date(object.date),
 			userId: user.id
 		});
+
+		await db
+			.update(usersTable)
+			.set({
+				quota: user.quota + 1
+			})
+			.where(eq(usersTable.id, user.id));
 		return { form };
 	},
 	edit: async ({ request, locals }) => {
@@ -158,25 +163,5 @@ export const actions = {
 		}
 
 		return { form };
-	},
-	purchase: async ({ locals, url }) => {
-		const user = checkUser(locals);
-
-		const session = await stripe.checkout.sessions.create({
-			line_items: [{ price: PRICE_ID, quantity: 1 }],
-			customer_email: user.email || undefined,
-			allow_promotion_codes: true,
-			mode: 'payment',
-			metadata: {
-				userId: user.id
-			},
-			invoice_creation: {
-				enabled: true
-			},
-			customer_creation: 'always',
-			success_url: `${url.origin}/success?id={CHECKOUT_SESSION_ID}`,
-			cancel_url: `${url.href}`
-		});
-		redirect(302, session.url as string);
 	}
 } satisfies Actions;

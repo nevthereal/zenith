@@ -49,7 +49,7 @@ export const usersTable = pgTable('users', {
 	joined: timestamp('joined').notNull(),
 	stripeId: text('stripe_id'),
 	paid: boolean('paid').default(false),
-	rate: integer('rate').notNull().default(0)
+	quota: integer('quota').notNull().default(0)
 });
 
 export const verificationCodesTable = pgTable('verification_codes', {
