@@ -21,6 +21,8 @@ export const actions = {
 	purchase: async ({ locals, url }) => {
 		const user = checkUser(locals);
 
+		if (!user.emailVerified) return redirect(302, '/account/email');
+
 		const session = await stripe.checkout.sessions.create({
 			line_items: [{ price: PRICE_ID, quantity: 1 }],
 			customer_email: user.email || undefined,
