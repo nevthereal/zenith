@@ -42,7 +42,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 		}
 	});
 
-	return { createForm, events, editForm, user, toggleForm, projects };
+	const remaining = 3 - user.quota;
+
+	return { createForm, events, editForm, user, toggleForm, projects, remaining };
 };
 
 let redis: Redis;
@@ -65,6 +67,8 @@ export const actions = {
 		const form = await superValidate(request, zod(zCreateEvent));
 
 		const user = checkUser(locals);
+
+		if (user.quota >= 3 && !user.paid) return fail(400);
 
 		if (!form.valid) {
 			return fail(400, { form });
