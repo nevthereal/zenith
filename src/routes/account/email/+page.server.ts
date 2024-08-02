@@ -61,8 +61,7 @@ export const actions = {
 				from: 'no-reply@zenithproductivity.app',
 				to: form.data.email,
 				subject: 'Verification Code for Zenith',
-				text: `Hey, ${form.data.email}, your verification code for Zenith is ${code}.
-				You can verify it on ${url.origin}/account/email/verify`
+				text: `Hey, ${form.data.email}, your verification code for Zenith is ${code}. Go to ${url.origin}/account/email/verify to verify it.`
 			});
 		} catch (error) {
 			console.error('Resend Error', error);

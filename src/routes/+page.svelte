@@ -17,6 +17,8 @@
 	});
 
 	const user = data.user;
+
+	let remaining = $derived(3 - user.quota);
 </script>
 
 <svelte:head>
@@ -47,7 +49,7 @@
 				</button>
 			</div>
 			{#if !user.paid}
-				<p class="text-muted mt-2">Free remaining: {3 - user.quota}</p>
+				<p class="text-muted mt-2">Free remaining: {remaining}</p>
 			{/if}
 			{#if rateLimited}
 				<span class="mt-2 text-error">Too many requests. Try again later</span>
