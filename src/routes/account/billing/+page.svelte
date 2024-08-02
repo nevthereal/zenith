@@ -39,10 +39,12 @@
 				>
 			</li>
 		</ul>
-	{:else}
+	{:else if user.emailVerified}
 		<p class="mb-2 text-warning">Please purchase the product to use the features of this app.</p>
 		<form action="?/purchase" method="post">
 			<button class="btn btn-warning">Purchase ($20)</button>
 		</form>
+	{:else}
+		<a href="/email" class="link link-warning">Verify your email to purchase the product.</a>
 	{/if}
 </div>
