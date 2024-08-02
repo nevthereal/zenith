@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Label from '$lib/components/Label.svelte';
 	import { superForm } from 'sveltekit-superforms';
 
 	let { data } = $props();
@@ -9,7 +10,12 @@
 		deleteModal = document.getElementById('delete-modal') as HTMLDialogElement;
 	});
 
-	const { form, enhance, errors, message } = superForm(data.updateForm);
+	const {
+		form: usernameForm,
+		enhance: usernameEnhance,
+		errors: usernameErrors,
+		message: usernameMessage
+	} = superForm(data.updateForm);
 </script>
 
 <svelte:head>
@@ -17,30 +23,26 @@
 </svelte:head>
 
 <h1 class="heading-main">Edit account</h1>
-<form use:enhance action="?/update_user" method="post" class="mb-8 flex max-w-prose flex-col gap-2">
-	<input
-		type="text"
-		bind:value={$form.username}
-		name="username"
-		placeholder="Username"
-		class="input input-bordered"
-	/>
-	{#if $errors.username}
-		<span class="text-error">{$errors.username}</span>
+<form use:usernameEnhance action="?/username" method="post" class="mb-8 flex w-64 flex-col gap-2">
+	<div class="flex flex-col">
+		<Label forAttr="username">Update username</Label>
+		<input
+			type="text"
+			bind:value={$usernameForm.username}
+			name="username"
+			class="input input-bordered"
+		/>
+	</div>
+	{#if $usernameErrors.username}
+		{#each $usernameErrors.username as err}
+			<span class="text-error">
+				{`${err} `}
+			</span>
+		{/each}
 	{/if}
-	<input
-		type="text"
-		bind:value={$form.email}
-		name="email"
-		placeholder="Email"
-		class="input input-bordered"
-	/>
-	{#if $errors.email}
-		<span class="text-error">{$errors.email}</span>
-	{/if}
-	<button disabled={!$form.email && !$form.username} class="btn btn-primary">Update</button>
-	{#if $message}
-		<span class="text-success">{$message}</span>
+	<button class="btn btn-primary">Update</button>
+	{#if $usernameMessage}
+		<span class="text-success">{$usernameMessage}</span>
 	{/if}
 </form>
 <h2 class="heading-sub">Danger zone</h2>
@@ -55,10 +57,9 @@
 		</p>
 		<div class="modal-action">
 			<form method="dialog">
-				<!-- if there is a button in form, it will close the modal -->
 				<button class="btn">Cancel</button>
 			</form>
-			<form action="?/delete_user" method="post">
+			<form action="?/delete" method="post">
 				<button class="btn btn-error">Delete</button>
 			</form>
 		</div>

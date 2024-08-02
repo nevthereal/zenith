@@ -5,6 +5,7 @@
 	import dayjs from 'dayjs';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 	import Spinner from './Spinner.svelte';
+	import Label from './Label.svelte';
 
 	type Event = typeof eventsTable.$inferSelect;
 	type Project = typeof projectsTable.$inferSelect;
@@ -110,7 +111,7 @@
 			<form method="POST" action="/?/edit" use:editEnhance class="flex flex-col gap-4">
 				<div class="grid gap-4 md:grid-cols-2">
 					<div class="flex flex-col">
-						<label for="event" class="text-muted mb-2 text-sm">Event name</label>
+						<Label forAttr="event">Event name</Label>
 						<input
 							{...$editConstraints.event}
 							bind:value={$editForm.event}
@@ -121,7 +122,7 @@
 						/>
 					</div>
 					<div class="flex flex-col">
-						<label for="date" class="text-muted mb-2 text-sm">Date</label>
+						<Label forAttr="date">Date</Label>
 						<input
 							{...$editConstraints.date}
 							bind:value={$dateInput}
@@ -132,7 +133,7 @@
 						/>
 					</div>
 					<div class="flex flex-col md:col-span-2">
-						<label for="project" class="text-muted mb-2 text-sm">Project</label>
+						<Label forAttr="project">Project</Label>
 						<select
 							name="projectId"
 							class="select select-bordered"

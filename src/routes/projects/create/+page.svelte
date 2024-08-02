@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Label from '$lib/components/Label.svelte';
 	import { dateProxy, superForm } from 'sveltekit-superforms';
 
 	let { data } = $props();
@@ -16,7 +17,7 @@
 	<h1 class="heading-main text-center">Create a project</h1>
 	<form method="post" class="flex flex-col gap-2 md:mx-16" use:enhance>
 		<div class="flex flex-col">
-			<label for="name" class="font-medium">Project name:</label>
+			<Label forAttr="name">Project name:</Label>
 			<input
 				{...$constraints.name}
 				type="text"
@@ -29,7 +30,7 @@
 			{/if}
 		</div>
 		<div class="flex flex-col">
-			<label for="dealine" class="font-medium">Deadline (optional):</label>
+			<Label forAttr="dealine">Deadline (optional):</Label>
 			<input
 				{...$constraints.deadline}
 				type="date"

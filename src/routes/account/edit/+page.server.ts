@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	update_user: async ({ request, locals }) => {
+	username: async ({ request, locals }) => {
 		const user = checkUser(locals);
 		const form = await superValidate(request, zod(zUpdateUser));
 
@@ -26,34 +26,18 @@ export const actions = {
 
 		const formData = form.data;
 
-		const updateEmail = async () => {
-			await db.update(usersTable).set({ email: formData.email }).where(eq(usersTable.id, user.id));
-		};
-		const updateUsername = async () => {
-			await db
-				.update(usersTable)
-				.set({ username: formData.username })
-				.where(eq(usersTable.id, user.id));
-		};
+		await db
+			.update(usersTable)
+			.set({ username: formData.username })
+			.where(eq(usersTable.id, user.id));
 
-		if (formData.email && formData.username) {
-			updateEmail();
-			updateUsername();
-			return setMessage(form, 'Updated user');
-		} else if (formData.username) {
-			updateUsername();
-			return setMessage(form, 'Updated username');
-		} else if (formData.email) {
-			updateEmail();
-			return setMessage(form, 'Updated email');
-		}
-		return { form };
+		return setMessage(form, 'Updated username');
 	},
-	delete_user: async ({ locals, cookies }) => {
+	delete: async ({ locals, cookies }) => {
 		const user = checkUser(locals);
 
 		if (!locals.session) {
-			return new Response('Failed', { status: 405 });
+			return fail(405);
 		}
 		await lucia.invalidateSession(locals.session.id);
 		const sessionCookie = lucia.createBlankSessionCookie();
