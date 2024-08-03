@@ -62,7 +62,11 @@ export const actions = {
 				from: 'no-reply@zenithproductivity.app',
 				to: form.data.email,
 				subject: 'Verification Code for Zenith',
-				html: `<p>Hey, ${form.data.email}, your verification code for Zenith is <strong>${code}</strong>.</p><p>Go to <a href="https://zenithproductivity.app/account/email/verify">zenithproductivity.app/account/email/verify</a> to verify it.</p>`
+				html: `<p>Hey, ${form.data.email}.</p> 
+				<p>Your verification code for Zenith is <strong>${code}</strong>.</p>
+				<p>Verify on <a href="https://zenithproductivity.app/account/email/verify">zenithproductivity.app/account/email/verify</a>.</p>
+				<p>Do <strong>NOT</strong> share this code with others!</p>
+				`
 			});
 		} catch (error) {
 			console.error('Resend Error', error);
