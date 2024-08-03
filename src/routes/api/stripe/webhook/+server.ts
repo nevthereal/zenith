@@ -23,27 +23,26 @@ export const POST: RequestHandler = async ({ request }) => {
 				expand: ['customer', 'invoice']
 			});
 
-			if (sessionWithCustomer.metadata) {
-				const customer = sessionWithCustomer.customer as Stripe.Customer;
-				const invoice = sessionWithCustomer.invoice as Stripe.Invoice;
+			const customer = sessionWithCustomer.customer as Stripe.Customer;
+			const invoice = sessionWithCustomer.invoice as Stripe.Invoice;
 
-				await db
-					.update(usersTable)
-					.set({
-						stripeId: customer.id,
-						paid: true
-					})
-					.where(eq(usersTable.id, sessionWithCustomer.metadata.userId));
+			const [updatedUser] = await db
+				.update(usersTable)
+				.set({
+					stripeId: customer.id,
+					paid: true
+				})
+				.where(eq(usersTable.email, sessionWithCustomer.customer_email as string))
+				.returning({ userId: usersTable.id });
 
-				await db.insert(ordersTable).values({
-					completedAt: new Date(),
-					customerId: customer.id,
-					orderId: sessionWithCustomer.payment_intent as string,
-					userId: sessionWithCustomer.metadata.userId,
-					sessionId: sessionWithCustomer.id,
-					invoiceUrl: invoice.hosted_invoice_url as string
-				});
-			}
+			await db.insert(ordersTable).values({
+				completedAt: new Date(),
+				customerId: customer.id,
+				orderId: sessionWithCustomer.payment_intent as string,
+				userId: updatedUser.userId,
+				sessionId: sessionWithCustomer.id,
+				invoiceUrl: invoice.hosted_invoice_url as string
+			});
 		}
 	} catch (err) {
 		console.log('Something went wrong.', err);

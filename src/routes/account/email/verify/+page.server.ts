@@ -33,8 +33,6 @@ export const actions = {
 
 		if (!dbEntry) {
 			return setError(form, "This code doesn't exist");
-		} else {
-			await db.delete(verificationCodesTable).where(eq(verificationCodesTable.id, dbEntry.id));
 		}
 
 		if (!isWithinExpirationDate(dbEntry.expires)) {
@@ -44,6 +42,12 @@ export const actions = {
 		if (dbEntry.user_id != user.id) {
 			return setError(form, 'This code does not belong to you');
 		}
+
+		if (dbEntry.code != form.data.code) {
+			return setError(form, 'Wrong code');
+		}
+
+		await db.delete(verificationCodesTable).where(eq(verificationCodesTable.id, dbEntry.id));
 
 		await db
 			.update(usersTable)

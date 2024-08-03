@@ -19,7 +19,7 @@ export const eventsTable = pgTable('events', {
 	userId: text('user_id')
 		.references(() => usersTable.id, { onDelete: 'cascade' })
 		.notNull(),
-	completed: boolean('completed').default(false),
+	completed: boolean('completed').default(false).notNull(),
 	projectId: integer('project_id').references(() => projectsTable.id, { onDelete: 'set null' })
 });
 
@@ -35,8 +35,12 @@ export const projectsTable = pgTable('projects', {
 
 export const projectCollaboratorsTable = pgTable('project_collaborators', {
 	id: serial('id').primaryKey(),
-	userId: text('user_id').references(() => usersTable.id, { onDelete: 'cascade' }),
-	projectId: integer('project_id').references(() => projectsTable.id, { onDelete: 'cascade' })
+	userId: text('user_id')
+		.notNull()
+		.references(() => usersTable.id, { onDelete: 'cascade' }),
+	projectId: integer('project_id')
+		.notNull()
+		.references(() => projectsTable.id, { onDelete: 'cascade' })
 });
 
 export const usersTable = pgTable('users', {
@@ -45,10 +49,10 @@ export const usersTable = pgTable('users', {
 	githubId: integer('github_id').unique().notNull(),
 	email: text('email').unique(),
 	emailVerified: boolean('emailVerified').default(false).notNull(),
-	admin: boolean('admin').default(false),
+	admin: boolean('admin').default(false).notNull(),
 	joined: timestamp('joined').notNull(),
 	stripeId: text('stripe_id'),
-	paid: boolean('paid').default(false),
+	paid: boolean('paid').default(false).notNull(),
 	quota: integer('quota').notNull().default(0)
 });
 

@@ -25,7 +25,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 const resend = new Resend(RESEND_KEY);
 
 export const actions = {
-	default: async ({ locals, request, url }) => {
+	default: async ({ locals, request }) => {
 		const user = checkUser(locals);
 
 		const form = await superValidate(request, zod(zAddEmail));
@@ -36,7 +36,8 @@ export const actions = {
 			where: eq(usersTable.email, form.data.email)
 		});
 
-		if (existingEmail) return setError(form, 'Email already exists');
+		if (existingEmail && user.email != existingEmail.email)
+			return setError(form, 'Email already exists');
 
 		await db.delete(verificationCodesTable).where(eq(verificationCodesTable.user_id, user.id));
 
@@ -61,7 +62,7 @@ export const actions = {
 				from: 'no-reply@zenithproductivity.app',
 				to: form.data.email,
 				subject: 'Verification Code for Zenith',
-				text: `Hey, ${form.data.email}, your verification code for Zenith is ${code}. Go to ${url.origin}/account/email/verify to verify it.`
+				html: `<p>Hey, ${form.data.email}, your verification code for Zenith is <strong>${code}</strong>.</p><p>Go to <a href="https://zenithproductivity.app/account/email/verify">zenithproductivity.app/account/email/verify</a> to verify it.</p>`
 			});
 		} catch (error) {
 			console.error('Resend Error', error);

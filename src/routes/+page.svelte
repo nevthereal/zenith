@@ -17,8 +17,6 @@
 	});
 
 	const user = data.user;
-
-	console.log(data.remaining);
 </script>
 
 <svelte:head>
@@ -57,8 +55,9 @@
 		</form>
 	{:else}
 		<p class="heading-small my-8 text-warning">
-			You have used all of your free queries. <a href="/account/billing">purchase</a> the product to
-			continue.
+			You have used all of your free queries. <a href="/account/billing" class="link link-warning"
+				>purchase</a
+			> the product to continue.
 		</p>
 	{/if}
 

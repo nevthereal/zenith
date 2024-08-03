@@ -45,7 +45,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			// Replace this with your own DB client.
 			await db.insert(usersTable).values({
 				email: githubUser.email,
-				admin: false,
 				githubId: githubUser.id,
 				id: userId,
 				username: githubUser.login,

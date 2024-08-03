@@ -24,7 +24,14 @@
 	<li class="flex items-center gap-2">
 		<span class="font-medium">Email:</span>
 		{#if user.email}
-			<span class="text-muted">{user.email}</span>
+			<span class="text-muted"
+				>{user.email},
+				{#if user.emailVerified}
+					verified
+				{:else}
+					<a href="/account/email" class="link">please verify</a>
+				{/if}</span
+			>
 		{:else}
 			<a href="/account/email" class="link link-primary">Please add an email</a>
 		{/if}
