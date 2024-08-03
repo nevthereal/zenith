@@ -11,7 +11,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 
 	const session = await stripe.checkout.sessions.create({
 		line_items: [{ price: PRICE_ID, quantity: 1 }],
-		customer_email: user.email || undefined,
+		customer_email: user.email,
 		allow_promotion_codes: true,
 		mode: 'payment',
 		invoice_creation: {
@@ -19,8 +19,7 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 		},
 		customer_creation: 'always',
 		success_url: `${url.origin}/success?id={CHECKOUT_SESSION_ID}`,
-		cancel_url: `${url.href}`
+		cancel_url: `${url.origin}/account/billing`
 	});
 	redirect(302, session.url as string);
-	return new Response();
 };
