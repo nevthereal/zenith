@@ -1,9 +1,5 @@
 <script lang="ts">
-	import EventDemo from '$lib/components/EventDemo.svelte';
-	import EarthImage from '$lib/assets/earth.jpg';
-	import dayjs from 'dayjs';
-	import Loading from '$lib/components/Loading.svelte';
-	import Error from '$lib/components/Error.svelte';
+	import EarthImage from '$lib/assets/earth.jpg?enhanced';
 </script>
 
 <svelte:head>
@@ -22,11 +18,11 @@
 </svelte:head>
 
 <section
-	class="hero mx-auto my-8 h-[75dvh] w-11/12 rounded-box bg-base-100 bg-blend-color-dodge"
-	style="background-image: url({EarthImage});"
+	class="hero relative mx-auto my-8 h-[75dvh] w-11/12 rounded-box bg-base-100 bg-blend-color-dodge"
 >
-	<div class="hero-overlay rounded-box bg-opacity-70"></div>
-	<div class="hero-content w-[80%] text-center">
+	<enhanced:img src={EarthImage} class="absolute inset-0 h-full w-full rounded-box object-cover" />
+	<div class="hero-overlay absolute inset-0 rounded-box bg-opacity-70"></div>
+	<div class="hero-content relative z-10 w-[80%] text-center">
 		<div class="md:max-w-md">
 			<h1 class="heading-super-big">Zenith</h1>
 			<p class="heading-small mb-4">everyday planning powered by AI, at your fingertips</p>
