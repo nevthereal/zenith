@@ -9,10 +9,12 @@ Zenith is an AI-powered Event/Task Manager for the web. The concept is simple; y
 - SvelteKit
 - TailwindCSS + daisyui
 - Vercel AI SDK
-- zod
-- SvelteKit-Superforms
 - Drizzle ORM
 - Neon DB
+- Resend
+- Upstash Ratelimit
+- SvelteKit-Superforms
+- zod
 - Lucia
 - dayjs
 
@@ -39,11 +41,11 @@ Zenith is an AI-powered Event/Task Manager for the web. The concept is simple; y
 ## V2
 
 - [x] Complete/Delete menu
-- [ ] Admin page
 - [x] Projects
-- [ ] New Landing page
+- [x] New Landing page
 
-## V2.x
+## Next
 
+- [ ] Admin page
 - [ ] Shared Projects
 - [ ] Assignees
