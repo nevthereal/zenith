@@ -20,7 +20,11 @@
 <section
 	class="hero relative mx-auto my-8 h-[75dvh] w-11/12 rounded-box bg-base-100 bg-blend-color-dodge"
 >
-	<enhanced:img src={EarthImage} class="absolute inset-0 h-full w-full rounded-box object-cover" />
+	<enhanced:img
+		src={EarthImage}
+		class="absolute inset-0 h-full w-full rounded-box object-cover"
+		alt="hero banner"
+	/>
 	<div class="hero-overlay absolute inset-0 rounded-box bg-opacity-70"></div>
 	<div class="hero-content relative z-10 w-[80%] text-center">
 		<div class="md:max-w-md">
