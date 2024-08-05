@@ -68,7 +68,7 @@ export const actions = {
 
 		const user = checkUser(locals);
 
-		if (user.quota >= 3 && !user.paid) return fail(400);
+		if (user.quota >= 3) return fail(400);
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -99,12 +99,15 @@ export const actions = {
 			userId: user.id
 		});
 
-		await db
-			.update(usersTable)
-			.set({
-				quota: user.quota + 1
-			})
-			.where(eq(usersTable.id, user.id));
+		if (!user.paid) {
+			await db
+				.update(usersTable)
+				.set({
+					quota: user.quota + 1
+				})
+				.where(eq(usersTable.id, user.id));
+		}
+
 		return { form };
 	},
 	edit: async ({ request, locals }) => {
