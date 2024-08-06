@@ -30,7 +30,7 @@
 			</li>
 			<li>
 				<span class="font-medium">Invoice:</span>
-				<a href={order.invoiceUrl} class="link link-primary">Invoice URL</a>
+				<a href={order.invoiceUrl} target="_blank" class="link link-primary">Invoice URL</a>
 			</li>
 			<li>
 				<span class="font-medium">For support contact:</span>
@@ -40,11 +40,14 @@
 			</li>
 		</ul>
 	{/if}
-	{#if user.emailVerified}
-		<p class="mb-2 text-warning">Please purchase the product to use the features of this app.</p>
-		<a href="/api/stripe" class="btn btn-warning">Purchase ($20)</a>
-	{:else}
-		<a href="/account/email" class="link link-warning">Verify your email to purchase the product.</a
-		>
+	{#if !user.paid}
+		{#if user.emailVerified}
+			<p class="mb-2 text-warning">Please purchase the product to use the features of this app.</p>
+			<a href="/api/stripe" class="btn btn-warning">Purchase ($20)</a>
+		{:else}
+			<a href="/account/email" class="link link-warning"
+				>Verify your email to purchase the product.</a
+			>
+		{/if}
 	{/if}
 </div>
