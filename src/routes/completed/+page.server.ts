@@ -7,7 +7,13 @@ import { checkUser, initializeEventForms } from '$lib/utils';
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	const { editForm, toggleForm } = await initializeEventForms();
+	const events = db.query.eventsTable.findMany({
+		where: and(eq(eventsTable.userId, user.id), eq(eventsTable.completed, true)),
+		orderBy: asc(eventsTable.date),
+		with: {
+			project: true
+		}
+	});
 
 	const projects = await db.query.projectsTable.findMany({
 		where: eq(projectsTable.userId, user.id),
@@ -17,13 +23,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		}
 	});
 
-	const events = db.query.eventsTable.findMany({
-		where: and(eq(eventsTable.userId, user.id), eq(eventsTable.completed, true)),
-		orderBy: asc(eventsTable.date),
-		with: {
-			project: true
-		}
-	});
+	const { editForm, toggleForm } = await initializeEventForms();
 
 	return { events, editForm, toggleForm, projects };
 };

@@ -18,18 +18,6 @@ import { building, dev } from '$app/environment';
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	const createForm = await superValidate(zod(zCreateEvent));
-
-	const { editForm, toggleForm } = await initializeEventForms();
-
-	const projects = await db.query.projectsTable.findMany({
-		where: eq(projectsTable.userId, user.id),
-		columns: {
-			id: true,
-			name: true
-		}
-	});
-
 	const events = db.query.eventsTable.findMany({
 		orderBy: asc(eventsTable.date),
 		where: and(
@@ -43,6 +31,18 @@ export const load: PageServerLoad = async ({ locals }) => {
 	});
 
 	const remaining = 3 - user.quota;
+
+	const createForm = await superValidate(zod(zCreateEvent));
+
+	const { editForm, toggleForm } = await initializeEventForms();
+
+	const projects = await db.query.projectsTable.findMany({
+		where: eq(projectsTable.userId, user.id),
+		columns: {
+			id: true,
+			name: true
+		}
+	});
 
 	return { createForm, events, editForm, user, toggleForm, projects, remaining };
 };
