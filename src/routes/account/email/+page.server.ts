@@ -59,7 +59,7 @@ export const actions = {
 
 		try {
 			await resend.emails.send({
-				from: 'no-reply@zenithproductivity.app',
+				from: 'Zenith <no-reply@zenithproductivity.app>',
 				to: form.data.email,
 				subject: 'Verification Code for Zenith',
 				html: `<p>Hey, ${form.data.email}.</p> 
