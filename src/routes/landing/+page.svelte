@@ -32,7 +32,9 @@
 			<p class="heading-small mb-4">everyday planning powered by AI, at your fingertips</p>
 			<div class="flex justify-center gap-6">
 				<a href="/features" class="btn">Features</a>
-				<a href="/signin" class="btn btn-primary">Sign In</a>
+				<a href="/signin" class="btn btn-outline"
+					><i class="fa-solid fa-arrow-right"></i> Get started</a
+				>
 			</div>
 		</div>
 	</div>
