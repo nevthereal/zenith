@@ -7,12 +7,7 @@
 
 	let { data } = $props();
 
-	let rateLimited = $state(false);
-
-	const { form, delayed, enhance, constraints } = superForm(data.createForm, {
-		onResult({ result }) {
-			if (result.status === 429) rateLimited = true;
-		},
+	const { form, delayed, enhance, constraints, allErrors } = superForm(data.createForm, {
 		invalidateAll: true
 	});
 
@@ -49,8 +44,10 @@
 			{#if !user.paid}
 				<p class="text-muted mt-2">Free remaining: {data.remaining}</p>
 			{/if}
-			{#if rateLimited}
-				<span class="mt-2 text-error">Too many requests. Try again later</span>
+			{#if $allErrors}
+				{#each $allErrors as err}
+					<span class="mt-2 text-error">{err.messages}</span>
+				{/each}
 			{/if}
 		</form>
 	{:else}

@@ -2,7 +2,7 @@ import { zEventLLM, zCreateEvent, zEditEvent, zToggleEvent } from '$lib/zod';
 import { model } from '$lib/ai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
-import { superValidate, fail } from 'sveltekit-superforms';
+import { superValidate, fail, setError } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
@@ -13,7 +13,7 @@ import { checkUser, initializeEventForms } from '$lib/utils';
 import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
-import { building, dev } from '$app/environment';
+import { dev } from '$app/environment';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
@@ -47,21 +47,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 	return { createForm, events, editForm, user, toggleForm, projects, remaining };
 };
 
-let redis: Redis;
-let ratelimit: Ratelimit;
-
-if (!dev && !building) {
-	redis = new Redis({
-		url: UPSTASH_URL,
-		token: UPSTASH_TOKEN
-	});
-
-	ratelimit = new Ratelimit({
-		redis,
-		limiter: Ratelimit.cachedFixedWindow(10, '1h')
-	});
-}
-
 export const actions = {
 	create: async ({ request, locals, getClientAddress }) => {
 		const form = await superValidate(request, zod(zCreateEvent));
@@ -75,13 +60,20 @@ export const actions = {
 		}
 
 		if (!dev) {
+			const redis = new Redis({
+				url: UPSTASH_URL,
+				token: UPSTASH_TOKEN
+			});
+
+			const ratelimit = new Ratelimit({
+				redis,
+				limiter: Ratelimit.cachedFixedWindow(10, '1h')
+			});
 			const ip = getClientAddress();
-			const rateLimitAttempt = await ratelimit.limit(ip);
+			const rateLimitAttempt = await ratelimit.limit(`create_${ip}`);
 
 			if (!rateLimitAttempt.success && !user.admin) {
-				return fail(429, {
-					form
-				});
+				return setError(form, 'Too many requests. Try again later', { status: 429 });
 			}
 		}
 

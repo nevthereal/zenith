@@ -38,13 +38,14 @@
 		form: editForm,
 		enhance: editEnhance,
 		constraints: editConstraints,
-		delayed: editDelayed
+		delayed: editDelayed,
+		allErrors
 	} = superForm(editFormData, {
 		onSubmit({ formData }) {
 			formData.set('id', event.id.toString());
 		},
-		onUpdated() {
-			editModal.close();
+		onUpdated({ form }) {
+			if (form.valid) editModal.close();
 		},
 		invalidateAll: true,
 		id: `editForm-${event.id}`
@@ -158,7 +159,13 @@
 			<p
 				class="mt-8 hidden select-none text-center font-mono text-xs text-base-content/75 md:block"
 			>
-				press <kbd class="kbd">esc</kbd> or click outside to cancel
+				{#if $allErrors.length != 0}
+					{#each $allErrors as err}
+						<span class="mt-2 text-error">{err.messages}</span>
+					{/each}
+				{:else}
+					<span>press <kbd class="kbd">esc</kbd> or click outside to cancel</span>
+				{/if}
 			</p>
 		</div>
 		<form method="dialog" class="modal-backdrop">

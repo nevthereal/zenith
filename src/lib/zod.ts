@@ -16,11 +16,11 @@ export const zEventLLM = z.object({
 });
 
 export const zCreateEvent = z.object({
-	event: z.string().min(1)
+	event: z.string().min(3, 'Provide something meaningful')
 });
 
 export const zEditEvent = z.object({
-	event: z.string().min(1),
+	event: z.string().min(3, 'Provide something meaningful'),
 	date: z.date(),
 	id: z.number(),
 	projectId: z.number()
