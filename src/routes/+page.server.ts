@@ -113,6 +113,14 @@ export const actions = {
 			return fail(400, { form });
 		}
 
+		if (
+			!(await db.query.eventsTable.findFirst({
+				where: and(eq(eventsTable.id, form.data.id), eq(eventsTable.userId, user.id))
+			}))
+		) {
+			return fail(429, { form });
+		}
+
 		let projectId: number | null = null;
 		if (form.data.projectId != 0) {
 			const requestedProject = await db.query.projectsTable.findFirst({
@@ -144,6 +152,14 @@ export const actions = {
 
 		if (!form.valid) {
 			return fail(400, { form });
+		}
+
+		if (
+			!(await db.query.eventsTable.findFirst({
+				where: and(eq(eventsTable.id, form.data.id), eq(eventsTable.userId, user.id))
+			}))
+		) {
+			return fail(429, { form });
 		}
 
 		const action = form.data.action;

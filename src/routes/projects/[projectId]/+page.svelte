@@ -19,41 +19,30 @@
 	});
 
 	const {
-		form: editForm,
-		enhance: editEnhance,
-		constraints: editConstraints,
-		delayed: editDelayed
+		form: prjEditForm,
+		enhance: prjEditEnhance,
+		constraints: prjEditConstraints,
+		delayed: prjEditDelayed
 	} = superForm(data.projectEditForm, {
-		onSubmit: ({ formData }) => {
-			formData.set('projectId', data.project.id.toString());
-		},
-		onUpdated: ({}) => {
-			editModal.close();
-		},
-		invalidateAll: true
-	});
-
-	const { enhance: deleteEnhance, delayed: deleteDelayed } = superForm(data.projectDeleteForm, {
-		onSubmit: ({ formData }) => {
-			formData.set('projectId', data.project.id.toString());
+		onResult: ({ result }) => {
+			if (result.type === 'success') editModal.close();
 		},
 		invalidateAll: true
 	});
 
 	const {
-		enhance: toggleEnhance,
-		delayed: toggleDelayed,
-		form: toggleForm
-	} = superForm(data.toggleForm, {
-		onSubmit: ({ formData }) => {
-			formData.set('projectId', data.project.id.toString());
-		},
+		form: deleteForm,
+		enhance: deleteEnhance,
+		delayed: deleteDelayed
+	} = superForm(data.projectDeleteForm, {
 		invalidateAll: true
 	});
 
-	const dateInput = dateProxy(editForm, 'deadline', { format: 'date' });
+	const dateInput = dateProxy(prjEditForm, 'deadline', { format: 'date' });
 
 	let deleteConfirmation = $state('');
+
+	$prjEditForm.projectId = data.project.id;
 </script>
 
 <svelte:head>
@@ -140,15 +129,15 @@
 <dialog id="editModal" class="modal">
 	<div class="modal-box">
 		<h1 class="heading-main">Edit Project</h1>
-		<form action="?/edit" method="post" class="flex flex-col gap-4" use:editEnhance>
+		<form action="?/edit" method="post" class="flex flex-col gap-4" use:prjEditEnhance>
 			<div class="flex flex-col">
 				<Label forAttr="name">Name</Label>
 				<input
 					type="text"
 					class="input input-primary"
 					name="name"
-					{...$editConstraints.name}
-					bind:value={$editForm.name}
+					{...$prjEditConstraints.name}
+					bind:value={$prjEditForm.name}
 				/>
 			</div>
 			<div class="flex flex-col">
@@ -157,21 +146,23 @@
 					type="date"
 					class="input input-primary"
 					name="deadline"
-					{...$editConstraints.deadline}
+					{...$prjEditConstraints.deadline}
 					bind:value={$dateInput}
 				/>
 			</div>
-			<button disabled={!$editForm.deadline && !$editForm.name} class="btn btn-primary"
-				>Edit {#if $editDelayed}
+			<input type="hidden" name="projectId" bind:value={$prjEditForm.projectId} />
+			<button disabled={!$prjEditForm.deadline && !$prjEditForm.name} class="btn btn-primary"
+				>Edit {#if $prjEditDelayed}
 					<Spinner />
 				{/if}</button
 			>
 		</form>
 		<form action="?/delete" class="mt-4" use:deleteEnhance method="post">
 			<h1 class="heading-small mb-4 text-error">Delete project?</h1>
+			<input type="hidden" name="projectId" bind:value={$deleteForm.projectId} />
 			<div class="flex flex-col">
 				<Label forAttr="confirmation"
-					>Type <span class="font-mono italic">delete my project</span> below</Label
+					>Type <span class="font-medium text-base-content">delete my project</span> below</Label
 				>
 				<input
 					id="confirmation"
@@ -179,7 +170,7 @@
 					bind:value={deleteConfirmation}
 					class="input input-error"
 				/>
-				<button disabled={deleteConfirmation != 'delete my project'} class="btn btn-error"
+				<button disabled={deleteConfirmation != 'delete my project'} class="btn btn-error mt-4"
 					>Delete {#if $deleteDelayed}
 						<Spinner />
 					{/if}</button
@@ -200,13 +191,3 @@
 	}}
 	method="post"
 ></form>
-
-<style>
-	input::-webkit-calendar-picker-indicator {
-		display: none;
-	}
-
-	input[type='date']::-webkit-input-placeholder {
-		visibility: hidden !important;
-	}
-</style>

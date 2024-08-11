@@ -41,20 +41,16 @@
 		delayed: editDelayed,
 		allErrors
 	} = superForm(editFormData, {
-		onSubmit({ formData }) {
-			formData.set('id', event.id.toString());
-		},
-		onUpdated({ form }) {
-			if (form.valid) editModal.close();
+		onResult({ result }) {
+			if (result.type === 'success') editModal.close();
 		},
 		invalidateAll: true,
 		id: `editForm-${event.id}`
 	});
 
 	const { enhance: toggleEnhance, form: toggleForm } = superForm(toggleFormData, {
-		onSubmit({ formData }) {
-			formData.set('id', event.id.toString());
-			toggleModal.close();
+		onResult({ result }) {
+			if (result.type === 'success') editModal.close();
 		},
 		invalidateAll: true,
 		id: `toggleForm-${event.id}`
@@ -64,6 +60,7 @@
 	const dateInput = dateProxy(editForm, 'date', { format: 'datetime-local' });
 
 	$editForm.event = event.content;
+	$editForm.id = event.id;
 	$dateInput = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
 	if (event.projectId) {
 		$editForm.projectId = event.projectId;
@@ -71,6 +68,7 @@
 		$editForm.projectId = 0;
 	}
 	$toggleForm.action = event.completed ? 'uncomplete' : 'complete';
+	$toggleForm.id = event.id;
 </script>
 
 <div class="flex w-full flex-row justify-between gap-4 rounded-box bg-base-200 p-8">
@@ -110,6 +108,7 @@
 		<div class="modal-box">
 			<h1 class="mb-4 text-xl font-medium">Edit Event</h1>
 			<form method="POST" action="/?/edit" use:editEnhance class="flex flex-col gap-4">
+				<input type="hidden" name="id" bind:value={$editForm.id} />
 				<div class="grid gap-4 md:grid-cols-2">
 					<div class="flex flex-col">
 						<Label forAttr="event">Event name</Label>
@@ -183,6 +182,7 @@
 						>
 						<option value="delete">Delete</option>
 					</select>
+					<input type="hidden" name="id" bind:value={$toggleForm.id} />
 					<button class={cn('btn', $toggleForm.action === 'delete' ? 'btn-error' : 'btn-success')}
 						>Yes</button
 					>
@@ -194,13 +194,3 @@
 		</form>
 	</dialog>
 </div>
-
-<style>
-	input::-webkit-calendar-picker-indicator {
-		display: none;
-	}
-
-	input[type='date']::-webkit-input-placeholder {
-		visibility: hidden !important;
-	}
-</style>

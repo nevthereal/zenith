@@ -17,7 +17,7 @@
 	>
 		<a
 			href="/projects/create"
-			class="card flex h-48 flex-col items-center justify-center bg-base-200"
+			class="card flex h-48 place-content-center place-items-center bg-base-200"
 		>
 			<i
 				class="fa-solid fa-plus mb-2 flex aspect-square items-center justify-center rounded-full border-2 border-base-content p-1 text-base-content"
