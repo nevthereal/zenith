@@ -8,7 +8,7 @@ import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
 import { eventsTable, projectsTable, usersTable } from '$lib/db/schema';
-import { and, asc, eq, lt } from 'drizzle-orm';
+import { and, asc, eq, gt, lt } from 'drizzle-orm';
 import { checkUser, initializeEventForms } from '$lib/utils';
 import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
@@ -23,7 +23,20 @@ export const load: PageServerLoad = async ({ locals }) => {
 		where: and(
 			lt(eventsTable.date, dayjs().endOf('day').toDate()),
 			eq(eventsTable.userId, user.id),
-			eq(eventsTable.completed, false)
+			eq(eventsTable.completed, false),
+			gt(eventsTable.date, dayjs().toDate())
+		),
+		with: {
+			project: true
+		}
+	});
+	const overdue = db.query.eventsTable.findMany({
+		orderBy: asc(eventsTable.date),
+		where: and(
+			lt(eventsTable.date, dayjs().endOf('day').toDate()),
+			eq(eventsTable.userId, user.id),
+			eq(eventsTable.completed, false),
+			lt(eventsTable.date, dayjs().toDate())
 		),
 		with: {
 			project: true
@@ -44,7 +57,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		}
 	});
 
-	return { createForm, events, editForm, user, toggleForm, projects, remaining };
+	return { createForm, events, editForm, user, toggleForm, projects, remaining, overdue };
 };
 
 export const actions = {

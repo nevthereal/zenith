@@ -73,7 +73,9 @@
 
 <div class="flex w-full flex-row justify-between gap-4 rounded-box bg-base-200 p-8">
 	<div>
-		<h1 class="heading-sub">{event.content}</h1>
+		<h1 class={cn('heading-sub', !event.completed ? 'text-primary' : 'text-success')}>
+			{event.content}
+		</h1>
 		<div class="text-md md:text-base">
 			<p>
 				<span class={cn(date.isBefore(dayjs().startOf('day')) && !event.completed && 'text-error')}>

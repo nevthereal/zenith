@@ -4,6 +4,7 @@
 	import Error from '$lib/components/Error.svelte';
 	import Loading from '$lib/components/Loading.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
+	import dayjs from 'dayjs';
 
 	let { data } = $props();
 
@@ -64,18 +65,41 @@
 		{:then events}
 			{#if events.length == 0}
 				<h2 class="heading-small italic">Nothing planned today.</h2>
+			{:else}
+				<h3 class="heading-sub mr-auto">Today:</h3>
+				{#each events as event (event.id)}
+					<Event
+						projects={data.projects}
+						{event}
+						editFormData={data.editForm}
+						toggleFormData={data.toggleForm}
+					/>
+				{/each}
 			{/if}
-			{#each events as event (event.id)}
-				<Event
-					projects={data.projects}
-					{event}
-					editFormData={data.editForm}
-					toggleFormData={data.toggleForm}
-				/>
-			{/each}
 		{:catch}
 			<Error />
 		{/await}
-		<a href="/upcoming" class="link link-primary font-semibold italic">See all upcoming</a>
+		{#await data.overdue}
+			<Loading text="overdue events" />
+		{:then events}
+			{#if events.length != 0}
+				<h3 class="heading-sub mr-auto">Overdue:</h3>
+				{#each events as event (event.id)}
+					<Event
+						projects={data.projects}
+						{event}
+						editFormData={data.editForm}
+						toggleFormData={data.toggleForm}
+					/>
+				{/each}
+			{/if}
+		{:catch}
+			<Error />
+		{/await}
+		<p class="flex gap-4">
+			<a href="/upcoming" class="link link-primary font-semibold italic">All upcoming</a>
+			<span>|</span>
+			<a href="/completed" class="link link-success font-semibold italic">Completed</a>
+		</p>
 	</section>
 </div>

@@ -4,4 +4,4 @@
 	let { text }: { text: string } = $props();
 </script>
 
-<span class="font-mono"><Spinner /> Loading {text}...</span>
+<p><Spinner /><span class="font-mono">Loading {text}...</span></p>
