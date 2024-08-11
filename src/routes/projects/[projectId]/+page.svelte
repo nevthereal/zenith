@@ -22,7 +22,8 @@
 		form: prjEditForm,
 		enhance: prjEditEnhance,
 		constraints: prjEditConstraints,
-		delayed: prjEditDelayed
+		delayed: prjEditDelayed,
+		allErrors
 	} = superForm(data.projectEditForm, {
 		onResult: ({ result }) => {
 			if (result.type === 'success') editModal.close();
@@ -150,6 +151,11 @@
 					bind:value={$dateInput}
 				/>
 			</div>
+			{#if $allErrors.length != 0}
+				{#each $allErrors as err}
+					<span class="text-error">{err.messages}</span>
+				{/each}
+			{/if}
 			<input type="hidden" name="projectId" bind:value={$prjEditForm.projectId} />
 			<button disabled={!$prjEditForm.deadline && !$prjEditForm.name} class="btn btn-primary"
 				>Edit {#if $prjEditDelayed}
