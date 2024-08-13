@@ -63,6 +63,7 @@
     "oslo": "^1.2.1",
     "resend": "^3.5.0",
     "stripe": "^15.12.0",
+    "svelte-sonner": "^0.3.27",
     "tailwind-merge": "^2.3.0",
     "zod": "^3.23.8"
   }
