@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions = {
-	default: async ({ locals, request, getClientAddress }) => {
+	default: async ({ locals, request }) => {
 		const user = checkUser(locals);
 
 		const form = await superValidate(request, zod(zVerifyEmail));
@@ -41,8 +41,7 @@ export const actions = {
 				analytics: true,
 				prefix: 'verify-email'
 			});
-			const ip = getClientAddress();
-			const rateLimitAttempt = await ratelimit.limit(ip);
+			const rateLimitAttempt = await ratelimit.limit(user.id);
 
 			if (!rateLimitAttempt.success && !user.admin) {
 				return setError(form, 'Too many requests. Try again later', { status: 429 });
