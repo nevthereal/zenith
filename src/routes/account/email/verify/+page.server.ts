@@ -37,10 +37,12 @@ export const actions = {
 
 			const ratelimit = new Ratelimit({
 				redis,
-				limiter: Ratelimit.cachedFixedWindow(3, '1h')
+				limiter: Ratelimit.slidingWindow(3, '1h'),
+				analytics: true,
+				prefix: 'verify-email'
 			});
 			const ip = getClientAddress();
-			const rateLimitAttempt = await ratelimit.limit(`verify_${ip}`);
+			const rateLimitAttempt = await ratelimit.limit(ip);
 
 			if (!rateLimitAttempt.success && !user.admin) {
 				return setError(form, 'Too many requests. Try again later', { status: 429 });
