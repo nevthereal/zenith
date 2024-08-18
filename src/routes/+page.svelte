@@ -78,7 +78,8 @@
 							toggleFormData={data.toggleForm}
 						/>
 					{/each}
-				{:else if overDueEvents.length != 0}
+				{/if}
+				{#if overDueEvents.length != 0}
 					<h3 class="heading-sub mr-auto">Overdue:</h3>
 					{#each overDueEvents as event (event.id)}
 						<Event
