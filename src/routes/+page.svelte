@@ -4,6 +4,7 @@
 	import Error from '$lib/components/Error.svelte';
 	import Loading from '$lib/components/Loading.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
+	import dayjs from 'dayjs';
 
 	let { data } = $props();
 
@@ -65,32 +66,29 @@
 			{#if events.length == 0}
 				<h2 class="heading-small italic">Nothing planned today.</h2>
 			{:else}
-				<h3 class="heading-sub mr-auto">Today:</h3>
-				{#each events as event (event.id)}
-					<Event
-						projects={data.projects}
-						{event}
-						editFormData={data.editForm}
-						toggleFormData={data.toggleForm}
-					/>
-				{/each}
-			{/if}
-		{:catch}
-			<Error />
-		{/await}
-		{#await data.overdue}
-			<Loading text="overdue events" />
-		{:then events}
-			{#if events.length != 0}
-				<h3 class="heading-sub mr-auto">Overdue:</h3>
-				{#each events as event (event.id)}
-					<Event
-						projects={data.projects}
-						{event}
-						editFormData={data.editForm}
-						toggleFormData={data.toggleForm}
-					/>
-				{/each}
+				{@const dueEvents = events.filter((e) => dayjs(e.date).isAfter(dayjs()))}
+				{@const overDueEvents = events.filter((e) => dayjs(e.date).isBefore(dayjs()))}
+				{#if dueEvents.length != 0}
+					<h3 class="heading-sub mr-auto">Today:</h3>
+					{#each dueEvents as event (event.id)}
+						<Event
+							projects={data.projects}
+							{event}
+							editFormData={data.editForm}
+							toggleFormData={data.toggleForm}
+						/>
+					{/each}
+				{:else if overDueEvents.length != 0}
+					<h3 class="heading-sub mr-auto">Overdue:</h3>
+					{#each overDueEvents as event (event.id)}
+						<Event
+							projects={data.projects}
+							{event}
+							editFormData={data.editForm}
+							toggleFormData={data.toggleForm}
+						/>
+					{/each}
+				{/if}
 			{/if}
 		{:catch}
 			<Error />

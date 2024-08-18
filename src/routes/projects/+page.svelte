@@ -26,7 +26,7 @@
 		</a>
 		{#await data.myProjects}
 			<div class="flex items-center justify-center">
-				<Loading text="project" />
+				<Loading text="projects" />
 			</div>
 		{:then projects}
 			{#if projects.length === 0}
