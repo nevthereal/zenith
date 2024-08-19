@@ -59,7 +59,7 @@
 		</p>
 	{/if}
 
-	<section class="mb-8 flex w-full max-w-2xl flex-col items-center gap-4">
+	<section class="mb-8 flex w-full max-w-2xl flex-col items-center gap-12">
 		{#await data.events}
 			<Loading text="events" />
 		{:then events}

@@ -11,7 +11,7 @@
 </svelte:head>
 
 <div class="flex flex-col items-center">
-	<h1 class="heading-main">All Projects</h1>
+	<h1 class="heading-main mb-8">All Projects</h1>
 	<section
 		class="m-4 mb-12 grid w-full max-w-[70vw] grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3"
 	>
