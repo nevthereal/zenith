@@ -57,7 +57,7 @@
 	<div class="flex flex-col">
 		<div class="flex max-md:flex-col max-md:gap-4 md:justify-between">
 			<div>
-				<h1 class="heading-sub text-muted">Project details</h1>
+				<h1 class="heading-sub text-muted mb-2">Project details</h1>
 				<ul>
 					<li>
 						<span class="font-medium">Deadline:</span>

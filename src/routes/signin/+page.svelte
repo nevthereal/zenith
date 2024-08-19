@@ -4,7 +4,7 @@
 
 <div class="grid h-[75dvh] md:grid-cols-2">
 	<div class="flex flex-col items-center justify-center">
-		<h1 class="heading-super-big">Sign in</h1>
+		<h1 class="heading-super-big mb-4">Sign in</h1>
 		<p class="heading-small text-center">
 			Not convinced yet? <br /> Check out the <a href="/features" class="link">Features</a>.
 		</p>

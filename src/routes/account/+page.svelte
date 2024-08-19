@@ -14,41 +14,45 @@
 	<title>Account - Overview</title>
 </svelte:head>
 
-<h1 class="heading-main">Account overview</h1>
+<section class="space-y-4">
+	<h1 class="heading-main">Account overview</h1>
 
-<ul class="flex flex-col gap-1 md:text-lg">
-	<li>
-		<span class="font-medium">Username:</span>
-		<span class="text-muted">{user.username}</span>
-	</li>
-	<li class="flex items-center gap-2">
-		<span class="font-medium">Email:</span>
-		{#if user.email}
-			<span class="text-muted"
-				>{user.email}
-				{#if !user.emailVerified}
-					<a href="/account/email" class="link">, please verify</a>
-				{/if}</span
-			>
-		{:else}
-			<a href="/account/email" class="link link-primary">Please add an email</a>
-		{/if}
-	</li>
-	<li>
-		<span class="font-medium">Joined:</span>
-		<span class="text-muted">{dayjs().to(dayjs(user.joined))}</span>
-	</li>
-	<li>
-		<span class="font-medium">Paid:</span>
-		<a class="link link-primary" href="/account/billing">{user.paid ? 'Yes' : 'No'}, See billing</a>
-	</li>
-	<li>
-		<span class="font-medium">Completed Tasks:</span>
-		<span class="text-muted">{data.completedCount.length}</span>
-	</li>
-	{#if user.admin}
+	<ul class="flex flex-col gap-1 md:text-lg">
 		<li>
-			<a href="/admin" class="link link-primary">You are an admin</a>
+			<span class="font-medium">Username:</span>
+			<span class="text-muted">{user.username}</span>
 		</li>
-	{/if}
-</ul>
+		<li class="flex items-center gap-2">
+			<span class="font-medium">Email:</span>
+			{#if user.email}
+				<span class="text-muted"
+					>{user.email}
+					{#if !user.emailVerified}
+						<a href="/account/email" class="link">, please verify</a>
+					{/if}</span
+				>
+			{:else}
+				<a href="/account/email" class="link link-primary">Please add an email</a>
+			{/if}
+		</li>
+		<li>
+			<span class="font-medium">Joined:</span>
+			<span class="text-muted">{dayjs().to(dayjs(user.joined))}</span>
+		</li>
+		<li>
+			<span class="font-medium">Paid:</span>
+			<a class="link link-primary" href="/account/billing"
+				>{user.paid ? 'Yes' : 'No'}, See billing</a
+			>
+		</li>
+		<li>
+			<span class="font-medium">Completed Tasks:</span>
+			<span class="text-muted">{data.completedCount.length}</span>
+		</li>
+		{#if user.admin}
+			<li>
+				<a href="/admin" class="link link-primary">You are an admin</a>
+			</li>
+		{/if}
+	</ul>
+</section>

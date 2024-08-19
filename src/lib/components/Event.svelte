@@ -6,6 +6,7 @@
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 	import Spinner from './Spinner.svelte';
 	import Label from './Label.svelte';
+	import { generateId } from 'lucia';
 
 	type Event = typeof eventsTable.$inferSelect;
 	type Project = typeof projectsTable.$inferSelect;
@@ -45,7 +46,7 @@
 			if (result.type === 'success') editModal.close();
 		},
 		invalidateAll: true,
-		id: `editForm-${event.id}`
+		id: `editForm-${generateId(5)}`
 	});
 
 	const { enhance: toggleEnhance, form: toggleForm } = superForm(toggleFormData, {
@@ -53,7 +54,7 @@
 			if (result.type === 'success') editModal.close();
 		},
 		invalidateAll: true,
-		id: `toggleForm-${event.id}`
+		id: `toggleForm-${generateId(5)}`
 	});
 
 	const date = $derived(dayjs(event.date));
@@ -73,7 +74,7 @@
 
 <div class="flex w-full flex-row justify-between gap-4 rounded-box bg-base-200 p-8">
 	<div>
-		<h1 class={cn('heading-sub', !event.completed ? 'text-primary' : 'text-success')}>
+		<h1 class={cn('heading-sub mb-2', !event.completed ? 'text-primary' : 'text-success')}>
 			{event.content}
 		</h1>
 		<div class="text-md md:text-base">

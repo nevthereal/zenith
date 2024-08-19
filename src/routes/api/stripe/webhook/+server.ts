@@ -6,6 +6,7 @@ import type Stripe from 'stripe';
 import { db } from '$lib/db/db';
 import { ordersTable, usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
+import dayjs from 'dayjs';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const whSecret = WEBHOOK;
@@ -36,7 +37,7 @@ export const POST: RequestHandler = async ({ request }) => {
 				.returning({ userId: usersTable.id });
 
 			await db.insert(ordersTable).values({
-				completedAt: new Date(),
+				completedAt: dayjs().toDate(),
 				customerId: customer.id,
 				orderId: sessionWithCustomer.payment_intent as string,
 				userId: updatedUser.userId,

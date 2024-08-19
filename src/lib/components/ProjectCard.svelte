@@ -12,7 +12,7 @@
 </script>
 
 <a href={`/projects/${id}`} class="card flex h-48 flex-col justify-between bg-base-200 p-8">
-	<h1 class="heading-sub">{name}</h1>
+	<h1 class="heading-sub mb-2">{name}</h1>
 	<div>
 		<p class="text-muted font-medium">
 			{#if collaborators.length != 0}

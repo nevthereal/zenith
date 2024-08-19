@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^3.0.0",
-    "@sveltejs/kit": "^2.5.20",
+    "@sveltejs/kit": "^2.5.24",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@tailwindcss/typography": "^0.5.13",
     "@types/eslint": "^8.56.7",
@@ -63,7 +63,6 @@
     "oslo": "^1.2.1",
     "resend": "^3.5.0",
     "stripe": "^15.12.0",
-    "svelte-sonner": "^0.3.27",
     "tailwind-merge": "^2.3.0",
     "zod": "^3.23.8"
   }

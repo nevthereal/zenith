@@ -7,7 +7,7 @@ import { zEditEvent, zToggleEvent } from './zod';
 
 export function checkUser(locals: App.Locals) {
 	const user = locals.user;
-	if (!user) redirect(302, '/landing');
+	if (!user) redirect(302, '/home');
 	return user;
 }
 

@@ -28,7 +28,7 @@
 	<div class="hero-overlay absolute inset-0 rounded-box bg-opacity-70"></div>
 	<div class="hero-content relative z-10 w-[80%] text-center">
 		<div class="md:max-w-md">
-			<h1 class="heading-super-big">Zenith</h1>
+			<h1 class="heading-super-big mb-4">Zenith</h1>
 			<p class="heading-small mb-4">everyday planning powered by AI, at your fingertips</p>
 			<div class="flex justify-center gap-6">
 				<a href="/features" class="btn">Features</a>
