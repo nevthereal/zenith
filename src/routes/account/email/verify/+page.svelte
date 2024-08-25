@@ -19,6 +19,7 @@
 		<Label forAttr="code">Verification code</Label>
 		<div class="flex gap-2">
 			<input inputmode="numeric" name="code" class="input input-primary" bind:value={$form.code} />
+			<button class="btn btn-primary">Check</button>
 		</div>
 		{#if $allErrors}
 			{#each $allErrors as err}

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
 	import dayjs from 'dayjs';
 
 	const { data } = $props();
@@ -48,11 +47,15 @@
 				<p class="mb-2 text-warning">
 					Please purchase the product to use the features of this app.
 				</p>
-				<a href="/api/stripe" class="btn btn-warning">Purchase ($20)</a>
+				<div class="flex items-center gap-4">
+					<a href="/api/stripe" class="btn btn-warning">Purchase ($20)</a>
 
-				{#if !user.trialEnd}
-					<button class="btn ml-2" form="trial">Activate the free trial</button>
-				{/if}
+					{#if !user.trialEnd || (user.trialEnd != null && dayjs().isBefore(dayjs(user.trialEnd)))}
+						<button class="btn" form="trial">Activate the free trial</button>
+					{:else}
+						<p>Your free trial is over.</p>
+					{/if}
+				</div>
 			{:else}
 				<a href="/account/email" class="link link-warning"
 					>Verify your email to purchase the product.</a
