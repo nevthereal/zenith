@@ -7,7 +7,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
-import { eventsTable, projectsTable, usersTable } from '$lib/db/schema';
+import { eventsTable, projectsTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
 import { checkUser, initializeEventForms } from '$lib/utils';
 import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
@@ -30,8 +30,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 		}
 	});
 
-	const remaining = 3 - user.quota;
-
 	const createForm = await superValidate(zod(zCreateEvent));
 
 	const { editForm, toggleForm } = await initializeEventForms();
@@ -44,7 +42,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		}
 	});
 
-	return { createForm, events, editForm, user, toggleForm, projects, remaining };
+	return { createForm, events, editForm, user, toggleForm, projects };
 };
 
 export const actions = {
@@ -52,8 +50,6 @@ export const actions = {
 		const form = await superValidate(request, zod(zCreateEvent));
 
 		const user = checkUser(locals);
-
-		if (user.quota >= 3) return fail(400);
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -91,15 +87,6 @@ export const actions = {
 			date: new Date(object.date),
 			userId: user.id
 		});
-
-		if (!user.paid) {
-			await db
-				.update(usersTable)
-				.set({
-					quota: user.quota + 1
-				})
-				.where(eq(usersTable.id, user.id));
-		}
 
 		return { form };
 	},

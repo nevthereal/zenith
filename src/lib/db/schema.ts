@@ -51,9 +51,9 @@ export const usersTable = pgTable('users', {
 	emailVerified: boolean('emailVerified').default(false).notNull(),
 	admin: boolean('admin').default(false).notNull(),
 	joined: timestamp('joined').notNull(),
+	trialEnd: timestamp('trial_end'),
 	stripeId: text('stripe_id'),
-	paid: boolean('paid').default(false).notNull(),
-	quota: integer('quota').notNull().default(0)
+	paid: boolean('paid').default(false).notNull()
 });
 
 export const verificationCodesTable = pgTable('verification_codes', {

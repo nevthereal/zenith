@@ -13,7 +13,7 @@
 </script>
 
 <section>
-	<h1 class="heading-main">You've got mail!</h1>
+	<h1 class="heading-main mb-2">You've got mail!</h1>
 	<p class="mb-4">We've sent a code to <span class="font-medium">{data.user.email}</span></p>
 	<form method="post" use:enhance class="flex max-w-64 flex-col">
 		<Label forAttr="code">Verification code</Label>

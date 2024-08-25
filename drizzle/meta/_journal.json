@@ -281,6 +281,13 @@
       "when": 1723829921856,
       "tag": "0039_sloppy_fantastic_four",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1724597199014,
+      "tag": "0040_watery_longshot",
+      "breakpoints": true
     }
   ]
 }

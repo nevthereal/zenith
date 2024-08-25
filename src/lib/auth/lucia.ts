@@ -21,10 +21,9 @@ export const lucia = new Lucia(adapter, {
 			email: attributes.email,
 			admin: attributes.admin,
 			paid: attributes.paid,
-			stripeId: attributes.stripeId,
 			joined: attributes.joined,
-			quota: attributes.quota,
-			emailVerified: attributes.emailVerified
+			emailVerified: attributes.emailVerified,
+			trialEnd: attributes.trialEnd
 		};
 	}
 });
@@ -42,8 +41,7 @@ interface DatabaseUserAttributes {
 	email: string;
 	admin: boolean;
 	paid: boolean;
-	stripeId: string | null;
 	joined: Date;
-	quota: number;
 	emailVerified: boolean;
+	trialEnd: Date | null;
 }

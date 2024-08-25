@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import dayjs from 'dayjs';
 
 	const { data } = $props();
@@ -47,6 +49,10 @@
 					Please purchase the product to use the features of this app.
 				</p>
 				<a href="/api/stripe" class="btn btn-warning">Purchase ($20)</a>
+
+				{#if !user.trialEnd}
+					<button class="btn ml-2" form="trial">Activate the free trial</button>
+				{/if}
 			{:else}
 				<a href="/account/email" class="link link-warning"
 					>Verify your email to purchase the product.</a
@@ -55,3 +61,4 @@
 		{/if}
 	</div>
 </section>
+<form action="?/trial" id="trial" use:enhance method="post"></form>

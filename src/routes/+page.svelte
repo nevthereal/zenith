@@ -5,12 +5,15 @@
 	import Loading from '$lib/components/Loading.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import dayjs from 'dayjs';
+	import relativeTime from 'dayjs/plugin/relativeTime';
 
 	let { data } = $props();
 
 	const { form, delayed, enhance, constraints, allErrors } = superForm(data.createForm, {
 		invalidateAll: true
 	});
+
+	dayjs.extend(relativeTime);
 
 	const user = data.user;
 </script>
@@ -24,7 +27,7 @@
 		Hi, <span class="font-bold text-primary">{user.username}</span>
 	</h3>
 	<h1 class="heading-main text-center">What are your plans?</h1>
-	{#if data.remaining != 0 || user.paid}
+	{#if user.paid || (user.trialEnd != null && user.trialEnd > dayjs().toDate())}
 		<form action="?/create" method="POST" class="my-12 flex flex-col" use:enhance>
 			<div class="flex items-center justify-center gap-4">
 				<input
@@ -42,8 +45,8 @@
 					{/if}
 				</button>
 			</div>
-			{#if !user.paid}
-				<p class="text-muted mt-2">Free remaining: {data.remaining}</p>
+			{#if user.trialEnd != null && user.trialEnd > dayjs().toDate()}
+				<p class="text-muted mt-2">Your trial ends in {dayjs().to(dayjs(user.trialEnd))}</p>
 			{/if}
 			{#if $allErrors}
 				{#each $allErrors as err}
@@ -51,12 +54,14 @@
 				{/each}
 			{/if}
 		</form>
+	{:else if user.trialEnd != null && user.trialEnd < dayjs().toDate()}
+		<a href="/account/billing" class=" heading-small link link-warning my-8 text-warning"
+			>Your free trial is over. Purchase the product to continue</a
+		>
 	{:else}
-		<p class="heading-small my-8 text-warning">
-			You have used all of your free queries. <a href="/account/billing" class="link link-warning"
-				>purchase</a
-			> the product to continue.
-		</p>
+		<a href="/account/billing" class=" heading-small link link-warning my-8 text-warning"
+			>Activate the free trial or purchase the product to continue.</a
+		>
 	{/if}
 
 	<section class="mb-8 flex w-full max-w-2xl flex-col items-center gap-12">
