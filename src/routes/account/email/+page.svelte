@@ -7,7 +7,7 @@
 	const { form, enhance, allErrors, delayed } = superForm(data.form);
 </script>
 
-<h1 class="heading-main">Add an email address</h1>
+<h1 class="heading-main mb-4">Add an email address</h1>
 <form method="post" use:enhance class="flex max-w-64 flex-col">
 	<Label forAttr="email">Email</Label>
 	<div class="flex gap-2">

@@ -28,7 +28,7 @@
 				<span class="text-muted"
 					>{user.email}
 					{#if !user.emailVerified}
-						<a href="/account/email" class="link">, please verify</a>
+						<a href="/account/email" class="link link-success">please verify</a>
 					{/if}</span
 				>
 			{:else}
