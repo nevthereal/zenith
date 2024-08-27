@@ -8,7 +8,7 @@ import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db/db';
 import { eventsTable, projectsTable } from '$lib/db/schema';
-import { and, asc, eq, lt } from 'drizzle-orm';
+import { and, asc, eq, gt, lt } from 'drizzle-orm';
 import { checkUser, initializeEventForms } from '$lib/utils';
 import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
@@ -74,11 +74,29 @@ export const actions = {
 			}
 		}
 
+		const usersEvents = await db.query.eventsTable.findMany({
+			where: and(
+				eq(eventsTable.userId, user.id),
+				gt(eventsTable.date, dayjs().toDate()),
+				eq(eventsTable.completed, false)
+			),
+			columns: {
+				completed: false,
+				content: true,
+				date: true,
+				id: false,
+				projectId: false,
+				userId: false
+			}
+		});
+
+		console.log(JSON.stringify(usersEvents));
+
 		const { object } = await generateObject({
 			model: model,
 			schema: zEventLLM,
 			mode: 'tool',
-			system: `Right now is the ${dayjs().toDate()}. You are an assistant who processes the users input to an event.`,
+			system: `Right now is the ${dayjs().toDate()}. You are an assistant who processes the users input to an event. Pay attention to the user's other events: ${usersEvents}.`,
 			prompt: form.data.event
 		});
 

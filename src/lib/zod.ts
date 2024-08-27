@@ -10,7 +10,7 @@ export const zEventLLM = z.object({
 			local: false
 		})
 		.describe(
-			'The due date and time of the event, should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific In ISO 8601 Format.'
+			'The due date and time of the event in JS Date format. It should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific.'
 		),
 	content: z.string().describe('The activity or event.')
 });
