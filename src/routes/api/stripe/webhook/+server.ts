@@ -4,9 +4,8 @@ import type { RequestHandler } from './$types';
 import { stripe } from '$lib/stripe';
 import type Stripe from 'stripe';
 import { db } from '$lib/db/db';
-import { ordersTable, usersTable } from '$lib/db/schema';
+import { usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
-import dayjs from 'dayjs';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const whSecret = WEBHOOK;
@@ -21,29 +20,18 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		if (eventType === 'checkout.session.completed') {
 			const sessionWithCustomer = await stripe.checkout.sessions.retrieve(event.data.object.id, {
-				expand: ['customer', 'invoice']
+				expand: ['customer']
 			});
 
 			const customer = sessionWithCustomer.customer as Stripe.Customer;
-			const invoice = sessionWithCustomer.invoice as Stripe.Invoice;
 
-			const [updatedUser] = await db
+			await db
 				.update(usersTable)
 				.set({
 					stripeId: customer.id,
 					paid: true
 				})
-				.where(eq(usersTable.email, sessionWithCustomer.customer_email as string))
-				.returning({ userId: usersTable.id });
-
-			await db.insert(ordersTable).values({
-				completedAt: dayjs().toDate(),
-				customerId: customer.id,
-				orderId: sessionWithCustomer.payment_intent as string,
-				userId: updatedUser.userId,
-				sessionId: sessionWithCustomer.id,
-				invoiceUrl: invoice.hosted_invoice_url as string
-			});
+				.where(eq(usersTable.email, sessionWithCustomer.customer_email as string));
 		}
 	} catch (err) {
 		console.log('Something went wrong.', err);

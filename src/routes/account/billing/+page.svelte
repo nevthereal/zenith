@@ -4,7 +4,6 @@
 
 	const { data } = $props();
 	const user = data.user;
-	const order = data.order;
 </script>
 
 <svelte:head>
@@ -15,32 +14,11 @@
 	<h1 class="heading-main">Billing</h1>
 
 	<div class="text-lg">
-		{#if user.paid && order}
-			<ul class="flex flex-col gap-1 text-base md:text-lg">
-				<li class="font-medium text-success">Your account is paid</li>
-				<li>
-					<span class="font-medium">Customer ID:</span>
-					<span class="text-muted">{order.customerId}</span>
-				</li>
-				<li>
-					<span class="font-medium">Order ID:</span>
-					<span class="text-muted">{order.orderId}</span>
-				</li>
-				<li>
-					<span class="font-medium">Completed:</span>
-					<span class="text-muted">{dayjs(order.completedAt).format('D MMMM YYYY, hh:mm')}</span>
-				</li>
-				<li>
-					<span class="font-medium">Invoice:</span>
-					<a href={order.invoiceUrl} target="_blank" class="link link-primary">Invoice URL</a>
-				</li>
-				<li>
-					<span class="font-medium">For support contact:</span>
-					<a target="_blank" href="mailto:contact@nevillebrem.com" class="link link-primary"
-						>contact@nevillebrem.com</a
-					>
-				</li>
-			</ul>
+		{#if user.paid}
+			<h1 class="heading-small mb-2">Your account is paid.</h1>
+			<p>
+				<a href="mailto:contact@nevillebrem.com" class="link">Contact me</a> for more information.
+			</p>
 		{/if}
 		{#if !user.paid}
 			{#if user.emailVerified}

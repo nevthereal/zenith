@@ -14,11 +14,8 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 		customer_email: user.email,
 		allow_promotion_codes: true,
 		mode: 'payment',
-		invoice_creation: {
-			enabled: true
-		},
 		customer_creation: 'always',
-		success_url: `${url.origin}/success?id={CHECKOUT_SESSION_ID}`,
+		success_url: `${url.origin}/`,
 		cancel_url: `${url.origin}/account/billing`
 	});
 	redirect(302, session.url as string);

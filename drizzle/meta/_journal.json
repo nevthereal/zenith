@@ -288,6 +288,20 @@
       "when": 1724597199014,
       "tag": "0040_watery_longshot",
       "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1724781668918,
+      "tag": "0041_military_wallow",
+      "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1724781872520,
+      "tag": "0042_aspiring_ronan",
+      "breakpoints": true
     }
   ]
 }
