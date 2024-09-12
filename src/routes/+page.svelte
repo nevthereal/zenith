@@ -76,25 +76,29 @@
 				{@const overDueEvents = events.filter((e) => dayjs(e.date).isBefore(dayjs()))}
 				{#if dueEvents.length != 0}
 					<h3 class="heading-sub mb-2 mr-auto">Today:</h3>
-					{#each dueEvents as event (event.id)}
-						<Event
-							projects={data.projects}
-							{event}
-							editFormData={data.editForm}
-							toggleFormData={data.toggleForm}
-						/>
-					{/each}
+					<div class="flex w-full flex-col gap-4">
+						{#each dueEvents as event (event.id)}
+							<Event
+								projects={data.projects}
+								{event}
+								editFormData={data.editForm}
+								toggleFormData={data.toggleForm}
+							/>
+						{/each}
+					</div>
 				{/if}
 				{#if overDueEvents.length != 0}
 					<h3 class="heading-sub mb-2 mr-auto">Overdue:</h3>
-					{#each overDueEvents as event (event.id)}
-						<Event
-							projects={data.projects}
-							{event}
-							editFormData={data.editForm}
-							toggleFormData={data.toggleForm}
-						/>
-					{/each}
+					<div class="flex w-full flex-col gap-4">
+						{#each overDueEvents as event (event.id)}
+							<Event
+								projects={data.projects}
+								{event}
+								editFormData={data.editForm}
+								toggleFormData={data.toggleForm}
+							/>
+						{/each}
+					</div>
 				{/if}
 			{/if}
 		{:catch}
