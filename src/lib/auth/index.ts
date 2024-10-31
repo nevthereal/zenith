@@ -5,7 +5,9 @@ import { db } from '$lib/db';
 import { eq } from 'drizzle-orm';
 import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/encoding';
 import { sha256 } from '@oslojs/crypto/sha2';
-import type { RequestEvent } from '@sveltejs/kit';
+import { GitHub } from 'arctic';
+
+export const github = new GitHub(GITHUB_CLIENT_ID, GITHUB_SECRET);
 
 export function generateSessionToken(): string {
 	const bytes = new Uint8Array(20);
@@ -54,24 +56,6 @@ export async function validateSessionToken(token: string): Promise<SessionValida
 
 export async function invalidateSession(sessionId: string): Promise<void> {
 	await db.delete(sessionsTable).where(eq(sessionsTable.id, sessionId));
-}
-
-export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date): void {
-	event.cookies.set('session', token, {
-		httpOnly: true,
-		sameSite: 'lax',
-		expires: expiresAt,
-		path: '/'
-	});
-}
-
-export function deleteSessionTokenCookie(event: RequestEvent): void {
-	event.cookies.set('session', '', {
-		httpOnly: true,
-		sameSite: 'lax',
-		maxAge: 0,
-		path: '/'
-	});
 }
 
 export type SessionValidationResult =

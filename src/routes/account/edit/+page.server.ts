@@ -7,7 +7,8 @@ import { db } from '$lib/db';
 import { usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { redirect } from '@sveltejs/kit';
-import { lucia } from '$lib/auth/lucia';
+import { invalidateSession } from '$lib/auth';
+import { deleteSessionTokenCookie } from '$lib/auth/cookies';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
@@ -33,18 +34,14 @@ export const actions = {
 
 		return setMessage(form, 'Updated username');
 	},
-	delete: async ({ locals, cookies }) => {
-		const user = checkUser(locals);
+	delete: async (event) => {
+		const user = checkUser(event.locals);
 
-		if (!locals.session) {
+		if (event.locals.session === null) {
 			return fail(405);
 		}
-		await lucia.invalidateSession(locals.session.id);
-		const sessionCookie = lucia.createBlankSessionCookie();
-		cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes
-		});
+		await invalidateSession(event.locals.session.id);
+		deleteSessionTokenCookie(event);
 		await db.delete(usersTable).where(eq(usersTable.id, user.id));
 
 		redirect(302, '/signin');
