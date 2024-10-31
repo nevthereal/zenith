@@ -2,7 +2,6 @@ import { WEBHOOK } from '$env/static/private';
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { stripe } from '$lib/stripe';
-import type Stripe from 'stripe';
 import { db } from '$lib/db';
 import { usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
@@ -19,16 +18,11 @@ export const POST: RequestHandler = async ({ request }) => {
 		const eventType = event.type;
 
 		if (eventType === 'checkout.session.completed') {
-			const sessionWithCustomer = await stripe.checkout.sessions.retrieve(event.data.object.id, {
-				expand: ['customer']
-			});
-
-			const customer = sessionWithCustomer.customer as Stripe.Customer;
+			const sessionWithCustomer = await stripe.checkout.sessions.retrieve(event.data.object.id);
 
 			await db
 				.update(usersTable)
 				.set({
-					stripeId: customer.id,
 					paid: true
 				})
 				.where(eq(usersTable.email, sessionWithCustomer.customer_email as string));
