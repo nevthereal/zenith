@@ -3,7 +3,7 @@ import { checkUser } from '$lib/utils';
 import { superValidate, fail, setMessage } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { zUpdateUser } from '$lib/zod';
-import { db } from '$lib/db/db';
+import { db } from '$lib/db';
 import { usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { redirect } from '@sveltejs/kit';

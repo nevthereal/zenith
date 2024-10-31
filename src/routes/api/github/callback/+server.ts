@@ -3,7 +3,7 @@ import { generateIdFromEntropySize } from 'lucia';
 import { github, lucia } from '$lib/auth/lucia';
 
 import type { RequestEvent } from '@sveltejs/kit';
-import { db } from '$lib/db/db';
+import { db } from '$lib/db';
 import { eq } from 'drizzle-orm';
 import { usersTable } from '$lib/db/schema';
 

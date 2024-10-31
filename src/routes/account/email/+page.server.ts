@@ -1,7 +1,7 @@
 import { checkUser } from '$lib/utils';
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { db } from '$lib/db/db';
+import { db } from '$lib/db';
 import { usersTable, verificationCodesTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { alphabet, generateRandomString } from 'oslo/crypto';

@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations, type InferSelectModel } from 'drizzle-orm';
 import {
 	boolean,
 	date,
@@ -99,3 +99,6 @@ export const eventRelation = relations(eventsTable, ({ one }) => ({
 	user: one(usersTable, { fields: [eventsTable.userId], references: [usersTable.id] }),
 	project: one(projectsTable, { fields: [eventsTable.projectId], references: [projectsTable.id] })
 }));
+
+export type User = InferSelectModel<typeof usersTable>;
+export type Session = InferSelectModel<typeof sessionsTable>;

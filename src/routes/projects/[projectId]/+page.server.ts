@@ -1,4 +1,4 @@
-import { db } from '$lib/db/db';
+import { db } from '$lib/db';
 import { checkUser, initializeEventForms } from '$lib/utils';
 import { and, asc, eq } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';

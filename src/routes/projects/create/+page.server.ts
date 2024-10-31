@@ -1,4 +1,4 @@
-import { db } from '$lib/db/db';
+import { db } from '$lib/db';
 import type { Actions, PageServerLoad } from './$types';
 import { projectsTable } from '$lib/db/schema';
 import { checkUser } from '$lib/utils';

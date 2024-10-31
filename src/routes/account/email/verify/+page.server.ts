@@ -4,7 +4,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { zod } from 'sveltekit-superforms/adapters';
 import { zVerifyEmail } from '$lib/zod';
 import { redirect } from '@sveltejs/kit';
-import { db } from '$lib/db/db';
+import { db } from '$lib/db';
 import { eq } from 'drizzle-orm';
 import { usersTable, verificationCodesTable } from '$lib/db/schema';
 import { isWithinExpirationDate } from 'oslo';

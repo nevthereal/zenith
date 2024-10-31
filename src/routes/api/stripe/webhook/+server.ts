@@ -3,7 +3,7 @@ import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { stripe } from '$lib/stripe';
 import type Stripe from 'stripe';
-import { db } from '$lib/db/db';
+import { db } from '$lib/db';
 import { usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 

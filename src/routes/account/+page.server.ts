@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { checkUser } from '$lib/utils';
 import { lucia } from '$lib/auth/lucia';
 import { redirect } from '@sveltejs/kit';
-import { db } from '$lib/db/db';
+import { db } from '$lib/db';
 import { and, eq } from 'drizzle-orm';
 import { eventsTable } from '$lib/db/schema';
 
