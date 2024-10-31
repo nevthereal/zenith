@@ -10,8 +10,8 @@ export const GET: RequestHandler = async ({ locals, url }) => {
 	if (!user.emailVerified) return redirect(302, '/account/email');
 
 	const session = await stripe.checkout.sessions.create({
+		customer_email: user.email!,
 		line_items: [{ price: PRICE_ID, quantity: 1 }],
-		customer_email: user.email,
 		allow_promotion_codes: true,
 		mode: 'payment',
 		customer_creation: 'always',
