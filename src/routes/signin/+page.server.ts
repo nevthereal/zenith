@@ -1,7 +1,7 @@
 import { generateState } from 'arctic';
 import type { Actions, PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
-import { github } from '$lib/auth/lucia';
+import { github } from '$lib/auth';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) redirect(302, '/account');

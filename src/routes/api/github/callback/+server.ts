@@ -1,11 +1,11 @@
 import { OAuth2RequestError } from 'arctic';
-import { generateIdFromEntropySize } from 'lucia';
-import { github, lucia } from '$lib/auth/lucia';
-
 import type { RequestEvent } from '@sveltejs/kit';
-import { db } from '$lib/db/db';
+import { db } from '$lib/db';
 import { eq } from 'drizzle-orm';
 import { usersTable } from '$lib/db/schema';
+import { createSession, generateSessionToken, github } from '$lib/auth';
+import { setSessionTokenCookie } from '$lib/auth/cookies';
+import { randomUUID } from 'crypto';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');
@@ -27,37 +27,29 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		});
 		const githubUser: GitHubUser = await githubUserResponse.json();
 
-		// Replace this with your own DB client.
 		const existingUser = await db.query.usersTable.findFirst({
-			where: eq(usersTable.githubId, githubUser.id)
+			where: eq(usersTable.username, githubUser.login)
 		});
 
 		if (existingUser) {
-			const session = await lucia.createSession(existingUser.id, {});
-			const sessionCookie = lucia.createSessionCookie(session.id);
-			event.cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: '.',
-				...sessionCookie.attributes
-			});
+			const token = generateSessionToken();
+			const session = await createSession(token, existingUser.id);
+			setSessionTokenCookie(event, token, session.expiresAt);
 		} else {
-			const userId = generateIdFromEntropySize(10); // 16 characters long
+			const userId = randomUUID();
 
-			// Replace this with your own DB client.
 			await db.insert(usersTable).values({
 				email: githubUser.email,
-				githubId: githubUser.id,
 				id: userId,
+				provider: 'github',
 				username: githubUser.login,
 				joined: new Date(),
 				emailVerified: githubUser.email ? true : false
 			});
 
-			const session = await lucia.createSession(userId, {});
-			const sessionCookie = lucia.createSessionCookie(session.id);
-			event.cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: '.',
-				...sessionCookie.attributes
-			});
+			const token = generateSessionToken();
+			const session = await createSession(token, userId);
+			setSessionTokenCookie(event, token, session.expiresAt);
 		}
 		return new Response(null, {
 			status: 302,
@@ -81,8 +73,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 }
 
 interface GitHubUser {
-	id: number;
 	login: string;
-	admin: boolean;
 	email: string | null;
 }

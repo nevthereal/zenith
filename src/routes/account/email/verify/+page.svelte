@@ -4,12 +4,7 @@
 
 	let { data } = $props();
 
-	const { form, allErrors, enhance, submit } = superForm(data.form);
-	$effect(() => {
-		if ($form.code.length === 6) {
-			submit();
-		}
-	});
+	const { form, allErrors, enhance } = superForm(data.form);
 </script>
 
 <section>

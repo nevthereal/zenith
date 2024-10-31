@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations, type InferSelectModel } from 'drizzle-orm';
 import {
 	boolean,
 	date,
@@ -46,19 +46,17 @@ export const projectCollaboratorsTable = pgTable('project_collaborators', {
 export const usersTable = pgTable('users', {
 	id: text('id').notNull().primaryKey(),
 	username: text('username').notNull(),
-	githubId: integer('github_id').unique().notNull(),
+	provider: text('provider').notNull(),
 	email: text('email').unique(),
 	emailVerified: boolean('emailVerified').default(false).notNull(),
 	admin: boolean('admin').default(false).notNull(),
 	joined: timestamp('joined').notNull(),
-	trialEnd: timestamp('trial_end'),
-	stripeId: text('stripe_id'),
 	paid: boolean('paid').default(false).notNull()
 });
 
 export const verificationCodesTable = pgTable('verification_codes', {
 	id: serial('id').primaryKey(),
-	code: text('code').notNull(),
+	code: integer('code').notNull(),
 	user_id: text('user_id').unique().notNull(),
 	email: text('email').notNull(),
 	expires: timestamp('expires').notNull()
@@ -99,3 +97,6 @@ export const eventRelation = relations(eventsTable, ({ one }) => ({
 	user: one(usersTable, { fields: [eventsTable.userId], references: [usersTable.id] }),
 	project: one(projectsTable, { fields: [eventsTable.projectId], references: [projectsTable.id] })
 }));
+
+export type User = InferSelectModel<typeof usersTable>;
+export type Session = InferSelectModel<typeof sessionsTable>;

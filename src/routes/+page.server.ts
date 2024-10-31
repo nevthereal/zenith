@@ -6,7 +6,7 @@ import { superValidate, fail, setError } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
-import { db } from '$lib/db/db';
+import { db } from '$lib/db';
 import { eventsTable, projectsTable } from '$lib/db/schema';
 import { and, asc, eq, gt, lt } from 'drizzle-orm';
 import { checkUser, initializeEventForms } from '$lib/utils';

@@ -27,7 +27,7 @@
 		Hi, <span class="font-bold text-primary">{user.username}</span>
 	</h3>
 	<h1 class="heading-main text-center">What are your plans?</h1>
-	{#if user.paid || (user.trialEnd != null && dayjs().isBefore(dayjs(user.trialEnd)))}
+	{#if user.paid}
 		<form action="?/create" method="POST" class="my-12 flex flex-col" use:enhance>
 			<div class="flex items-center justify-center gap-4">
 				<input
@@ -45,23 +45,15 @@
 					{/if}
 				</button>
 			</div>
-			{#if user.trialEnd != null && dayjs().isBefore(dayjs(user.trialEnd))}
-				<p class="text-muted mt-2">Your trial ends in {dayjs().to(dayjs(user.trialEnd))}</p>
-			{/if}
 			{#if $allErrors}
 				{#each $allErrors as err}
 					<span class="mt-2 text-error">{err.messages}</span>
 				{/each}
 			{/if}
 		</form>
-	{:else if user.trialEnd != null && dayjs().isAfter(dayjs(user.trialEnd))}
-		<p class="heading-small my-8 text-warning">
-			Your free trial is over. <a href="/account/billing" class="link link-warning">Purchase</a> the
-			product to continue
-		</p>
 	{:else}
 		<a href="/account/billing" class=" heading-small link link-warning my-8 text-warning"
-			>Activate the free trial or purchase the product to continue.</a
+			>Purchase the product to continue.</a
 		>
 	{/if}
 
