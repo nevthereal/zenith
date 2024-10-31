@@ -1,5 +1,5 @@
 <script lang="ts">
-	let { username, email, code }: { username: string; email: string; code: string } = $props();
+	let { username, code }: { username: string; code: number } = $props();
 </script>
 
 <h2 class="mb-4 text-xl">Hello, {username}</h2>

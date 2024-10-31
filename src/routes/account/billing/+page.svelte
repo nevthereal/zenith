@@ -27,12 +27,6 @@
 				</p>
 				<div class="flex items-center gap-4">
 					<a href="/api/stripe" class="btn btn-warning">Purchase ($20)</a>
-
-					{#if !user.trialEnd || (user.trialEnd != null && dayjs().isBefore(dayjs(user.trialEnd)))}
-						<button class="btn" form="trial">Activate the free trial</button>
-					{:else}
-						<p>Your free trial is over.</p>
-					{/if}
 				</div>
 			{:else}
 				<a href="/account/email" class="link link-warning"

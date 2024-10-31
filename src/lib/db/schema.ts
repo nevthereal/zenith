@@ -51,14 +51,12 @@ export const usersTable = pgTable('users', {
 	emailVerified: boolean('emailVerified').default(false).notNull(),
 	admin: boolean('admin').default(false).notNull(),
 	joined: timestamp('joined').notNull(),
-	trialEnd: timestamp('trial_end'),
-	stripeId: text('stripe_id'),
 	paid: boolean('paid').default(false).notNull()
 });
 
 export const verificationCodesTable = pgTable('verification_codes', {
 	id: serial('id').primaryKey(),
-	code: text('code').notNull(),
+	code: integer('code').notNull(),
 	user_id: text('user_id').unique().notNull(),
 	email: text('email').notNull(),
 	expires: timestamp('expires').notNull()

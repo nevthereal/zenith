@@ -1,5 +1,5 @@
-import type { User } from '$lib/server/user';
-import type { Session } from '$lib/server/session';
+import type { User } from '$lib/db/schema';
+import type { Session } from '$lib/db/schema';
 
 declare global {
 	namespace App {

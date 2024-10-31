@@ -1,10 +1,10 @@
-import { checkUser } from '$lib/utils';
+import { checkUser, random } from '$lib/utils';
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/db';
 import { usersTable, verificationCodesTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
-import { alphabet, generateRandomString } from 'oslo/crypto';
+import { generateRandomIntegerNumber } from '@oslojs/crypto/random';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
 import { zAddEmail } from '$lib/zod';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -43,7 +43,7 @@ export const actions = {
 
 		await db.delete(verificationCodesTable).where(eq(verificationCodesTable.user_id, user.id));
 
-		const code = generateRandomString(6, alphabet('0-9'));
+		const code = generateRandomIntegerNumber(random, 6);
 
 		await db.insert(verificationCodesTable).values({
 			user_id: user.id,
@@ -59,7 +59,7 @@ export const actions = {
 			})
 			.where(eq(usersTable.id, user.id));
 
-		const html = render(Verify, { props: { code, email: user.email, username: user.username } });
+		const html = render(Verify, { props: { code, username: user.username } });
 
 		try {
 			await resend.emails.send({
