@@ -36,4 +36,3 @@
 		{/if}
 	</div>
 </section>
-<form action="?/trial" id="trial" use:enhance method="post"></form>

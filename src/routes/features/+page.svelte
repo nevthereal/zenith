@@ -38,8 +38,7 @@
 		purchase with no subscription tied to it and you have full access to all features. Your payment
 		is securely processed with
 		<strong>Stripe</strong>. You can pay with every popular credit card, as well as with
-		<strong>Apple Pay</strong> and <strong>Google Pay</strong>. If you want to try out the features
-		before, you can activate a <strong>3-day free trial</strong> and recieve all features.
+		<strong>Apple Pay</strong> and <strong>Google Pay</strong>.
 	</p>
 	<p>
 		Suggest a feature? Hit me up at <a href="mailto:contact@nevillebrem.com"
