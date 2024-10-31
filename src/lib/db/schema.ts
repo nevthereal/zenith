@@ -46,7 +46,7 @@ export const projectCollaboratorsTable = pgTable('project_collaborators', {
 export const usersTable = pgTable('users', {
 	id: text('id').notNull().primaryKey(),
 	username: text('username').notNull(),
-	githubId: integer('github_id').unique().notNull(),
+	provider: text('provider').notNull(),
 	email: text('email').unique(),
 	emailVerified: boolean('emailVerified').default(false).notNull(),
 	admin: boolean('admin').default(false).notNull(),

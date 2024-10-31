@@ -309,6 +309,13 @@
       "when": 1730374318179,
       "tag": "0043_mute_star_brand",
       "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1730402108227,
+      "tag": "0044_freezing_true_believers",
+      "breakpoints": true
     }
   ]
 }

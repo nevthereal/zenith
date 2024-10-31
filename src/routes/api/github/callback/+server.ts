@@ -27,9 +27,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		});
 		const githubUser: GitHubUser = await githubUserResponse.json();
 
-		// Replace this with your own DB client.
 		const existingUser = await db.query.usersTable.findFirst({
-			where: eq(usersTable.githubId, githubUser.id)
+			where: eq(usersTable.username, githubUser.login)
 		});
 
 		if (existingUser) {
@@ -41,8 +40,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
 			await db.insert(usersTable).values({
 				email: githubUser.email,
-				githubId: githubUser.id,
 				id: userId,
+				provider: 'github',
 				username: githubUser.login,
 				joined: new Date(),
 				emailVerified: githubUser.email ? true : false
@@ -74,8 +73,6 @@ export async function GET(event: RequestEvent): Promise<Response> {
 }
 
 interface GitHubUser {
-	id: number;
 	login: string;
-	admin: boolean;
 	email: string | null;
 }
