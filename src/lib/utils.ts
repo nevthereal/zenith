@@ -22,7 +22,7 @@ export const random: RandomReader = {
 	}
 };
 
-export const alphabet = 'ABCDEFGHIJKLMNOP';
+export const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
 
 export async function initializeEventForms() {
 	const editForm = await superValidate(zod(zEditEvent));
