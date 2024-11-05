@@ -47,7 +47,7 @@
 		</li>
 		<li>
 			<span class="font-medium">Completed Tasks:</span>
-			<span class="text-muted">{data.completedCount.length}</span>
+			<span class="text-muted">{data.completedCount}</span>
 		</li>
 		{#if user.admin}
 			<li>

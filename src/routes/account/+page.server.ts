@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { checkUser } from '$lib/utils';
 import { redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
-import { and, eq } from 'drizzle-orm';
+import { and, count, eq } from 'drizzle-orm';
 import { eventsTable } from '$lib/db/schema';
 import { invalidateSession } from '$lib/auth';
 import { deleteSessionTokenCookie } from '$lib/auth/cookies';
@@ -10,11 +10,12 @@ import { deleteSessionTokenCookie } from '$lib/auth/cookies';
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	const completedCount = await db.query.eventsTable.findMany({
-		where: and(eq(eventsTable.completed, true), eq(eventsTable.userId, user.id))
-	});
+	const query = await db
+		.select({ value: count() })
+		.from(eventsTable)
+		.where(and(eq(eventsTable.completed, true), eq(eventsTable.userId, user.id)));
 
-	return { user, completedCount };
+	return { user, completedCount: query[0].value };
 };
 export const actions = {
 	signout: async (event) => {
