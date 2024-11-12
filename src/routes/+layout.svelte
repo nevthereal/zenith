@@ -1,8 +1,11 @@
 <script>
 	import logo from '$lib/assets/zenith-logo.svg';
 	import '../app.css';
+	import { inject } from '@vercel/analytics';
 
 	const { children, data } = $props();
+
+	inject();
 
 	const user = data.user;
 </script>
