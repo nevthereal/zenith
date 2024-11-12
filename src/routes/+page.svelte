@@ -57,7 +57,7 @@
 		>
 	{/if}
 
-	<section class="mb-8 flex w-full max-w-2xl flex-col items-center gap-12">
+	<section class="mb-8 flex w-full max-w-2xl flex-col items-center">
 		{#await data.events}
 			<Loading text="events" />
 		{:then events}
@@ -67,7 +67,7 @@
 				{@const dueEvents = events.filter((e) => dayjs(e.date).isAfter(dayjs()))}
 				{@const overDueEvents = events.filter((e) => dayjs(e.date).isBefore(dayjs()))}
 				{#if dueEvents.length != 0}
-					<h3 class="heading-sub mb-2 mr-auto">Today:</h3>
+					<h3 class="heading-sub mb-4 mr-auto">Today:</h3>
 					<div class="flex w-full flex-col gap-4">
 						{#each dueEvents as event (event.id)}
 							<Event
@@ -80,7 +80,7 @@
 					</div>
 				{/if}
 				{#if overDueEvents.length != 0}
-					<h3 class="heading-sub mb-2 mr-auto">Overdue:</h3>
+					<h3 class="heading-sub mb-4 mr-auto">Overdue:</h3>
 					<div class="flex w-full flex-col gap-4">
 						{#each overDueEvents as event (event.id)}
 							<Event
@@ -96,7 +96,7 @@
 		{:catch}
 			<Error />
 		{/await}
-		<p class="flex gap-4">
+		<p class="mt-4 flex gap-4">
 			<a href="/upcoming" class="link link-primary font-semibold italic">All upcoming</a>
 			<span>|</span>
 			<a href="/completed" class="link link-success font-semibold italic">Completed</a>

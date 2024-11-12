@@ -28,7 +28,7 @@ export const POST: RequestHandler = async ({ request }) => {
 				.where(eq(usersTable.email, sessionWithCustomer.customer_email as string));
 		}
 	} catch (err) {
-		console.log('Something went wrong.', err);
+		console.error(err);
 		error(500);
 	}
 

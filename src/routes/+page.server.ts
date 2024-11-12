@@ -1,5 +1,6 @@
 import { zEventLLM, zCreateEvent, zEditEvent, zToggleEvent } from '$lib/zod';
-import { model } from '$lib/ai';
+import { OPENAI_KEY } from '$env/static/private';
+import { createOpenAI } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
 import { superValidate, fail, setError } from 'sveltekit-superforms';
@@ -49,6 +50,10 @@ export const actions = {
 	create: async ({ request, locals }) => {
 		const form = await superValidate(request, zod(zCreateEvent));
 
+		const openai = createOpenAI({
+			apiKey: OPENAI_KEY
+		});
+
 		const user = checkUser(locals);
 
 		if (!form.valid) {
@@ -90,12 +95,9 @@ export const actions = {
 			}
 		});
 
-		console.log(JSON.stringify(usersEvents));
-
 		const { object } = await generateObject({
-			model: model,
+			model: openai('gpt-4o'),
 			schema: zEventLLM,
-			mode: 'tool',
 			system: `Right now is the ${dayjs().toDate()}. You are an assistant who processes the users input to an event. Pay attention to the user's other events: ${usersEvents}.`,
 			prompt: form.data.event
 		});

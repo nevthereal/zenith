@@ -188,12 +188,3 @@
 		<button>close</button>
 	</form>
 </dialog>
-
-<form
-	action="?/action"
-	id="actionForm"
-	use:enhance={({ formData }) => {
-		formData.set('projectId', data.project.id.toString());
-	}}
-	method="post"
-></form>
