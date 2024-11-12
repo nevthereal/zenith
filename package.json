@@ -44,7 +44,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@ai-sdk/openai": "^0.0.27",
+    "@ai-sdk/openai": "^0.0.72",
     "@neondatabase/serverless": "^0.9.3",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
@@ -52,7 +52,7 @@
     "@sveltejs/enhanced-img": "^0.3.9",
     "@upstash/ratelimit": "^2.0.0",
     "@upstash/redis": "^1.33.0",
-    "ai": "^3.2.16",
+    "ai": "^3.4.33",
     "arctic": "^1.9.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.11",
