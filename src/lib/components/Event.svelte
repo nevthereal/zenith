@@ -27,13 +27,8 @@
 
 	let { editFormData, toggleFormData, event, projects }: Props = $props();
 
-	let editModal: HTMLDialogElement = $state() as HTMLDialogElement;
-	let toggleModal: HTMLDialogElement = $state() as HTMLDialogElement;
-
-	$effect(() => {
-		editModal = document.getElementById(`edit-modal-${event.id}`) as HTMLDialogElement;
-		toggleModal = document.getElementById(`toggle-modal-${event.id}`) as HTMLDialogElement;
-	});
+	let editModal: HTMLDialogElement;
+	let toggleModal: HTMLDialogElement;
 
 	const {
 		form: editForm,
@@ -107,7 +102,7 @@
 			<i class="fa-regular fa-circle-check text-lg md:text-xl"></i>
 		</button>
 	</div>
-	<dialog id={`edit-modal-${event.id}`} class="modal">
+	<dialog id={`edit-modal-${event.id}`} bind:this={editModal} class="modal">
 		<div class="modal-box">
 			<h1 class="mb-4 text-xl font-medium">Edit Event</h1>
 			<form method="POST" action="/?/edit" use:editEnhance class="flex flex-col gap-4">
@@ -174,7 +169,7 @@
 			<button>close</button>
 		</form>
 	</dialog>
-	<dialog class="modal" id={`toggle-modal-${event.id}`}>
+	<dialog class="modal" bind:this={toggleModal} id={`toggle-modal-${event.id}`}>
 		<div class="modal-box">
 			<h2 class="text-xl font-bold">Complete or Delete Event?</h2>
 			<div class="modal-action">

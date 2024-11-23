@@ -12,11 +12,7 @@
 
 	let { data } = $props();
 
-	let editModal = $state() as HTMLDialogElement;
-
-	$effect(() => {
-		editModal = document.getElementById('editModal') as HTMLDialogElement;
-	});
+	let editModal: HTMLDialogElement;
 
 	const {
 		form: prjEditForm,
@@ -127,7 +123,7 @@
 	</div>
 </div>
 
-<dialog id="editModal" class="modal">
+<dialog bind:this={editModal} class="modal">
 	<div class="modal-box">
 		<h1 class="heading-main">Edit Project</h1>
 		<form action="?/edit" method="post" class="flex flex-col gap-4" use:prjEditEnhance>

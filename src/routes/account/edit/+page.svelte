@@ -4,11 +4,7 @@
 
 	let { data } = $props();
 
-	let deleteModal: HTMLDialogElement = $state() as HTMLDialogElement;
-
-	$effect(() => {
-		deleteModal = document.getElementById('delete-modal') as HTMLDialogElement;
-	});
+	let deleteModal: HTMLDialogElement;
 
 	const {
 		form: usernameForm,
@@ -53,7 +49,7 @@
 		>
 	</div>
 </section>
-<dialog id="delete-modal" class="modal">
+<dialog id="delete-modal" bind:this={deleteModal} class="modal">
 	<div class="modal-box">
 		<h3 class="text-lg font-bold">Confirm account deletion</h3>
 		<p class="py-4">
