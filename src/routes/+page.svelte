@@ -52,7 +52,7 @@
 			{/if}
 		</form>
 	{:else}
-		<a href="/account/billing" class=" heading-small link link-warning my-8 text-warning"
+		<a href="/account/billing" class="heading-small link link-warning my-8 text-warning"
 			>Purchase the product to continue.</a
 		>
 	{/if}

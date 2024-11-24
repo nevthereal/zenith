@@ -53,6 +53,7 @@
 		"@sveltejs/enhanced-img": "^0.3.9",
 		"@upstash/ratelimit": "^2.0.0",
 		"@upstash/redis": "^1.33.0",
+		"@vercel/speed-insights": "^1.1.0",
 		"ai": "^3.4.33",
 		"arctic": "^1.9.1",
 		"clsx": "^2.1.1",

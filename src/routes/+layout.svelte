@@ -1,8 +1,13 @@
 <script>
 	import logo from '$lib/assets/zenith-logo.svg';
 	import '../app.css';
+	import { injectAnalytics } from '@vercel/analytics/sveltekit';
+	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 
 	const { children, data } = $props();
+
+	injectAnalytics();
+	injectSpeedInsights();
 
 	const user = data.user;
 </script>
