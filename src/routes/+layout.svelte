@@ -1,14 +1,22 @@
 <script>
+	import { dev } from '$app/environment';
 	import logo from '$lib/assets/zenith-logo.svg';
 	import '../app.css';
-	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 
 	const { children, data } = $props();
 
-	injectSpeedInsights();
-
 	const user = data.user;
 </script>
+
+<svelte:head>
+	{#if !dev}
+		<script
+			defer
+			src="https://analytics.nevillebrem.com/script.js"
+			data-website-id="96c4fd49-95b0-4b54-928b-6cc0081a30a0"
+		></script>
+	{/if}
+</svelte:head>
 
 <nav class="flex select-none items-center justify-between p-4">
 	<a href="/" class="flex items-center"
