@@ -26,7 +26,9 @@
 					Please purchase the product to use the features of this app.
 				</p>
 				<div class="flex items-center gap-4">
-					<a href="/api/stripe" class="btn btn-warning">Purchase ($20)</a>
+					<a data-umami-event="purchase" href="/api/stripe" class="btn btn-warning"
+						>Purchase ($20)</a
+					>
 				</div>
 			{:else}
 				<a href="/account/email" class="link link-warning"
