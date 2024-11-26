@@ -1,3 +1,7 @@
+<script>
+	import { dev } from '$app/environment';
+</script>
+
 <svelte:head>
 	<title>Zenith - Sign in</title>
 </svelte:head>
@@ -10,7 +14,9 @@
 		</p>
 	</div>
 
-	<a data-umami-event="sign-up" href="api/github" class="btn m-auto flex gap-4 text-lg"
-		><i class="fa-brands fa-github"></i>Sign in with GitHub</a
+	<a
+		data-umami-event={dev ? 'signup' : null}
+		href="api/github"
+		class="btn m-auto flex gap-4 text-lg"><i class="fa-brands fa-github"></i>Sign in with GitHub</a
 	>
 </div>
