@@ -13,7 +13,11 @@ import { deleteSessionTokenCookie } from '$lib/auth/cookies';
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	const updateForm = await superValidate(zod(zUpdateUser));
+	const updateForm = await superValidate(zod(zUpdateUser), {
+		defaults: {
+			username: user.username
+		}
+	});
 
 	return { user, updateForm };
 };

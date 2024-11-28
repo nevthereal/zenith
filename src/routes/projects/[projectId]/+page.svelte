@@ -38,8 +38,6 @@
 	const dateInput = dateProxy(prjEditForm, 'deadline', { format: 'date' });
 
 	let deleteConfirmation = $state('');
-
-	$prjEditForm.projectId = data.project.id;
 </script>
 
 <svelte:head>
@@ -125,7 +123,7 @@
 
 <dialog bind:this={editModal} class="modal">
 	<div class="modal-box">
-		<h1 class="heading-main">Edit Project</h1>
+		<h1 class="heading-main mb-4">Edit Project</h1>
 		<form action="?/edit" method="post" class="flex flex-col gap-4" use:prjEditEnhance>
 			<div class="flex flex-col">
 				<Label forAttr="name">Name</Label>
@@ -159,8 +157,10 @@
 				{/if}</button
 			>
 		</form>
+		<h1 class="heading-main my-4 border-t border-base-content/40 pt-4 text-error">
+			Delete project?
+		</h1>
 		<form action="?/delete" class="mt-4" use:deleteEnhance method="post">
-			<h1 class="heading-small mb-4 text-error">Delete project?</h1>
 			<input type="hidden" name="projectId" bind:value={$deleteForm.projectId} />
 			<div class="flex flex-col">
 				<Label forAttr="confirmation"

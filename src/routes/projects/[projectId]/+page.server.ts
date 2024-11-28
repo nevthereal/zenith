@@ -7,6 +7,7 @@ import { error, redirect } from '@sveltejs/kit';
 import { fail, setMessage, superValidate } from 'sveltekit-superforms';
 import { zDeleteProject, zEditProject } from '$lib/zod';
 import { zod } from 'sveltekit-superforms/adapters';
+import dayjs from 'dayjs';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	const user = checkUser(locals);
@@ -58,8 +59,18 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const { editForm, toggleForm } = await initializeEventForms();
 
-	const projectEditForm = await superValidate(zod(zEditProject));
-	const projectDeleteForm = await superValidate(zod(zDeleteProject));
+	const projectEditForm = await superValidate(zod(zEditProject), {
+		defaults: {
+			projectId: project.id,
+			deadline: dayjs(project.deadline).isValid() ? dayjs(project.deadline).toDate() : undefined,
+			name: project.name
+		}
+	});
+	const projectDeleteForm = await superValidate(zod(zDeleteProject), {
+		defaults: {
+			projectId: project.id
+		}
+	});
 
 	return {
 		project,

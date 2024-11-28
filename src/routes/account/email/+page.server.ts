@@ -17,7 +17,11 @@ import Verify from '$lib/components/mails/Verify.svelte';
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	const form = await superValidate(zod(zAddEmail));
+	const form = await superValidate(zod(zAddEmail), {
+		defaults: {
+			email: user.email
+		}
+	});
 
 	if (user.emailVerified) redirect(302, '/account');
 
