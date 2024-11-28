@@ -11,8 +11,6 @@ import { zod } from 'sveltekit-superforms/adapters';
 import dayjs from 'dayjs';
 import { Resend } from 'resend';
 import { RESEND_KEY } from '$env/static/private';
-import { render } from 'svelte/server';
-import Verify from '$lib/components/mails/Verify.svelte';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
@@ -63,14 +61,11 @@ export const actions = {
 			})
 			.where(eq(usersTable.id, user.id));
 
-		const html = render(Verify, { props: { code, username: user.username } });
-
 		try {
 			await resend.emails.send({
 				from: 'Zenith <no-reply@zenithproductivity.app>',
 				to: form.data.email,
 				subject: 'Verification Code for Zenith',
-				html: html.body,
 				text: `Your verification code for Zenith is: ${code}`
 			});
 		} catch (error) {
