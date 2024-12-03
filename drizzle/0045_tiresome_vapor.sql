@@ -1,0 +1,1 @@
+ALTER TABLE "verification_codes" ALTER COLUMN "code" SET DATA TYPE text;

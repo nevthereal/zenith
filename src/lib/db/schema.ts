@@ -56,7 +56,7 @@ export const usersTable = pgTable('users', {
 
 export const verificationCodesTable = pgTable('verification_codes', {
 	id: serial('id').primaryKey(),
-	code: integer('code').notNull(),
+	code: text('code').notNull(),
 	user_id: text('user_id').unique().notNull(),
 	email: text('email').notNull(),
 	expires: timestamp('expires').notNull()

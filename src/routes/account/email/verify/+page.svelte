@@ -13,7 +13,7 @@
 	<form method="post" use:enhance class="flex max-w-64 flex-col">
 		<Label forAttr="code">Verification code</Label>
 		<div class="flex gap-2">
-			<input inputmode="numeric" name="code" class="input input-primary" bind:value={$form.code} />
+			<input name="code" class="input input-primary" bind:value={$form.code} />
 			<button class="btn btn-primary">Check</button>
 		</div>
 		{#if $allErrors}

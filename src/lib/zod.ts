@@ -63,5 +63,5 @@ export const zAddEmail = z.object({
 });
 
 export const zVerifyEmail = z.object({
-	code: z.number()
+	code: z.string()
 });
