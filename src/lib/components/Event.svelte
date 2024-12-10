@@ -117,6 +117,7 @@
 							name="event"
 							placeholder="What?"
 							class="input input-bordered"
+							defaultValue={$editForm.event}
 						/>
 					</div>
 					<div class="flex flex-col">
@@ -128,6 +129,7 @@
 							type="datetime-local"
 							placeholder="When?"
 							class="input input-bordered"
+							defaultValue={dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS')}
 						/>
 					</div>
 					<div class="flex flex-col md:col-span-2">
