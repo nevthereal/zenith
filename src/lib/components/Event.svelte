@@ -67,7 +67,9 @@
 	$toggleForm.id = event.id;
 </script>
 
-<div class="flex w-full flex-row justify-between gap-4 rounded-box bg-base-200 p-8">
+<div
+	class="motion-preset-fade-md flex w-full flex-row justify-between gap-4 rounded-box bg-base-200 p-8"
+>
 	<div>
 		<h1 class={cn('heading-sub mb-2', !event.completed ? 'text-primary' : 'text-success')}>
 			{event.content}

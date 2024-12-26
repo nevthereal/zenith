@@ -32,6 +32,6 @@ export default {
 		],
 		logs: false
 	},
-
-	plugins: [typography, daisyui]
+	// eslint-disable-next-line @typescript-eslint/no-require-imports
+	plugins: [typography, daisyui, require('tailwindcss-motion')]
 } as Config;

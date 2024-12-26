@@ -18,7 +18,7 @@
 	{/if}
 </svelte:head>
 
-<nav class="flex select-none items-center justify-between p-4">
+<nav class="motion-preset-blur-up flex select-none items-center justify-between p-4">
 	<a href="/" class="flex items-center"
 		><img src={logo} alt="Logo" class="size-16" /><span
 			class="text-2xl font-bold italic md:text-4xl"

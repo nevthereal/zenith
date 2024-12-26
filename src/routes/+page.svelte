@@ -23,12 +23,19 @@
 </svelte:head>
 
 <div class="flex flex-col items-center">
-	<h3 class="heading-small">
-		Hi, <span class="font-bold text-primary">{user.username}</span>
-	</h3>
-	<h1 class="heading-main text-center">What are your plans?</h1>
+	<div class="motion-preset-blur-up text-center">
+		<h3 class="heading-small">
+			Hi, <span class="font-bold text-primary">{user.username}</span>
+		</h3>
+		<h1 class="heading-main">What are your plans?</h1>
+	</div>
 	{#if user.paid}
-		<form action="?/create" method="POST" class="my-12 flex flex-col" use:enhance>
+		<form
+			action="?/create"
+			method="POST"
+			class="motion-preset-blur-up my-12 flex flex-col motion-delay-300"
+			use:enhance
+		>
 			<div class="flex items-center justify-center gap-4">
 				<input
 					class="input input-bordered input-primary border-2"
@@ -62,12 +69,12 @@
 			<Loading text="events" />
 		{:then events}
 			{#if events.length == 0}
-				<h2 class="heading-small italic">Nothing planned today.</h2>
+				<h2 class="heading-small italic">All done for today!</h2>
 			{:else}
 				{@const dueEvents = events.filter((e) => dayjs(e.date).isAfter(dayjs()))}
 				{@const overDueEvents = events.filter((e) => dayjs(e.date).isBefore(dayjs()))}
 				{#if dueEvents.length != 0}
-					<h3 class="heading-sub mb-4 mr-auto">Today:</h3>
+					<h3 class="heading-sub my-4 mr-auto">Today:</h3>
 					<div class="flex w-full flex-col gap-4">
 						{#each dueEvents as event (event.id)}
 							<Event
@@ -80,7 +87,7 @@
 					</div>
 				{/if}
 				{#if overDueEvents.length != 0}
-					<h3 class="heading-sub mb-4 mr-auto">Overdue:</h3>
+					<h3 class="heading-sub my-4 mr-auto">Overdue:</h3>
 					<div class="flex w-full flex-col gap-4">
 						{#each overDueEvents as event (event.id)}
 							<Event

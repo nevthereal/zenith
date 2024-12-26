@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import Event from '$lib/components/Event.svelte';
 	import Label from '$lib/components/Label.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
@@ -89,7 +88,7 @@
 			{#if data.events.length != 0}
 				<section class="mt-4 flex flex-col items-center gap-4">
 					<h3 class="heading-muted mb-4">Due events ({data.events.length})</h3>
-					{#each data.events as event}
+					{#each data.events as event (event.id)}
 						<Event
 							{event}
 							projects={data.userProjects}
@@ -104,7 +103,7 @@
 					<h3 class="heading-small mb-4 text-success">
 						Completed events ({data.completedEvents.length})
 					</h3>
-					{#each data.completedEvents as event}
+					{#each data.completedEvents as event (event.id)}
 						<Event
 							{event}
 							projects={data.userProjects}
