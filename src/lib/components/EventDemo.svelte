@@ -7,8 +7,13 @@
 		"<span class="bg-primary/50">Dinner with Stacy</span>
 		<span class="bg-secondary/50">tomorrow</span> at <span class="bg-secondary/50">6PM</span>"
 	</p>
-	<i class="fa-solid fa-arrow-down text-2xl text-secondary"></i>
-	<div class="flex flex-row justify-between gap-4 rounded-box bg-base-200 p-8 text-left">
+	<i
+		class="fa-solid fa-arrow-down motion-preset-rebound-down text-2xl text-secondary motion-delay-300"
+		aria-label="arrow"
+	></i>
+	<div
+		class="motion-preset-focus flex flex-row justify-between gap-4 rounded-box bg-base-200 p-8 text-left motion-delay-700"
+	>
 		<div>
 			<h1 class="heading-sub mb-2">Dinner with Stacy</h1>
 			<div class="text-md md:text-base">
