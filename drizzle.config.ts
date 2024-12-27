@@ -6,7 +6,7 @@ export default {
 		url: process.env.DB_URL as string
 	},
 	dialect: 'postgresql',
-	schema: './src/lib/db/schema.ts',
+	schema: './src/lib/db/schema/*.sql.ts',
 	out: './drizzle',
 	verbose: true,
 	strict: true

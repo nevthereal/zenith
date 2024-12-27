@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 import typography from '@tailwindcss/typography';
 import daisyui from 'daisyui';
+import tailwindcssMotion from 'tailwindcss-motion';
 
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts,tsx}'],
@@ -32,6 +33,5 @@ export default {
 		],
 		logs: false
 	},
-	// eslint-disable-next-line @typescript-eslint/no-require-imports
-	plugins: [typography, daisyui, require('tailwindcss-motion')]
+	plugins: [typography, daisyui, tailwindcssMotion]
 } as Config;
