@@ -6,12 +6,16 @@
 		deadline: string | null;
 		collaborators: { user: { username: string } | null }[];
 		id: number;
+		index: number;
 	}
 
-	let { name, deadline, collaborators, id }: Props = $props();
+	let { name, deadline, collaborators, id, index }: Props = $props();
 </script>
 
-<a href={`/projects/${id}`} class="card flex h-48 flex-col justify-between bg-base-200 p-8">
+<a
+	href={`/projects/${id}`}
+	class="card motion-preset-focus flex h-48 flex-col justify-between bg-base-200 p-8"
+>
 	<h1 class="heading-sub mb-2">{name}</h1>
 	<div>
 		<p class="text-muted font-medium">

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Loading from '$lib/components/Loading.svelte';
 	import ProjectCard from '$lib/components/ProjectCard.svelte';
+	import ProjectCardLoading from '$lib/components/ProjectCardLoading.svelte';
 	import Error from '../+error.svelte';
 
 	let { data } = $props();
@@ -25,17 +25,16 @@
 			<p class="text-xl font-medium">Create a space</p>
 		</a>
 		{#await data.myProjects}
-			<div class="flex items-center justify-center">
-				<Loading text="projects" />
-			</div>
+			<ProjectCardLoading />
 		{:then projects}
 			{#if projects.length === 0}
 				<div class="flex items-center justify-center">
 					<p>No projects</p>
 				</div>
 			{:else}
-				{#each projects as project}
+				{#each projects as project, idx}
 					<ProjectCard
+						index={idx}
 						id={project.id}
 						collaborators={project.collaborators}
 						name={project.name}

@@ -99,20 +99,29 @@ export const actions = {
 		if (!qProject) return fail(429, { form });
 
 		if (form.data.deadline && form.data.name) {
-			await db.update(projectsTable).set({
-				deadline: form.data.deadline.toDateString(),
-				name: form.data.name
-			});
+			await db
+				.update(projectsTable)
+				.set({
+					deadline: form.data.deadline.toDateString(),
+					name: form.data.name
+				})
+				.where(eq(projectsTable.id, form.data.projectId));
 			return setMessage(form, 'Updated deadline and name');
 		} else if (form.data.deadline) {
-			await db.update(projectsTable).set({
-				deadline: form.data.deadline.toDateString()
-			});
+			await db
+				.update(projectsTable)
+				.set({
+					deadline: form.data.deadline.toDateString()
+				})
+				.where(eq(projectsTable.id, form.data.projectId));
 			return setMessage(form, 'Updated deadline');
 		} else if (form.data.name) {
-			await db.update(projectsTable).set({
-				name: form.data.name
-			});
+			await db
+				.update(projectsTable)
+				.set({
+					name: form.data.name
+				})
+				.where(eq(projectsTable.id, form.data.projectId));
 			return setMessage(form, 'Updated name');
 		}
 	},
