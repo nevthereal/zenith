@@ -27,16 +27,18 @@
 	/>
 	<div class="hero-overlay absolute inset-0 rounded-box bg-opacity-70"></div>
 	<div class="hero-content relative z-10 w-[80%] text-center">
-		<div class="motion-preset-blur-up md:max-w-md">
+		<div class="motion-safe:motion-preset-blur-up md:max-w-md">
 			<h1 class="heading-super-big mb-4">Zenith</h1>
 			<p class="heading-small mb-4">
-				everyday planning powered by AI<span class="motion-preset-blur-up motion-delay-300"
-					>, at your fingertips</span
+				everyday planning powered by AI<span
+					class="motion-delay-300 motion-safe:motion-preset-blur-up">, at your fingertips</span
 				>
 			</p>
 			<div class="flex justify-center gap-6">
-				<a href="/features" class="btn motion-preset-blur-up motion-delay-500">Features</a>
-				<a href="/signin" class="btn btn-outline motion-preset-blur-up motion-delay-700"
+				<a href="/features" class="btn motion-delay-500 motion-safe:motion-preset-blur-up"
+					>Features</a
+				>
+				<a href="/signin" class="btn btn-outline motion-delay-700 motion-safe:motion-preset-blur-up"
 					><i class="fa-solid fa-arrow-right"></i> Get started</a
 				>
 			</div>
