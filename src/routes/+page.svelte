@@ -6,10 +6,11 @@
 	import Spinner from '$lib/components/Spinner.svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
+	import { error } from '@sveltejs/kit';
 
 	let { data } = $props();
 
-	const { form, delayed, enhance, constraints, allErrors } = superForm(data.createForm, {
+	const { form, delayed, enhance, constraints, allErrors, errors } = superForm(data.createForm, {
 		invalidateAll: true
 	});
 
@@ -52,10 +53,8 @@
 					{/if}
 				</button>
 			</div>
-			{#if $allErrors}
-				{#each $allErrors as err}
-					<span class="mt-2 text-error">{err.messages}</span>
-				{/each}
+			{#if $errors.event}
+				<span class="mt-2 text-error">{$errors.event.join(', ')}</span>
 			{/if}
 		</form>
 	{:else}

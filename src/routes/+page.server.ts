@@ -95,12 +95,14 @@ export const actions = {
 			}
 		});
 
-		const { object } = await generateObject({
-			model: openai('gpt-4o'),
+		const { object, finishReason } = await generateObject({
+			model: openai('gpt-4o-mini'),
 			schema: zEventLLM,
 			system: `Right now is the ${dayjs().toDate()}. You are an assistant who processes the users input to an event. Pay attention to the user's other events: ${usersEvents}.`,
 			prompt: form.data.event
 		});
+
+		if (finishReason == 'error') return setError(form, 'Generation error');
 
 		await db.insert(eventsTable).values({
 			content: object.content,
