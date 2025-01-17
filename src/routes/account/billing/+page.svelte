@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
-	import { enhance } from '$app/forms';
-	import dayjs from 'dayjs';
 
 	const { data } = $props();
 	const user = data.user;
@@ -18,7 +16,7 @@
 		{#if user.paid}
 			<h1 class="heading-small mb-2">Your account is paid.</h1>
 			<p>
-				<a href="mailto:contact@nevillebrem.com" class="link">Contact me</a> for more information.
+				<a href="mailto:support@zenithproductivity.app" class="link">Contact me</a> for more information.
 			</p>
 		{/if}
 		{#if !user.paid}

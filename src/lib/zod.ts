@@ -4,11 +4,8 @@ import { z } from 'zod';
 export const zEventLLM = z.object({
 	date: z
 		.string()
-		.datetime({
-			offset: true,
-			precision: 0,
-			local: false
-		})
+		.datetime({ offset: true, local: true })
+		.transform((value) => new Date(value))
 		.describe(
 			'The due date and time of the event in JS Date format. It should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific.'
 		),

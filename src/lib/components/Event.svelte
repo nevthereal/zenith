@@ -77,7 +77,11 @@
 		<div class="text-md md:text-base">
 			<p>
 				<span class={cn(date.isBefore(dayjs().startOf('day')) && !event.completed && 'text-error')}>
-					{date.format('D MMMM YYYY, HH:mm')}
+					{new Intl.DateTimeFormat('en', {
+						timeStyle: 'short',
+						dateStyle: 'long',
+						timeZone: 'UTC'
+					}).format(event.date)}
 				</span>
 				{#if event.project}
 					<a href={`/projects/${event.project.id}`} class="text-secondary"

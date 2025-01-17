@@ -98,9 +98,11 @@ export const actions = {
 		const { object, finishReason } = await generateObject({
 			model: openai('gpt-4o-mini'),
 			schema: zEventLLM,
-			system: `Right now is the ${dayjs().toDate()}. You are an assistant who processes the users input to an event. Pay attention to the user's other events: ${usersEvents}.`,
+			system: `Right now is the ${new Date()}. You are an assistant who processes the users input to an event. Pay attention to the user's other events: ${usersEvents}.`,
 			prompt: form.data.event
 		});
+
+		console.log(object);
 
 		if (finishReason == 'error') return setError(form, 'Generation error');
 

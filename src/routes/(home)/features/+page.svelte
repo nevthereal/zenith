@@ -41,8 +41,8 @@
 		<strong>Apple Pay</strong> and <strong>Google Pay</strong>.
 	</p>
 	<p>
-		Suggest a feature? Hit me up at <a href="mailto:contact@nevillebrem.com"
-			>contact@nevillebrem.com</a
+		Suggest a feature? Hit me up at <a href="mailto:support@zenithproductivity.app"
+			>support@zenithproductivity.app</a
 		>
 	</p>
 </section>
