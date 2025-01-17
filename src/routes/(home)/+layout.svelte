@@ -4,5 +4,5 @@
 
 {@render children()}
 <footer class="text-center font-bold">
-	© 2024 <a href="https://nevillebrem.com" class="link">Neville Brem</a>
+	© {new Date().getFullYear()} <a href="https://nevillebrem.com" class="link">Neville Brem</a>
 </footer>
