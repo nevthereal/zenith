@@ -32,9 +32,8 @@
 					<p>No projects</p>
 				</div>
 			{:else}
-				{#each projects as project, idx}
+				{#each projects as project}
 					<ProjectCard
-						index={idx}
 						id={project.id}
 						collaborators={project.collaborators}
 						name={project.name}

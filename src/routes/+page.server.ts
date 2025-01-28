@@ -9,7 +9,7 @@ import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db';
 import { eventsTable, projectsTable } from '$lib/db/schema';
-import { and, asc, eq, gt, lt } from 'drizzle-orm';
+import { and, asc, eq, lt } from 'drizzle-orm';
 import { checkUser, initializeEventForms } from '$lib/utils';
 import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
@@ -79,30 +79,17 @@ export const actions = {
 			}
 		}
 
-		const usersEvents = await db.query.eventsTable.findMany({
-			where: and(
-				eq(eventsTable.userId, user.id),
-				gt(eventsTable.date, dayjs().toDate()),
-				eq(eventsTable.completed, false)
-			),
-			columns: {
-				completed: false,
-				content: true,
-				date: true,
-				id: false,
-				projectId: false,
-				userId: false
-			}
-		});
-
 		const { object, finishReason } = await generateObject({
 			model: openai('gpt-4o-mini'),
 			schema: zEventLLM,
-			system: `Right now is the ${new Date()}. You are an assistant who processes the users input to an event. Pay attention to the user's other events: ${usersEvents}.`,
-			prompt: form.data.event
+			schemaName: 'Event',
+			schemaDescription: 'An event or a task',
+			system:
+				`Right now is ${new Date()}.` +
+				`You are an assistant who processes the users input to an event for a todo-like app.`,
+			prompt: form.data.event,
+			mode: 'json'
 		});
-
-		console.log(object);
 
 		if (finishReason == 'error') return setError(form, 'Generation error');
 

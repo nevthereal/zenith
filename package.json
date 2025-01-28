@@ -46,7 +46,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@ai-sdk/openai": "^0.0.72",
+		"@ai-sdk/openai": "^1.1.3",
 		"@neondatabase/serverless": "^0.9.3",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
@@ -55,7 +55,7 @@
 		"@upstash/ratelimit": "^2.0.0",
 		"@upstash/redis": "^1.33.0",
 		"@vercel/speed-insights": "^1.1.0",
-		"ai": "^3.4.33",
+		"ai": "^4.1.6",
 		"arctic": "^1.9.1",
 		"clsx": "^2.1.1",
 		"dayjs": "^1.11.11",
@@ -65,6 +65,6 @@
 		"resend": "^3.5.0",
 		"stripe": "^15.12.0",
 		"tailwind-merge": "^2.3.0",
-		"zod": "^3.23.8"
+		"zod": "^3.24.1"
 	}
 }

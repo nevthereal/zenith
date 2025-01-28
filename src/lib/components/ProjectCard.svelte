@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { prettyDate } from '$lib/utils';
 	import dayjs from 'dayjs';
 
 	interface Props {
@@ -6,10 +7,9 @@
 		deadline: string | null;
 		collaborators: { user: { username: string } | null }[];
 		id: number;
-		index: number;
 	}
 
-	let { name, deadline, collaborators, id, index }: Props = $props();
+	let { name, deadline, collaborators, id }: Props = $props();
 </script>
 
 <a

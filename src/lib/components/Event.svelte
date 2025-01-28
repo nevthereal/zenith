@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { eventsTable, projectsTable } from '$lib/db/schema';
-	import { alphabet, cn, random } from '$lib/utils';
+	import { alphabet, cn, prettyDate, random } from '$lib/utils';
 	import type { zToggleEvent, zEditEvent } from '$lib/zod';
 	import dayjs from 'dayjs';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
@@ -77,11 +77,7 @@
 		<div class="text-md md:text-base">
 			<p>
 				<span class={cn(date.isBefore(dayjs().startOf('day')) && !event.completed && 'text-error')}>
-					{new Intl.DateTimeFormat('en', {
-						timeStyle: 'short',
-						dateStyle: 'long',
-						timeZone: 'UTC'
-					}).format(event.date)}
+					{prettyDate(event.date)}
 				</span>
 				{#if event.project}
 					<a href={`/projects/${event.project.id}`} class="text-secondary"

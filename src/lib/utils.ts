@@ -30,3 +30,7 @@ export async function initializeEventForms() {
 
 	return { editForm, toggleForm };
 }
+
+export function prettyDate(date: Date) {
+	return Intl.DateTimeFormat('en', { dateStyle: 'long', timeStyle: 'short' }).format(date);
+}
