@@ -25,8 +25,10 @@
 					Please purchase the product to use the features of this app.
 				</p>
 				<div class="flex items-center gap-4">
-					<a data-umami-event={!dev ? 'purchase' : null} href="/api/stripe" class="btn btn-warning"
-						>Purchase ($20)</a
+					<a
+						data-umami-event={!dev ? 'purchase' : null}
+						href="/api/polar/checkout"
+						class="btn btn-warning">Purchase ($20)</a
 					>
 				</div>
 			{:else}

@@ -323,6 +323,20 @@
       "when": 1733250997864,
       "tag": "0045_tiresome_vapor",
       "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "7",
+      "when": 1738523452597,
+      "tag": "0046_legal_ender_wiggin",
+      "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "7",
+      "when": 1738523552866,
+      "tag": "0047_giant_the_professor",
+      "breakpoints": true
     }
   ]
 }

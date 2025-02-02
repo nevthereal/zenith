@@ -50,6 +50,8 @@
 		"@neondatabase/serverless": "^0.9.3",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
+		"@polar-sh/sdk": "^0.22.2",
+		"@polar-sh/sveltekit": "^0.3.14",
 		"@sveltejs/adapter-vercel": "^5.4.1",
 		"@sveltejs/enhanced-img": "^0.3.9",
 		"@upstash/ratelimit": "^2.0.0",

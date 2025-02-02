@@ -12,7 +12,8 @@ export const usersTable = pgTable('users', {
 	emailVerified: boolean('emailVerified').default(false).notNull(),
 	admin: boolean('admin').default(false).notNull(),
 	joined: timestamp('joined').notNull(),
-	paid: boolean('paid').default(false).notNull()
+	paid: boolean('paid').default(false).notNull(),
+	customerId: text('customer_id')
 });
 
 export const userRelation = relations(usersTable, ({ many }) => ({

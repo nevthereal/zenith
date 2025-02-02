@@ -6,6 +6,7 @@ import { usersTable } from '$lib/db/schema';
 import { createSession, generateSessionToken, github } from '$lib/auth';
 import { setSessionTokenCookie } from '$lib/auth/cookies';
 import { randomUUID } from 'crypto';
+import { polar } from '$lib/polar';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');
