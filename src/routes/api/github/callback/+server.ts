@@ -6,7 +6,7 @@ import { usersTable } from '$lib/db/schema';
 import { createSession, generateSessionToken, github } from '$lib/auth';
 import { setSessionTokenCookie } from '$lib/auth/cookies';
 import { randomUUID } from 'crypto';
-import { polar } from '$lib/polar';
+import { generateCustomerId } from '$lib/polar';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');
@@ -45,7 +45,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				provider: 'github',
 				username: githubUser.login,
 				joined: new Date(),
-				emailVerified: githubUser.email ? true : false
+				emailVerified: githubUser.email ? true : false,
+				customerId: githubUser.email ? await generateCustomerId(githubUser.email) : null
 			});
 
 			const token = generateSessionToken();

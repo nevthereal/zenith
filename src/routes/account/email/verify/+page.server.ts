@@ -12,6 +12,7 @@ import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { dev } from '$app/environment';
+import { generateCustomerId } from '$lib/polar';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
@@ -26,6 +27,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
 	default: async ({ locals, request }) => {
 		const user = checkUser(locals);
+
+		if (!user.email) return redirect(302, '/account/email');
 
 		const form = await superValidate(request, zod(zVerifyEmail));
 
@@ -66,7 +69,8 @@ export const actions = {
 		await db
 			.update(usersTable)
 			.set({
-				emailVerified: true
+				emailVerified: true,
+				customerId: await generateCustomerId(user.email)
 			})
 			.where(eq(usersTable.id, user.id));
 
