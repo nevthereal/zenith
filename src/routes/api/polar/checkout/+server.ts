@@ -12,7 +12,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
 	if (!user.emailVerified) return redirect(302, '/account/email');
 
-	let customerId: string | null = null;
+	let customerId: string;
 
 	if (!user.customerId) {
 		const [{ id }] = await db
@@ -23,13 +23,16 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 			.where(eq(usersTable.id, user.id))
 			.returning({ id: usersTable.customerId });
 
+		if (!id) throw new Error('Failed to generate customer ID');
 		customerId = id;
+	} else {
+		customerId = user.customerId;
 	}
 
 	const session = await polar.checkouts.custom.create({
 		productId: POLAR_PRODUCT_ID,
 		successUrl: `${url.origin}/`,
-		customerId: user.customerId || customerId
+		customerId
 	});
 
 	return redirect(302, session.url);
