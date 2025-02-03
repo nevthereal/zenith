@@ -7,7 +7,7 @@ export const users = pgTable('users', {
 	emailVerified: boolean('email_verified').notNull(),
 	image: text('image'),
 	createdAt: timestamp('created_at').notNull(),
-	updatedAt: timestamp('updated_at').notNull(),
+	updatedAt: timestamp('updated_at').notNull().defaultNow(),
 	paid: boolean('paid').notNull().default(false),
 	admin: boolean('admin').notNull().default(false)
 });

@@ -344,6 +344,13 @@
       "when": 1738599766747,
       "tag": "0048_tranquil_the_spike",
       "breakpoints": true
+    },
+    {
+      "idx": 49,
+      "version": "7",
+      "when": 1738609685106,
+      "tag": "0049_crazy_mole_man",
+      "breakpoints": true
     }
   ]
 }
