@@ -14,7 +14,8 @@ export const auth = betterAuth({
 		}
 	},
 	database: drizzleAdapter(db, {
-		provider: 'pg'
+		provider: 'pg',
+		usePlural: true
 	}),
 	user: {
 		additionalFields: {
@@ -28,11 +29,6 @@ export const auth = betterAuth({
 				type: 'boolean',
 				defaultValue: false,
 				input: false
-			},
-			gender: {
-				type: 'string',
-				input: true,
-				required: false
 			}
 		}
 	}

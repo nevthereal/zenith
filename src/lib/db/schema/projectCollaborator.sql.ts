@@ -1,6 +1,6 @@
 import { integer, text, pgTable, serial } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { usersTable } from './user.sql';
+import { usersTable } from './auth.sql';
 import { projectsTable } from './project.sql';
 
 export const projectCollaboratorsTable = pgTable('project_collaborators', {
@@ -18,5 +18,5 @@ export const projectCollaboratorRelation = relations(projectCollaboratorsTable, 
 		fields: [projectCollaboratorsTable.projectId],
 		references: [projectsTable.id]
 	}),
-	user: one(usersTable, { fields: [projectCollaboratorsTable.userId], references: [usersTable.id] })
+	uses: one(usersTable, { fields: [projectCollaboratorsTable.userId], references: [usersTable.id] })
 }));

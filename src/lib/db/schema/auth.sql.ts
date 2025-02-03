@@ -1,16 +1,18 @@
 import { pgTable, text, integer, timestamp, boolean } from 'drizzle-orm/pg-core';
 
-export const user = pgTable('user', {
+export const usersTable = pgTable('users', {
 	id: text('id').primaryKey(),
 	name: text('name').notNull(),
 	email: text('email').notNull().unique(),
 	emailVerified: boolean('email_verified').notNull(),
 	image: text('image'),
 	createdAt: timestamp('created_at').notNull(),
-	updatedAt: timestamp('updated_at').notNull()
+	updatedAt: timestamp('updated_at').notNull(),
+	paid: boolean('paid').notNull(),
+	admin: boolean('admin')
 });
 
-export const session = pgTable('session', {
+export const sessionsTable = pgTable('sessions', {
 	id: text('id').primaryKey(),
 	expiresAt: timestamp('expires_at').notNull(),
 	token: text('token').notNull().unique(),
@@ -20,16 +22,16 @@ export const session = pgTable('session', {
 	userAgent: text('user_agent'),
 	userId: text('user_id')
 		.notNull()
-		.references(() => user.id)
+		.references(() => usersTable.id)
 });
 
-export const account = pgTable('account', {
+export const accountsTable = pgTable('accounts', {
 	id: text('id').primaryKey(),
 	accountId: text('account_id').notNull(),
 	providerId: text('provider_id').notNull(),
 	userId: text('user_id')
 		.notNull()
-		.references(() => user.id),
+		.references(() => usersTable.id),
 	accessToken: text('access_token'),
 	refreshToken: text('refresh_token'),
 	idToken: text('id_token'),
@@ -41,7 +43,7 @@ export const account = pgTable('account', {
 	updatedAt: timestamp('updated_at').notNull()
 });
 
-export const verification = pgTable('verification', {
+export const verificationsTable = pgTable('verifications', {
 	id: text('id').primaryKey(),
 	identifier: text('identifier').notNull(),
 	value: text('value').notNull(),

@@ -1,5 +1,6 @@
 <script>
 	import { dev } from '$app/environment';
+	import { authClient } from '$lib/auth/client';
 </script>
 
 <svelte:head>
@@ -14,7 +15,12 @@
 		</p>
 	</div>
 
-	<button onclick={() => } class="btn m-auto flex gap-4 text-lg"
+	<button
+		onclick={async () =>
+			await authClient.signIn.social({
+				provider: 'github'
+			})}
+		class="btn m-auto flex gap-4 text-lg"
 		><i class="fa-brands fa-github"></i>Sign in with GitHub</button
 	>
 </div>

@@ -1,6 +1,6 @@
 import { boolean, integer, text, timestamp, pgTable, serial } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { usersTable } from './user.sql';
+import { usersTable } from './auth.sql';
 import { projectsTable } from './project.sql';
 
 export const eventsTable = pgTable('events', {
@@ -15,6 +15,6 @@ export const eventsTable = pgTable('events', {
 });
 
 export const eventRelation = relations(eventsTable, ({ one }) => ({
-	user: one(usersTable, { fields: [eventsTable.userId], references: [usersTable.id] }),
+	users: one(usersTable, { fields: [eventsTable.userId], references: [usersTable.id] }),
 	project: one(projectsTable, { fields: [eventsTable.projectId], references: [projectsTable.id] })
 }));
