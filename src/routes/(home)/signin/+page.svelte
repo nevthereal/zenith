@@ -1,5 +1,5 @@
 <script>
-	import { dev } from '$app/environment';
+	import { authClient } from '$lib/auth/client';
 </script>
 
 <svelte:head>
@@ -14,9 +14,14 @@
 		</p>
 	</div>
 
-	<a
-		data-umami-event={!dev ? 'signup' : null}
-		href="api/github"
-		class="btn m-auto flex gap-4 text-lg"><i class="fa-brands fa-github"></i>Sign in with GitHub</a
+	<button
+		onclick={async () =>
+			await authClient.signIn.social({
+				provider: 'github',
+				newUserCallbackURL: '/',
+				callbackURL: '/'
+			})}
+		class="btn m-auto flex gap-4 text-lg"
+		><i class="fa-brands fa-github"></i>Sign in with GitHub</button
 	>
 </div>

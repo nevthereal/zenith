@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { authClient } from '$lib/auth/client.js';
 	import Label from '$lib/components/Label.svelte';
 	import { superForm } from 'sveltekit-superforms';
 
@@ -59,9 +60,13 @@
 			<form method="dialog">
 				<button class="btn">Cancel</button>
 			</form>
-			<form action="?/delete" method="post">
-				<button class="btn btn-error">Delete</button>
-			</form>
+			<button
+				class="btn btn-error"
+				onclick={async () => {
+					await authClient.deleteUser({ callbackURL: '/home' });
+					location.reload();
+				}}>Delete</button
+			>
 		</div>
 	</div>
 </dialog>

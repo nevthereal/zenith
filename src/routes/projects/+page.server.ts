@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 				with: {
 					user: {
 						columns: {
-							username: true
+							name: true
 						}
 					}
 				}

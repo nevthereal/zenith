@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { authClient } from '$lib/auth/client';
+	import { redirect } from '@sveltejs/kit';
+
 	const { children } = $props();
 </script>
 
@@ -22,11 +25,14 @@
 				>
 			</li>
 			<li>
-				<form action="/account/?/signout" method="post">
-					<button class="flex items-center gap-2 text-error"
-						><i class="fa-solid fa-right-from-bracket"></i>Log out</button
-					>
-				</form>
+				<button
+					onclick={async () => {
+						await authClient.signOut();
+						location.reload();
+					}}
+					class="flex items-center gap-2 text-error"
+					><i class="fa-solid fa-right-from-bracket"></i>Log out</button
+				>
 			</li>
 		</ul>
 	</nav>

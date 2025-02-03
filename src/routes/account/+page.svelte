@@ -22,7 +22,7 @@
 	<ul class="flex flex-col gap-1 md:text-lg">
 		<li>
 			<span class="font-medium">Username:</span>
-			<span class="text-muted">{user.username}</span>
+			<span class="text-muted">{user.name}</span>
 		</li>
 		<li class="flex items-center gap-2">
 			<span class="font-medium">Email:</span>
@@ -42,7 +42,7 @@
 		</li>
 		<li>
 			<span class="font-medium">Joined:</span>
-			<span class="text-muted">{dayjs().to(dayjs(user.joined))}</span>
+			<span class="text-muted">{dayjs().to(dayjs(user.createdAt))}</span>
 		</li>
 		<li>
 			<span class="font-medium">Paid:</span>

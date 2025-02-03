@@ -5,7 +5,7 @@
 	interface Props {
 		name: string;
 		deadline: string | null;
-		collaborators: { user: { username: string } | null }[];
+		collaborators: { user: { name: string } | null }[];
 		id: number;
 	}
 
@@ -21,7 +21,7 @@
 		<p class="text-muted font-medium">
 			{#if collaborators.length != 0}
 				<span
-					>Shared with {collaborators[0].user?.username}
+					>Shared with {collaborators[0].user?.name}
 					{#if collaborators.length > 1}
 						and {collaborators.length - 1} other{collaborators.length - 1 != 1 ? 's' : ''}
 					{/if}</span
