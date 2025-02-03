@@ -2,6 +2,7 @@ import { GITHUB_CLIENT_ID, GITHUB_SECRET } from '$env/static/private';
 import { db } from '../db';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import * as schema from '../db/schema';
 
 export const auth = betterAuth({
 	emailAndPassword: {
@@ -15,9 +16,11 @@ export const auth = betterAuth({
 	},
 	database: drizzleAdapter(db, {
 		provider: 'pg',
-		usePlural: true
+		usePlural: true,
+		schema
 	}),
 	user: {
+		modelName: 'usersTable',
 		additionalFields: {
 			paid: {
 				type: 'boolean',
@@ -31,6 +34,15 @@ export const auth = betterAuth({
 				input: false
 			}
 		}
+	},
+	session: {
+		modelName: 'sessionsTable'
+	},
+	account: {
+		modelName: 'accountsTable'
+	},
+	verification: {
+		modelName: 'verificationsTable'
 	}
 });
 
