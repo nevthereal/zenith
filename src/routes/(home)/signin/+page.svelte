@@ -14,9 +14,7 @@
 		</p>
 	</div>
 
-	<a
-		data-umami-event={!dev ? 'signup' : null}
-		href="api/github"
-		class="btn m-auto flex gap-4 text-lg"><i class="fa-brands fa-github"></i>Sign in with GitHub</a
+	<button onclick={() => } class="btn m-auto flex gap-4 text-lg"
+		><i class="fa-brands fa-github"></i>Sign in with GitHub</button
 	>
 </div>

@@ -26,7 +26,7 @@
 <div class="flex flex-col items-center">
 	<div class="motion-preset-blur-up text-center">
 		<h3 class="heading-small">
-			Hi, <span class="font-bold text-primary">{user.username}</span>
+			Hi, <span class="font-bold text-primary">{user.name}</span>
 		</h3>
 		<h1 class="heading-main">What are your plans?</h1>
 	</div>

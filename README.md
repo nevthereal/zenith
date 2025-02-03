@@ -13,3 +13,7 @@ Zenith is an AI-powered Event/Task Manager for the web. The concept is simple; y
 - SvelteKit-Superforms
 - zod
 - Lucia
+
+# Todo
+
+- [ ] Replace all of the auth things with better auth

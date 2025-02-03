@@ -15,7 +15,27 @@ export const auth = betterAuth({
 	},
 	database: drizzleAdapter(db, {
 		provider: 'pg'
-	})
+	}),
+	user: {
+		additionalFields: {
+			paid: {
+				type: 'boolean',
+				input: false,
+				required: true,
+				defaultValue: false
+			},
+			admin: {
+				type: 'boolean',
+				defaultValue: false,
+				input: false
+			},
+			gender: {
+				type: 'string',
+				input: true,
+				required: false
+			}
+		}
+	}
 });
 
 export type Auth = typeof auth;

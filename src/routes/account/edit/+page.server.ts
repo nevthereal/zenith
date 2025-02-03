@@ -6,16 +6,17 @@ import { zUpdateUser } from '$lib/zod';
 import { db } from '$lib/db';
 import { usersTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
-import { redirect } from '@sveltejs/kit';
-import { invalidateSession } from '$lib/auth';
-import { deleteSessionTokenCookie } from '$lib/auth/cookies';
+// import { redirect } from '@sveltejs/kit';
+// import { auth } from '$lib/auth';
+
+// TODO Replace shit with better auth
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
 	const updateForm = await superValidate(zod(zUpdateUser), {
 		defaults: {
-			username: user.username
+			username: user.name
 		}
 	});
 
@@ -37,17 +38,5 @@ export const actions = {
 			.where(eq(usersTable.id, user.id));
 
 		return setMessage(form, 'Updated username');
-	},
-	delete: async (event) => {
-		const user = checkUser(event.locals);
-
-		if (event.locals.session === null) {
-			return fail(405);
-		}
-		await invalidateSession(event.locals.session.id);
-		deleteSessionTokenCookie(event);
-		await db.delete(usersTable).where(eq(usersTable.id, user.id));
-
-		redirect(302, '/signin');
 	}
 } satisfies Actions;
