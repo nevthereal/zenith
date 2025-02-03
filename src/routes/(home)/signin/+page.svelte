@@ -1,5 +1,4 @@
 <script>
-	import { page } from '$app/state';
 	import { authClient } from '$lib/auth/client';
 </script>
 
@@ -19,7 +18,8 @@
 		onclick={async () =>
 			await authClient.signIn.social({
 				provider: 'github',
-				callbackURL: page.url.origin
+				newUserCallbackURL: '/',
+				callbackURL: '/'
 			})}
 		class="btn m-auto flex gap-4 text-lg"
 		><i class="fa-brands fa-github"></i>Sign in with GitHub</button

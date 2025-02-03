@@ -2,7 +2,7 @@ import { alphabet, checkUser, random } from '$lib/utils';
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/db';
-import { usersTable, verificationCodesTable } from '$lib/db/schema';
+import { users, verificationCodesTable } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { generateRandomString } from '@oslojs/crypto/random';
 import { fail, setError, superValidate } from 'sveltekit-superforms';
@@ -36,8 +36,8 @@ export const actions = {
 
 		if (!form.valid) return fail(400, { form });
 
-		const existingEmail = await db.query.usersTable.findFirst({
-			where: eq(usersTable.email, form.data.email)
+		const existingEmail = await db.query.users.findFirst({
+			where: eq(users.email, form.data.email)
 		});
 
 		if (existingEmail && user.email != existingEmail.email)
@@ -55,11 +55,11 @@ export const actions = {
 		});
 
 		await db
-			.update(usersTable)
+			.update(users)
 			.set({
 				email: form.data.email
 			})
-			.where(eq(usersTable.id, user.id));
+			.where(eq(users.id, user.id));
 
 		try {
 			await resend.emails.send({

@@ -6,7 +6,7 @@ import { zVerifyEmail } from '$lib/zod';
 import { redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
 import { eq } from 'drizzle-orm';
-import { usersTable, verificationCodesTable } from '$lib/db/schema';
+import { users, verificationCodesTable } from '$lib/db/schema';
 import { isWithinExpirationDate } from 'oslo';
 import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
@@ -64,11 +64,11 @@ export const actions = {
 
 		await db.delete(verificationCodesTable).where(eq(verificationCodesTable.id, dbEntry.id));
 		await db
-			.update(usersTable)
+			.update(users)
 			.set({
 				emailVerified: true
 			})
-			.where(eq(usersTable.id, user.id));
+			.where(eq(users.id, user.id));
 
 		return redirect(302, '/account');
 	}

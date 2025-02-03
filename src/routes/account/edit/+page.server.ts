@@ -4,7 +4,7 @@ import { superValidate, fail, setMessage } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { zUpdateUser } from '$lib/zod';
 import { db } from '$lib/db';
-import { usersTable } from '$lib/db/schema';
+import { users } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 // import { redirect } from '@sveltejs/kit';
 // import { auth } from '$lib/auth';
@@ -32,10 +32,7 @@ export const actions = {
 
 		const formData = form.data;
 
-		await db
-			.update(usersTable)
-			.set({ username: formData.username })
-			.where(eq(usersTable.id, user.id));
+		await db.update(users).set({ name: formData.username }).where(eq(users.id, user.id));
 
 		return setMessage(form, 'Updated username');
 	}

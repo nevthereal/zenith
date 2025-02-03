@@ -3,7 +3,7 @@ import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { stripe } from '$lib/stripe';
 import { db } from '$lib/db';
-import { usersTable } from '$lib/db/schema';
+import { users } from '$lib/db/schema';
 import { eq } from 'drizzle-orm';
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -21,11 +21,11 @@ export const POST: RequestHandler = async ({ request }) => {
 			const sessionWithCustomer = await stripe.checkout.sessions.retrieve(event.data.object.id);
 
 			await db
-				.update(usersTable)
+				.update(users)
 				.set({
 					paid: true
 				})
-				.where(eq(usersTable.email, sessionWithCustomer.customer_email as string));
+				.where(eq(users.email, sessionWithCustomer.customer_email as string));
 		}
 	} catch (err) {
 		console.error(err);

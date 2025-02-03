@@ -330,6 +330,20 @@
       "when": 1738598591795,
       "tag": "0046_long_zarda",
       "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "7",
+      "when": 1738599440255,
+      "tag": "0047_lying_karen_page",
+      "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "7",
+      "when": 1738599766747,
+      "tag": "0048_tranquil_the_spike",
+      "breakpoints": true
     }
   ]
 }
