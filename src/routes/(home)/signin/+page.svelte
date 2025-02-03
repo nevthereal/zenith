@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/state';
 	import { authClient } from '$lib/auth/client';
 </script>
 
@@ -16,7 +17,7 @@
 
 	<button
 		onclick={async () =>
-			await authClient.signIn.social({
+			await authClient(page.url.origin).signIn.social({
 				provider: 'github',
 				newUserCallbackURL: '/',
 				callbackURL: '/'

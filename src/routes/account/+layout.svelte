@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { authClient } from '$lib/auth/client';
 	import { redirect } from '@sveltejs/kit';
 
@@ -27,7 +28,7 @@
 			<li>
 				<button
 					onclick={async () => {
-						await authClient.signOut();
+						await authClient(page.url.origin).signOut();
 						location.reload();
 					}}
 					class="flex items-center gap-2 text-error"

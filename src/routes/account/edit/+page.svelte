@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { authClient } from '$lib/auth/client.js';
 	import Label from '$lib/components/Label.svelte';
 	import { superForm } from 'sveltekit-superforms';
@@ -63,7 +64,7 @@
 			<button
 				class="btn btn-error"
 				onclick={async () => {
-					await authClient.deleteUser({ callbackURL: '/home' });
+					await authClient(page.url.origin).deleteUser({ callbackURL: '/home' });
 					location.reload();
 				}}>Delete</button
 			>
