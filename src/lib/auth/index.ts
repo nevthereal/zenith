@@ -18,6 +18,9 @@ export const auth = betterAuth({
 		usePlural: true
 	}),
 	user: {
+		deleteUser: {
+			enabled: true
+		},
 		additionalFields: {
 			paid: {
 				type: 'boolean',

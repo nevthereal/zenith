@@ -1,15 +1,12 @@
 import type { Actions, PageServerLoad } from './$types';
 import { checkUser } from '$lib/utils';
-import { superValidate, fail, setMessage } from 'sveltekit-superforms';
+import { superValidate, fail } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { zUpdateUser } from '$lib/zod';
-import { db } from '$lib/db';
 import { users } from '$lib/db/schema';
+import { db } from '$lib/db';
 import { eq } from 'drizzle-orm';
-// import { redirect } from '@sveltejs/kit';
-// import { auth } from '$lib/auth';
-
-// TODO Replace shit with better auth
+import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
@@ -34,6 +31,6 @@ export const actions = {
 
 		await db.update(users).set({ name: formData.username }).where(eq(users.id, user.id));
 
-		return setMessage(form, 'Updated username');
+		return redirect(302, '/account');
 	}
 } satisfies Actions;
