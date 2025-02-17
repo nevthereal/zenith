@@ -4,16 +4,7 @@ Zenith is an AI-powered Event/Task Manager for the web. The concept is simple; y
 
 # Technologies used
 
-- SvelteKit
-- TailwindCSS + daisyui
-- Vercel AI SDK
-- Drizzle ORM
-- Neon DB
-- Resend
-- SvelteKit-Superforms
-- zod
-- Lucia
-
-# Todo
-
-- [ ] Replace all of the auth things with better auth
+1.  **Frontend:** SvelteKit, TailwindCSS, daisyUI
+2.  **Backend:** Drizzle ORM, Neon DB, better-auth
+3.  **APIs/Services:** Vercel AI SDK, Resend
+4.  **Forms:** SvelteKit-Superforms
