@@ -57,7 +57,7 @@
 		"@vercel/speed-insights": "^1.1.0",
 		"ai": "^4.1.6",
 		"arctic": "^1.9.1",
-		"better-auth": "^1.1.20",
+		"better-auth": "^1.1.21",
 		"clsx": "^2.1.1",
 		"dayjs": "^1.11.11",
 		"dotenv": "^16.4.5",
