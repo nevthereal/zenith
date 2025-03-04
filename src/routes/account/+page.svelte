@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/state';
+	import { getActiveSubscription } from '$lib/auth/client.js';
 	import { cn } from '$lib/utils.js';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
@@ -47,14 +49,14 @@
 		<li>
 			<span class="font-medium">Paid:</span>
 			<a class="link link-primary" href="/account/billing"
-				>{user.paid ? 'Yes' : 'No'}, See billing</a
+				>{getActiveSubscription(page.url.origin) ? 'Yes' : 'No'}, See billing</a
 			>
 		</li>
 		<li>
 			<span class="font-medium">Completed Tasks:</span>
 			<span class="text-muted">{data.completedCount}</span>
 		</li>
-		{#if user.admin}
+		{#if user.role === 'admin'}
 			<li>
 				<a href="/admin" class="link link-primary">You are an admin</a>
 			</li>

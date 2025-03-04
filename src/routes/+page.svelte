@@ -7,6 +7,8 @@
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	import { error } from '@sveltejs/kit';
+	import { getActiveSubscription } from '$lib/auth/client.js';
+	import { page } from '$app/state';
 
 	let { data } = $props();
 
@@ -30,7 +32,7 @@
 		</h3>
 		<h1 class="heading-main">What are your plans?</h1>
 	</div>
-	{#if user.paid}
+	{#if !getActiveSubscription(page.url.origin)}
 		<form
 			action="?/create"
 			method="POST"

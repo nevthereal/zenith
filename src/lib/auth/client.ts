@@ -15,3 +15,9 @@ export const authClient = (url: string) => {
 		]
 	});
 };
+
+export async function getActiveSubscription(baseUrl: string) {
+	const { data: subscriptions } = await authClient(baseUrl).subscription.list();
+
+	return subscriptions?.find((s) => s.status === 'active');
+}

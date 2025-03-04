@@ -29,7 +29,7 @@ export const auth = betterAuth({
 				enabled: true,
 				plans: [
 					{
-						name: 'Zenith Pro',
+						name: 'pro',
 						priceId: PRICE_ID
 					}
 				]

@@ -15,6 +15,7 @@ import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { dev } from '$app/environment';
+import { getActiveSubscription } from '$lib/auth/client';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
@@ -74,7 +75,7 @@ export const actions = {
 			});
 			const rateLimitAttempt = await ratelimit.limit(user.id);
 
-			if (!rateLimitAttempt.success && !user.admin) {
+			if (!rateLimitAttempt.success && user.role === 'admin') {
 				return setError(form, 'Too many requests. Try again later', { status: 429 });
 			}
 		}
@@ -101,10 +102,10 @@ export const actions = {
 
 		return { form };
 	},
-	edit: async ({ request, locals }) => {
+	edit: async ({ request, locals, url }) => {
 		const user = checkUser(locals);
 
-		if (!user.paid) redirect(302, '/account');
+		if (!(await getActiveSubscription(url.origin))) redirect(302, '/account');
 
 		const form = await superValidate(request, zod(zEditEvent));
 
