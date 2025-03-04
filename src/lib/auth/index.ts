@@ -4,6 +4,7 @@ import { stripe } from '@better-auth/stripe';
 import { stripe as stripeClient } from '../stripe';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { admin } from 'better-auth/plugins';
 
 export const auth = betterAuth({
 	emailAndPassword: {
@@ -33,24 +34,12 @@ export const auth = betterAuth({
 					}
 				]
 			}
-		})
+		}),
+		admin()
 	],
 	user: {
 		deleteUser: {
 			enabled: true
-		},
-		additionalFields: {
-			paid: {
-				type: 'boolean',
-				input: false,
-				required: true,
-				defaultValue: false
-			},
-			admin: {
-				type: 'boolean',
-				defaultValue: false,
-				input: false
-			}
 		}
 	}
 });
