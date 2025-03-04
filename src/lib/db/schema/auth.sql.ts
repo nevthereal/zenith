@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean } from 'drizzle-orm/pg-core';
+import { pgTable, text, integer, timestamp, boolean } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
 	id: text('id').primaryKey(),
@@ -7,6 +7,7 @@ export const users = pgTable('users', {
 	emailVerified: boolean('email_verified').notNull(),
 	image: text('image'),
 	createdAt: timestamp('created_at').notNull(),
+	stripeCustomerId: text('stripe_customer_id'),
 	updatedAt: timestamp('updated_at').notNull().defaultNow(),
 	paid: boolean('paid').notNull().default(false),
 	admin: boolean('admin').notNull().default(false)
@@ -22,7 +23,7 @@ export const sessions = pgTable('sessions', {
 	userAgent: text('user_agent'),
 	userId: text('user_id')
 		.notNull()
-		.references(() => users.id)
+		.references(() => users.id, { onDelete: 'cascade' })
 });
 
 export const accounts = pgTable('accounts', {
@@ -31,7 +32,7 @@ export const accounts = pgTable('accounts', {
 	providerId: text('provider_id').notNull(),
 	userId: text('user_id')
 		.notNull()
-		.references(() => users.id),
+		.references(() => users.id, { onDelete: 'cascade' }),
 	accessToken: text('access_token'),
 	refreshToken: text('refresh_token'),
 	idToken: text('id_token'),
@@ -50,4 +51,17 @@ export const verifications = pgTable('verifications', {
 	expiresAt: timestamp('expires_at').notNull(),
 	createdAt: timestamp('created_at'),
 	updatedAt: timestamp('updated_at')
+});
+
+export const subscriptions = pgTable('subscriptions', {
+	id: text('id').primaryKey(),
+	plan: text('plan').notNull(),
+	referenceId: text('reference_id').notNull(),
+	stripeCustomerId: text('stripe_customer_id'),
+	stripeSubscriptionId: text('stripe_subscription_id'),
+	status: text('status'),
+	periodStart: timestamp('period_start'),
+	periodEnd: timestamp('period_end'),
+	cancelAtPeriodEnd: boolean('cancel_at_period_end'),
+	seats: integer('seats')
 });

@@ -1,7 +1,7 @@
-import { GITHUB_CLIENT_ID, GITHUB_SECRET, WEBHOOK } from '$env/static/private';
+import { GITHUB_CLIENT_ID, GITHUB_SECRET, PRICE_ID, WEBHOOK } from '$env/static/private';
 import { db } from '../db';
 import { stripe } from '@better-auth/stripe';
-import { stripe as stripeClient } from '$lib/stripe';
+import { stripe as stripeClient } from '../stripe';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 
@@ -23,7 +23,16 @@ export const auth = betterAuth({
 		stripe({
 			stripeClient,
 			stripeWebhookSecret: WEBHOOK!,
-			createCustomerOnSignUp: true
+			createCustomerOnSignUp: true,
+			subscription: {
+				enabled: true,
+				plans: [
+					{
+						name: 'Zenith Pro',
+						priceId: PRICE_ID
+					}
+				]
+			}
 		})
 	],
 	user: {
