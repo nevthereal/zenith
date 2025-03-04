@@ -1,5 +1,7 @@
-import { GITHUB_CLIENT_ID, GITHUB_SECRET } from '$env/static/private';
+import { GITHUB_CLIENT_ID, GITHUB_SECRET, WEBHOOK } from '$env/static/private';
 import { db } from '../db';
+import { stripe } from '@better-auth/stripe';
+import { stripe as stripeClient } from '$lib/stripe';
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 
@@ -17,6 +19,13 @@ export const auth = betterAuth({
 		provider: 'pg',
 		usePlural: true
 	}),
+	plugins: [
+		stripe({
+			stripeClient,
+			stripeWebhookSecret: WEBHOOK!,
+			createCustomerOnSignUp: true
+		})
+	],
 	user: {
 		deleteUser: {
 			enabled: true
