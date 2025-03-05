@@ -1,1 +1,0 @@
-ALTER TABLE "users" ADD COLUMN "complete_count" integer DEFAULT 0;

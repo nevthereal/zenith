@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
+	import { page } from '$app/state';
+	import { authClient } from '$lib/auth/client.js';
 
 	const { data } = $props();
 	const user = data.user;
+
+	const { subscription } = $derived(data);
 </script>
 
 <svelte:head>
@@ -13,20 +17,38 @@
 	<h1 class="heading-main">Billing</h1>
 
 	<div class="text-lg">
-		{#if user.paid}
+		{#if subscription}
 			<h1 class="heading-small mb-2">Your account is paid.</h1>
 			<p>
-				<a href="mailto:support@zenithproductivity.app" class="link">Contact me</a> for more information.
+				Subscribed since <span class="text-primary"
+					>{Intl.DateTimeFormat('en', { dateStyle: 'long' }).format(subscription.periodStart)}</span
+				>
+			</p>
+			<p>
+				Your Stripe ID:
+				<span class="font-mono italic text-primary">{subscription.stripeCustomerId}</span>
 			</p>
 		{/if}
-		{#if !user.paid}
+		{#if !subscription}
 			{#if user.emailVerified}
 				<p class="mb-2 text-warning">
 					Please purchase the product to use the features of this app.
 				</p>
 				<div class="flex items-center gap-4">
-					<a data-umami-event={!dev ? 'purchase' : null} href="/api/stripe" class="btn btn-warning"
-						>Purchase ($20)</a
+					<button
+						data-umami-event={!dev ? 'purchase' : null}
+						class="btn btn-warning"
+						onclick={async () => {
+							try {
+								await authClient(page.url.origin).subscription.upgrade({
+									plan: 'pro',
+									successUrl: `${page.url.origin}`,
+									cancelUrl: `${page.url.origin}/account/billing`
+								});
+							} catch (error) {
+								console.log(error);
+							}
+						}}>Purchase ($20)</button
 					>
 				</div>
 			{:else}

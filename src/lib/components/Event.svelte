@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { eventsTable, projectsTable } from '$lib/db/schema';
-	import { alphabet, cn, prettyDate, random } from '$lib/utils';
+	import { cn, prettyDate } from '$lib/utils';
 	import type { zToggleEvent, zEditEvent } from '$lib/zod';
 	import dayjs from 'dayjs';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 	import Spinner from './Spinner.svelte';
 	import Label from './Label.svelte';
-	import { generateRandomString } from '@oslojs/crypto/random';
 
 	type Event = typeof eventsTable.$inferSelect;
 	type Project = typeof projectsTable.$inferSelect;
@@ -41,7 +40,7 @@
 			if (result.type === 'success') editModal.close();
 		},
 		invalidateAll: true,
-		id: `editForm-${generateRandomString(random, alphabet, 5)}`
+		id: `editForm-${event.id}`
 	});
 
 	const { enhance: toggleEnhance, form: toggleForm } = superForm(toggleFormData, {
@@ -49,7 +48,7 @@
 			if (result.type === 'success') editModal.close();
 		},
 		invalidateAll: true,
-		id: `toggleForm-${generateRandomString(random, alphabet, 5)}`
+		id: `toggleForm-${event.id}`
 	});
 
 	const date = $derived(dayjs(event.date));

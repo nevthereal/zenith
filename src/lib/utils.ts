@@ -4,7 +4,6 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { twMerge } from 'tailwind-merge';
 import { zEditEvent, zToggleEvent } from './zod';
-import type { RandomReader } from '@oslojs/crypto/random';
 
 export function checkUser(locals: App.Locals) {
 	const user = locals.user;
@@ -15,14 +14,6 @@ export function checkUser(locals: App.Locals) {
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
-
-export const random: RandomReader = {
-	read(bytes: Uint8Array): void {
-		crypto.getRandomValues(bytes);
-	}
-};
-
-export const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
 
 export async function initializeEventForms() {
 	const editForm = await superValidate(zod(zEditEvent));

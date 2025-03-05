@@ -46,15 +46,15 @@
 		</li>
 		<li>
 			<span class="font-medium">Paid:</span>
-			<a class="link link-primary" href="/account/billing"
-				>{user.paid ? 'Yes' : 'No'}, See billing</a
-			>
+			<a class="link link-primary" href="/account/billing">
+				{data.subscription ? 'Yes' : 'No'}, See billing
+			</a>
 		</li>
 		<li>
 			<span class="font-medium">Completed Tasks:</span>
 			<span class="text-muted">{data.completedCount}</span>
 		</li>
-		{#if user.admin}
+		{#if user.role === 'admin'}
 			<li>
 				<a href="/admin" class="link link-primary">You are an admin</a>
 			</li>

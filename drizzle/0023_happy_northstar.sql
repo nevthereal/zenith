@@ -1,1 +1,0 @@
-ALTER TABLE "projects" RENAME COLUMN "shared_with" TO "collaborators";

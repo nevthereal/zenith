@@ -6,7 +6,6 @@
 	import Spinner from '$lib/components/Spinner.svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
-	import { error } from '@sveltejs/kit';
 
 	let { data } = $props();
 
@@ -30,7 +29,7 @@
 		</h3>
 		<h1 class="heading-main">What are your plans?</h1>
 	</div>
-	{#if user.paid}
+	{#if data.subscription}
 		<form
 			action="?/create"
 			method="POST"

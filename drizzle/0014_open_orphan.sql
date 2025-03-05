@@ -1,1 +1,0 @@
-ALTER TABLE "events" RENAME COLUMN "tag" TO "space";
