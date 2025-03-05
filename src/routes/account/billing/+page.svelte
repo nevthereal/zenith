@@ -20,6 +20,7 @@
 			<Loading text="subscription data" />
 		{:then subscription}
 			{#if subscription}
+				<!-- TODO: display sub info -->
 				<h1 class="heading-small mb-2">Your account is paid.</h1>
 				<p>
 					<a href="mailto:support@zenithproductivity.app" class="link">Contact me</a> for more information.
@@ -48,6 +49,10 @@
 					>
 				{/if}
 			{/if}
+		{:catch}
+			<p class="mb-2 text-error">
+				Unable to load subscription information. Please try again later.
+			</p>
 		{/await}
 	</div>
 </section>

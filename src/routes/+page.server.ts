@@ -75,7 +75,7 @@ export const actions = {
 			});
 			const rateLimitAttempt = await ratelimit.limit(user.id);
 
-			if (!rateLimitAttempt.success && user.role === 'admin') {
+			if (!rateLimitAttempt.success && user.role != 'admin') {
 				return setError(form, 'Too many requests. Try again later', { status: 429 });
 			}
 		}

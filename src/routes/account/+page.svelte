@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { getActiveSubscription } from '$lib/auth/client.js';
+	import Loading from '$lib/components/Loading.svelte';
 	import { cn } from '$lib/utils.js';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
@@ -49,8 +50,14 @@
 		<li>
 			<span class="font-medium">Paid:</span>
 			<a class="link link-primary" href="/account/billing"
-				>{getActiveSubscription(page.url.origin) ? 'Yes' : 'No'}, See billing</a
-			>
+				>{#await getActiveSubscription(page.url.origin) then subscription}
+					{subscription ? 'Yes' : 'No'}, See billing
+				{:catch}
+					<p class="mb-2 text-error">
+						Unable to load subscription information. Please try again later.
+					</p>
+				{/await}
+			</a>
 		</li>
 		<li>
 			<span class="font-medium">Completed Tasks:</span>

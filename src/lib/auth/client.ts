@@ -17,7 +17,11 @@ export const authClient = (url: string) => {
 };
 
 export async function getActiveSubscription(baseUrl: string) {
-	const { data: subscriptions } = await authClient(baseUrl).subscription.list();
-
-	return subscriptions?.find((s) => s.status === 'active');
+	try {
+		const { data: subscriptions } = await authClient(baseUrl).subscription.list();
+		return subscriptions?.find((s) => s.status === 'active');
+	} catch (error) {
+		console.error('Failed to retrieve subscription status:', error);
+		return undefined;
+	}
 }

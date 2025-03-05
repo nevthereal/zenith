@@ -23,7 +23,7 @@ export const auth = betterAuth({
 	plugins: [
 		stripe({
 			stripeClient,
-			stripeWebhookSecret: WEBHOOK!,
+			stripeWebhookSecret: WEBHOOK,
 			createCustomerOnSignUp: true,
 			subscription: {
 				enabled: true,
