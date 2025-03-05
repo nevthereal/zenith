@@ -36,7 +36,7 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 
 	const { editForm, toggleForm } = await initializeEventForms();
 
-	const subscription = getActiveSubscription(request.headers);
+	const subscription = await getActiveSubscription(request.headers);
 
 	const projects = await db.query.projectsTable.findMany({
 		where: eq(projectsTable.userId, user.id),
