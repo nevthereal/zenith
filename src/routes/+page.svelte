@@ -6,9 +6,6 @@
 	import Spinner from '$lib/components/Spinner.svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
-	import { error } from '@sveltejs/kit';
-	import { getActiveSubscription } from '$lib/auth/client.js';
-	import { page } from '$app/state';
 
 	let { data } = $props();
 
