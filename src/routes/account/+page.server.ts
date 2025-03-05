@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 		.from(eventsTable)
 		.where(and(eq(eventsTable.completed, true), eq(eventsTable.userId, user.id)));
 
-	const subscription = getActiveSubscription(request.headers);
+	const subscription = await getActiveSubscription(request.headers);
 
 	return { user, completedCount, subscription };
 };

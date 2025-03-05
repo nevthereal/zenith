@@ -49,9 +49,9 @@ export type User = typeof auth.$Infer.Session.user;
 export type Session = typeof auth.$Infer.Session.session;
 
 export async function getActiveSubscription(headers: Headers) {
-	await auth.api
-		.listActiveSubscriptions({
-			headers: headers
-		})
-		.then((subscriptions) => subscriptions.find((s) => s.status === 'active'));
+	const subscriptions = await auth.api.listActiveSubscriptions({
+		headers: headers
+	});
+
+	return subscriptions.find((s) => s.status === 'active');
 }
