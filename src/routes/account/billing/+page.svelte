@@ -2,7 +2,6 @@
 	import { dev } from '$app/environment';
 	import { page } from '$app/state';
 	import { authClient } from '$lib/auth/client.js';
-	import Loading from '$lib/components/Loading.svelte';
 
 	const { data } = $props();
 	const user = data.user;
@@ -39,12 +38,17 @@
 					<button
 						data-umami-event={!dev ? 'purchase' : null}
 						class="btn btn-warning"
-						onclick={() =>
-							authClient(page.url.origin).subscription.upgrade({
-								plan: 'pro',
-								successUrl: `${page.url.origin}`,
-								cancelUrl: `${page.url.origin}/account/billing`
-							})}>Purchase ($20)</button
+						onclick={async () => {
+							try {
+								await authClient(page.url.origin).subscription.upgrade({
+									plan: 'pro',
+									successUrl: `${page.url.origin}`,
+									cancelUrl: `${page.url.origin}/account/billing`
+								});
+							} catch (error) {
+								console.log(error);
+							}
+						}}>Purchase ($20)</button
 					>
 				</div>
 			{:else}

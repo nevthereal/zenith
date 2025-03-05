@@ -109,7 +109,7 @@ export const actions = {
 
 		const subscription = getActiveSubscription(request.headers);
 
-		if (!subscription) redirect(302, '/account');
+		if (!subscription) return redirect(302, '/account');
 
 		const form = await superValidate(request, zod(zEditEvent));
 
