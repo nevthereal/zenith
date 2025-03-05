@@ -15,7 +15,7 @@ import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { dev } from '$app/environment';
-import { auth } from '$lib/auth';
+import { getActiveSubscription } from '$lib/auth';
 
 export const load: PageServerLoad = async ({ locals, request }) => {
 	const user = checkUser(locals);
@@ -36,11 +36,7 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 
 	const { editForm, toggleForm } = await initializeEventForms();
 
-	const subscription = await auth.api
-		.listActiveSubscriptions({
-			headers: request.headers
-		})
-		.then((subscriptions) => subscriptions.find((s) => s.status === 'active'));
+	const subscription = getActiveSubscription(request.headers);
 
 	const projects = await db.query.projectsTable.findMany({
 		where: eq(projectsTable.userId, user.id),
@@ -111,11 +107,7 @@ export const actions = {
 	edit: async ({ request, locals }) => {
 		const user = checkUser(locals);
 
-		const subscription = await auth.api
-			.listActiveSubscriptions({
-				headers: request.headers
-			})
-			.then((subscriptions) => subscriptions.find((s) => s.status === 'active'));
+		const subscription = getActiveSubscription(request.headers);
 
 		if (!subscription) redirect(302, '/account');
 
