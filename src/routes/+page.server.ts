@@ -16,8 +16,9 @@ import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { dev } from '$app/environment';
 import { getActiveSubscription } from '$lib/auth/client';
+import { auth } from '$lib/auth';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, request }) => {
 	const user = checkUser(locals);
 
 	const events = db.query.eventsTable.findMany({
@@ -36,6 +37,12 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const { editForm, toggleForm } = await initializeEventForms();
 
+	const subscriptions = await auth.api.listActiveSubscriptions({
+		headers: request.headers
+	});
+
+	const subscription = subscriptions.filter((s) => s.status === 'active');
+
 	const projects = await db.query.projectsTable.findMany({
 		where: eq(projectsTable.userId, user.id),
 		columns: {
@@ -44,7 +51,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 		}
 	});
 
-	return { createForm, events, editForm, user, toggleForm, projects };
+	return { createForm, events, editForm, user, toggleForm, projects, subscription };
 };
 
 export const actions = {

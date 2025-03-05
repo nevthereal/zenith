@@ -32,7 +32,7 @@
 		</h3>
 		<h1 class="heading-main">What are your plans?</h1>
 	</div>
-	{#if !getActiveSubscription(page.url.origin)}
+	{#if data.subscription}
 		<form
 			action="?/create"
 			method="POST"
