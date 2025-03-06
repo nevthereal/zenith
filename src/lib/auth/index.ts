@@ -32,7 +32,14 @@ export const auth = betterAuth({
 						name: 'pro',
 						priceId: PRICE_ID
 					}
-				]
+				],
+				getCheckoutSessionParams: () => {
+					return {
+						params: {
+							allow_promotion_codes: true
+						}
+					};
+				}
 			}
 		}),
 		admin()
