@@ -39,8 +39,8 @@ importers:
         specifier: ^4.1.6
         version: 4.1.6(react@18.3.1)(zod@3.24.1)
       better-auth:
-        specifier: ^1.2.2
-        version: 1.2.2(typescript@5.6.3)
+        specifier: ^1.2.3
+        version: 1.2.3(typescript@5.6.3)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -1562,8 +1562,8 @@ packages:
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
-  better-auth@1.2.2:
-    resolution: {integrity: sha512-zsynKwkMKeuKq1QQy80zLV9UehcM8yG0fjJSlGsb7oXWwgfgek5RVBptBFckZcq7z1e84WIqDvtypcgXx0xmlg==}
+  better-auth@1.2.3:
+    resolution: {integrity: sha512-y97/ah2SOWaW81IRg36m7xMSMVl7ATaHie/nhQ0in/reVlEX/6juVPszNqq0gcTwQtFsB8oe15wQKgdf4yHP9Q==}
 
   better-call@1.0.4:
     resolution: {integrity: sha512-NdAihYdkS0IOz1mtz8mw1gWacCxR9r921U8YqB+VB6++rt8edMG13vVL16Y4TBL4XkjMK/DUewEsOOFkw9LJYQ==}
@@ -3324,7 +3324,7 @@ snapshots:
 
   '@better-auth/stripe@1.2.2(typescript@5.6.3)':
     dependencies:
-      better-auth: 1.2.2(typescript@5.6.3)
+      better-auth: 1.2.3(typescript@5.6.3)
       zod: 3.24.1
     transitivePeerDependencies:
       - typescript
@@ -4436,7 +4436,7 @@ snapshots:
 
   balanced-match@1.0.2: {}
 
-  better-auth@1.2.2(typescript@5.6.3):
+  better-auth@1.2.3(typescript@5.6.3):
     dependencies:
       '@better-auth/utils': 0.2.3
       '@better-fetch/fetch': 1.1.15
