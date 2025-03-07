@@ -51,13 +51,17 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 
 export const actions = {
 	create: async ({ request, locals }) => {
+		const user = checkUser(locals);
+
+		const subscription = getActiveSubscription(request.headers);
+
+		if (!subscription || user.role === 'admin') return redirect(302, '/account');
+
 		const form = await superValidate(request, zod(zCreateEvent));
 
 		const openai = createOpenAI({
 			apiKey: OPENAI_KEY
 		});
-
-		const user = checkUser(locals);
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -106,10 +110,6 @@ export const actions = {
 	},
 	edit: async ({ request, locals }) => {
 		const user = checkUser(locals);
-
-		const subscription = getActiveSubscription(request.headers);
-
-		if (!subscription) return redirect(302, '/account');
 
 		const form = await superValidate(request, zod(zEditEvent));
 

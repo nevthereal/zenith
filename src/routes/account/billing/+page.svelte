@@ -31,9 +31,7 @@
 		{/if}
 		{#if !subscription}
 			{#if user.emailVerified}
-				<p class="mb-2 text-warning">
-					Please purchase the product to use the features of this app.
-				</p>
+				<p class="mb-2 text-warning">Please subscribe to use the features of this app.</p>
 				<div class="flex items-center gap-4">
 					<button
 						data-umami-event={!dev ? 'purchase' : null}
@@ -48,12 +46,12 @@
 							} catch (error) {
 								console.log(error);
 							}
-						}}>Purchase ($20)</button
+						}}>Subscribe</button
 					>
 				</div>
 			{:else}
 				<a href="/account/email" class="link link-warning"
-					>Verify your email to purchase the product.</a
+					>Verify your email to subscribe the product.</a
 				>
 			{/if}
 		{/if}

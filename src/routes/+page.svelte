@@ -29,7 +29,7 @@
 		</h3>
 		<h1 class="heading-main">What are your plans?</h1>
 	</div>
-	{#if data.subscription}
+	{#if data.subscription || user.role === 'admin'}
 		<form
 			action="?/create"
 			method="POST"
@@ -58,7 +58,7 @@
 		</form>
 	{:else}
 		<a href="/account/billing" class="heading-small link link-warning my-8 text-warning"
-			>Purchase the product to continue.</a
+			>Upgrade your plan to continue.</a
 		>
 	{/if}
 
