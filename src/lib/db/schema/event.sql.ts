@@ -11,8 +11,15 @@ export const eventsTable = pgTable('events', {
 		.references(() => users.id, { onDelete: 'cascade' })
 		.notNull(),
 	completed: boolean('completed').default(false).notNull(),
-	projectId: integer('project_id').references(() => projectsTable.id, { onDelete: 'set null' }),
-	createdAt: timestamp('created_at').defaultNow()
+	projectId: integer('project_id').references(() => projectsTable.id, { onDelete: 'set null' })
+});
+
+export const freeTierGenerations = pgTable('free_generations', {
+	id: serial('id').primaryKey(),
+	createdAt: timestamp('created_at').$defaultFn(() => new Date()),
+	userId: text('user_id')
+		.references(() => users.id, { onDelete: 'cascade' })
+		.notNull()
 });
 
 export const eventRelation = relations(eventsTable, ({ one }) => ({

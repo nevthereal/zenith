@@ -8,7 +8,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db';
-import { eventsTable, projectsTable } from '$lib/db/schema';
+import { eventsTable, freeTierGenerations, projectsTable } from '$lib/db/schema';
 import { and, asc, eq, lt } from 'drizzle-orm';
 import { checkUser, initializeEventForms } from '$lib/utils';
 import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
@@ -32,15 +32,21 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 		}
 	});
 
+	const freeToday = await db.query.freeTierGenerations.findMany({
+		where: ({ userId }, { eq }) => {
+			return eq(userId, user.id);
+		}
+	});
+
+	const freeTodayCount = freeToday.filter(
+		(e) => dayjs(e.createdAt).get('day') === dayjs().get('day')
+	).length;
+
 	const createForm = await superValidate(zod(zCreateEvent));
 
 	const { editForm, toggleForm } = await initializeEventForms();
 
 	const subscription = await getActiveSubscription(request.headers);
-
-	const todayCount = (await events).filter(
-		(e) => dayjs(e.createdAt).get('day') === dayjs().get('day')
-	).length;
 
 	const projects = await db.query.projectsTable.findMany({
 		where: eq(projectsTable.userId, user.id),
@@ -50,16 +56,25 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 		}
 	});
 
-	return { createForm, events, editForm, user, toggleForm, projects, subscription, todayCount };
+	return { createForm, events, editForm, user, toggleForm, projects, subscription, freeTodayCount };
 };
 
 export const actions = {
 	create: async ({ request, locals }) => {
 		const user = checkUser(locals);
 
-		const subscription = getActiveSubscription(request.headers);
+		const subscription = await getActiveSubscription(request.headers);
+		const freeToday = await db.query.freeTierGenerations.findMany({
+			where: ({ userId }, { eq }) => {
+				return eq(userId, user.id);
+			}
+		});
 
-		if (!subscription && user.role != 'admin') return redirect(302, '/account');
+		const freeTodayCount = freeToday.filter(
+			(e) => dayjs(e.createdAt).get('day') === dayjs().get('day')
+		).length;
+
+		if (!subscription && freeTodayCount >= 5) return redirect(302, '/account/billing');
 
 		const form = await superValidate(request, zod(zCreateEvent));
 
@@ -103,6 +118,12 @@ export const actions = {
 		});
 
 		if (finishReason == 'error') return setError(form, 'Generation error');
+
+		if (!subscription) {
+			await db.insert(freeTierGenerations).values({
+				userId: user.id
+			});
+		}
 
 		await db.insert(eventsTable).values({
 			content: object.content,
