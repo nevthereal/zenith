@@ -11,7 +11,8 @@ export const eventsTable = pgTable('events', {
 		.references(() => users.id, { onDelete: 'cascade' })
 		.notNull(),
 	completed: boolean('completed').default(false).notNull(),
-	projectId: integer('project_id').references(() => projectsTable.id, { onDelete: 'set null' })
+	projectId: integer('project_id').references(() => projectsTable.id, { onDelete: 'set null' }),
+	createdAt: timestamp('created_at').defaultNow()
 });
 
 export const eventRelation = relations(eventsTable, ({ one }) => ({

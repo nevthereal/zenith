@@ -9,13 +9,13 @@
 
 	let { data } = $props();
 
-	const { form, delayed, enhance, constraints, allErrors, errors } = superForm(data.createForm, {
+	const { user, todayCount, subscription, events } = $derived(data);
+
+	const { form, delayed, enhance, constraints, errors } = superForm(data.createForm, {
 		invalidateAll: true
 	});
 
 	dayjs.extend(relativeTime);
-
-	const user = data.user;
 </script>
 
 <svelte:head>
@@ -29,7 +29,7 @@
 		</h3>
 		<h1 class="heading-main">What are your plans?</h1>
 	</div>
-	{#if data.subscription || user.role === 'admin'}
+	{#if subscription || user.role === 'admin' || todayCount < 5}
 		<form
 			action="?/create"
 			method="POST"
@@ -52,18 +52,21 @@
 					{/if}
 				</button>
 			</div>
+			{#if !subscription}
+				<span class="text-muted mt-2">{5 - todayCount} daily Events left on free tier</span>
+			{/if}
 			{#if $errors.event}
 				<span class="mt-2 text-error">{$errors.event.join(', ')}</span>
 			{/if}
 		</form>
 	{:else}
 		<a href="/account/billing" class="heading-small link link-warning my-8 text-warning"
-			>Upgrade your plan to continue.</a
+			>Your daily quota has run out. Please upgrade.</a
 		>
 	{/if}
 
 	<section class="mb-8 flex w-full max-w-2xl flex-col items-center">
-		{#await data.events}
+		{#await events}
 			<Loading text="events" />
 		{:then events}
 			{#if events.length == 0}

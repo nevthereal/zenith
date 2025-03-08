@@ -38,6 +38,10 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 
 	const subscription = await getActiveSubscription(request.headers);
 
+	const todayCount = (await events).filter(
+		(e) => dayjs(e.createdAt).get('day') === dayjs().get('day')
+	).length;
+
 	const projects = await db.query.projectsTable.findMany({
 		where: eq(projectsTable.userId, user.id),
 		columns: {
@@ -46,7 +50,7 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 		}
 	});
 
-	return { createForm, events, editForm, user, toggleForm, projects, subscription };
+	return { createForm, events, editForm, user, toggleForm, projects, subscription, todayCount };
 };
 
 export const actions = {
