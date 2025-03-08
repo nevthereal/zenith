@@ -56,7 +56,7 @@
 		"@upstash/redis": "^1.33.0",
 		"@vercel/speed-insights": "^1.1.0",
 		"ai": "^4.1.6",
-		"better-auth": "^1.2.2",
+		"better-auth": "^1.2.3",
 		"clsx": "^2.1.1",
 		"dayjs": "^1.11.11",
 		"dotenv": "^16.4.5",

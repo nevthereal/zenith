@@ -42,7 +42,10 @@ export const auth = betterAuth({
 				}
 			}
 		}),
-		admin()
+		admin({
+			defaultRole: 'user',
+			adminRoles: ['admin']
+		})
 	],
 	user: {
 		deleteUser: {

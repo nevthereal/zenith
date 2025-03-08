@@ -14,6 +14,14 @@ export const eventsTable = pgTable('events', {
 	projectId: integer('project_id').references(() => projectsTable.id, { onDelete: 'set null' })
 });
 
+export const freeTierGenerations = pgTable('free_generations', {
+	id: serial('id').primaryKey(),
+	createdAt: timestamp('created_at').$defaultFn(() => new Date()),
+	userId: text('user_id')
+		.references(() => users.id, { onDelete: 'cascade' })
+		.notNull()
+});
+
 export const eventRelation = relations(eventsTable, ({ one }) => ({
 	users: one(users, { fields: [eventsTable.userId], references: [users.id] }),
 	project: one(projectsTable, { fields: [eventsTable.projectId], references: [projectsTable.id] })
