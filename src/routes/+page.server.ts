@@ -55,7 +55,7 @@ export const actions = {
 
 		const subscription = getActiveSubscription(request.headers);
 
-		if (!subscription || user.role === 'admin') return redirect(302, '/account');
+		if (!subscription && user.role != 'admin') return redirect(302, '/account');
 
 		const form = await superValidate(request, zod(zCreateEvent));
 
