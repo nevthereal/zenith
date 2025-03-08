@@ -38,9 +38,7 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 		}
 	});
 
-	const freeTodayCount = freeToday.filter(
-		(e) => dayjs(e.createdAt).get('day') === dayjs().get('day')
-	).length;
+	const freeTodayCount = freeToday.filter((e) => dayjs(e.createdAt).isSame('day')).length;
 
 	const createForm = await superValidate(zod(zCreateEvent));
 
@@ -70,9 +68,7 @@ export const actions = {
 			}
 		});
 
-		const freeTodayCount = freeToday.filter(
-			(e) => dayjs(e.createdAt).get('day') === dayjs().get('day')
-		).length;
+		const freeTodayCount = freeToday.filter((e) => dayjs(e.createdAt).isSame('day')).length;
 
 		if (!subscription && freeTodayCount >= 5) return redirect(302, '/account/billing');
 
