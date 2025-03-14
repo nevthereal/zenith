@@ -16,8 +16,6 @@
 	});
 
 	dayjs.extend(relativeTime);
-
-	$inspect(freeTodayCount);
 </script>
 
 <svelte:head>
