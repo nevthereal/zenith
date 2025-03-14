@@ -38,7 +38,11 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 		}
 	});
 
-	const freeTodayCount = freeToday.filter((e) => dayjs(e.createdAt).isSame('day')).length;
+	const freeTodayCount = freeToday.filter((e) =>
+		dayjs(e.createdAt).isSame(new Date(), 'day')
+	).length;
+
+	console.log(freeTodayCount);
 
 	const createForm = await superValidate(zod(zCreateEvent));
 
