@@ -6,6 +6,7 @@
 	import Spinner from '$lib/components/Spinner.svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
+	import { cn } from '$lib/utils.js';
 
 	let { data } = $props();
 
@@ -45,7 +46,7 @@
 					bind:value={$form.event}
 					{...$constraints.event}
 				/>
-				<button class="btn btn-primary"
+				<button class="btn btn-primary" disabled={!subscription && freeTodayCount >= 5}
 					>Add!
 					{#if $delayed}
 						<Spinner />
@@ -53,7 +54,11 @@
 				</button>
 			</div>
 			{#if !subscription}
-				<span class="text-muted mt-2">{5 - freeTodayCount} daily Events left on free tier</span>
+				<span class={cn('text-muted mt-2', freeTodayCount >= 5 && 'text-error')}
+					>{5 - freeTodayCount} daily Events left on free tier {#if freeTodayCount >= 5}
+						<a href="/account/billing" class="font-bold">Upgrade</a>
+					{/if}</span
+				>
 			{/if}
 			{#if $errors.event}
 				<span class="mt-2 text-error">{$errors.event.join(', ')}</span>
