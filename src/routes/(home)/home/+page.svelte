@@ -15,7 +15,7 @@
 	/>
 	<meta property="twitter:title" content="Zenith" />
 	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:site" content="@BremNeville" />
+	<meta name="twitter:site" content="@nevthereal" />
 </svelte:head>
 
 <section
