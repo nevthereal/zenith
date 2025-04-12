@@ -42,8 +42,6 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 		dayjs(e.createdAt).isSame(new Date(), 'day')
 	).length;
 
-	console.log(freeTodayCount);
-
 	const createForm = await superValidate(zod(zCreateEvent));
 
 	const { editForm, toggleForm } = await initializeEventForms();
