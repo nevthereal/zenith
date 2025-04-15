@@ -7,7 +7,7 @@ export const zEventLLM = z.object({
 		.datetime({ offset: true, local: true })
 		.transform((value) => new Date(value))
 		.describe(
-			'The due date and time of the event in JS Date format. It should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific.'
+			'The due date and time of the event or task. It should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific.'
 		),
 	content: z.string().describe('The activity or event.')
 });

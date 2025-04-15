@@ -112,7 +112,7 @@ export const actions = {
 				`Right now is ${new Date()}.` +
 				`You are an assistant who processes the users input to an event for a todo-like app.`,
 			prompt: form.data.event,
-			mode: 'json'
+			maxRetries: 3
 		});
 
 		if (finishReason == 'error') return setError(form, 'Generation error');

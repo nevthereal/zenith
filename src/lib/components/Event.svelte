@@ -43,7 +43,11 @@
 		id: `editForm-${event.id}`
 	});
 
-	const { enhance: toggleEnhance, form: toggleForm } = superForm(toggleFormData, {
+	const {
+		enhance: toggleEnhance,
+		form: toggleForm,
+		delayed
+	} = superForm(toggleFormData, {
 		onResult({ result }) {
 			if (result.type === 'success') editModal.close();
 		},
@@ -184,8 +188,12 @@
 						<option value="delete">Delete</option>
 					</select>
 					<input type="hidden" name="id" bind:value={$toggleForm.id} />
-					<button class={cn('btn', $toggleForm.action === 'delete' ? 'btn-error' : 'btn-success')}
-						>Yes</button
+					<button
+						disabled={$delayed}
+						class={cn('btn', $toggleForm.action === 'delete' ? 'btn-error' : 'btn-success')}
+					>
+						Confirm
+						{#if $delayed}<Spinner />{/if}</button
 					>
 				</form>
 			</div>
