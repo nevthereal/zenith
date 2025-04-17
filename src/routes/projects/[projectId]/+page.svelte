@@ -37,6 +37,10 @@
 	const dateInput = dateProxy(prjEditForm, 'deadline', { format: 'date' });
 
 	let deleteConfirmation = $state('');
+
+	const { events } = $derived(data.project);
+
+	const completedEvents = $derived(events.filter((e) => e.completed));
 </script>
 
 <svelte:head>
@@ -85,10 +89,10 @@
 			</div>
 		</div>
 		<div>
-			{#if data.events.length != 0}
+			{#if events.length != 0}
 				<section class="mt-4 flex flex-col items-center gap-4">
-					<h3 class="heading-muted mb-4">Due events ({data.events.length})</h3>
-					{#each data.events as event (event.id)}
+					<h3 class="heading-muted mb-4">Due events ({events.length})</h3>
+					{#each events as event (event.id)}
 						<Event
 							{event}
 							projects={data.userProjects}
@@ -98,12 +102,12 @@
 					{/each}
 				</section>
 			{/if}
-			{#if data.completedEvents.length != 0}
+			{#if completedEvents.length != 0}
 				<section class="mt-4 flex flex-col items-center gap-4">
 					<h3 class="heading-small mb-4 text-success">
-						Completed events ({data.completedEvents.length})
+						Completed events ({completedEvents.length})
 					</h3>
-					{#each data.completedEvents as event (event.id)}
+					{#each completedEvents as event (event.id)}
 						<Event
 							{event}
 							projects={data.userProjects}
@@ -113,7 +117,7 @@
 					{/each}
 				</section>
 			{/if}
-			{#if data.completedEvents.length === 0 && data.events.length === 0}
+			{#if completedEvents.length === 0 && events.length === 0}
 				<h2 class="heading-small mt-8 text-center italic">No events in this project</h2>
 			{/if}
 		</div>

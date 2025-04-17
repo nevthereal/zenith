@@ -24,6 +24,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			events: {
 				orderBy: {
 					date: 'asc'
+				},
+				with: {
+					project: true
 				}
 			}
 		}
