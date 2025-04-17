@@ -1,8 +1,8 @@
 import { db } from '$lib/db';
 import { checkUser, initializeEventForms } from '$lib/utils';
-import { and, asc, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';
-import { eventsTable, projectCollaboratorsTable, projectsTable } from '$lib/db/schema';
+import { projectsTable } from '$lib/db/schema';
 import { error, redirect } from '@sveltejs/kit';
 import { fail, setMessage, superValidate } from 'sveltekit-superforms';
 import { zDeleteProject, zEditProject } from '$lib/zod';
@@ -19,38 +19,22 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	}
 
 	const project = await db.query.projectsTable.findFirst({
-		where: eq(projectsTable.id, projectId)
-	});
-
-	const events = await db.query.eventsTable.findMany({
-		where: and(eq(eventsTable.projectId, projectId), eq(eventsTable.completed, false)),
+		where: { id: projectId },
 		with: {
-			project: true
-		},
-		orderBy: asc(eventsTable.date)
-	});
-
-	const completedEvents = await db.query.eventsTable.findMany({
-		where: and(eq(eventsTable.projectId, projectId), eq(eventsTable.completed, true)),
-		with: {
-			project: true
-		},
-		orderBy: asc(eventsTable.date)
+			events: {
+				orderBy: {
+					date: 'asc'
+				}
+			}
+		}
 	});
 
 	if (!project || project.userId != user.id) {
 		error(404, 'Project not found');
 	}
 
-	const collaborators = await db.query.projectCollaboratorsTable.findMany({
-		where: eq(projectCollaboratorsTable.userId, project.userId),
-		with: {
-			user: true
-		}
-	});
-
-	const userProjects = await db.query.projectsTable.findMany({
-		where: eq(projectsTable.userId, user.id),
+	const usersProjects = await db.query.projectsTable.findMany({
+		where: { userId: user.id },
 		columns: {
 			id: true,
 			name: true
@@ -74,12 +58,9 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	return {
 		project,
-		collaborators,
 		editForm,
 		toggleForm,
-		userProjects,
-		events,
-		completedEvents,
+		userProjects: usersProjects,
 		projectEditForm,
 		projectDeleteForm
 	};
@@ -93,7 +74,7 @@ export const actions = {
 		if (!form.valid) return fail(400, { form });
 
 		const qProject = await db.query.projectsTable.findFirst({
-			where: and(eq(projectsTable.id, form.data.projectId), eq(projectsTable.userId, user.id))
+			where: { id: form.data.projectId, userId: user.id }
 		});
 
 		if (!qProject) return fail(429, { form });
@@ -133,7 +114,7 @@ export const actions = {
 		if (!form.valid) fail(400, { form });
 
 		const qProject = await db.query.projectsTable.findFirst({
-			where: and(eq(projectsTable.id, form.data.projectId), eq(projectsTable.userId, user.id))
+			where: { id: form.data.projectId, userId: user.id }
 		});
 
 		if (qProject) {

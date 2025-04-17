@@ -23,7 +23,8 @@ export const relations = defineRelations(schema, (r) => ({
 			from: r.projectsTable.userId,
 			to: r.users.id
 		}),
-		collaborators: r.many.users()
+		collaborators: r.many.users(),
+		events: r.many.eventsTable()
 	},
 	users: {
 		collabs: r.many.projectsTable({

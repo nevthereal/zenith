@@ -8,7 +8,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db';
-import { eventsTable, freeTierGenerations, projectsTable } from '$lib/db/schema';
+import { eventsTable, freeTierGenerations } from '$lib/db/schema';
 import { and, eq } from 'drizzle-orm';
 import { checkUser, initializeEventForms } from '$lib/utils';
 import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
@@ -158,7 +158,10 @@ export const actions = {
 		let projectId: number | null = null;
 		if (form.data.projectId != 0) {
 			const requestedProject = await db.query.projectsTable.findFirst({
-				where: eq(projectsTable.id, form.data.projectId)
+				where: {
+					id: form.data.projectId,
+					userId: user.id
+				}
 			});
 			if (!requestedProject) {
 				return fail(404, { form });
@@ -190,7 +193,10 @@ export const actions = {
 
 		if (
 			!(await db.query.eventsTable.findFirst({
-				where: and(eq(eventsTable.id, form.data.id), eq(eventsTable.userId, user.id))
+				where: {
+					id: form.data.id,
+					userId: user.id
+				}
 			}))
 		) {
 			return fail(429, { form });
