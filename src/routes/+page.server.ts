@@ -9,7 +9,7 @@ import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db';
 import { eventsTable, freeTierGenerations, projectsTable } from '$lib/db/schema';
-import { and, asc, eq, lt } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { checkUser, initializeEventForms } from '$lib/utils';
 import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
 import { Ratelimit } from '@upstash/ratelimit';
@@ -21,20 +21,22 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 	const user = checkUser(locals);
 
 	const events = db.query.eventsTable.findMany({
-		orderBy: asc(eventsTable.date),
-		where: and(
-			lt(eventsTable.date, dayjs().endOf('day').toDate()),
-			eq(eventsTable.userId, user.id),
-			eq(eventsTable.completed, false)
-		),
+		orderBy: { date: 'asc' },
+		where: {
+			date: {
+				lt: dayjs().endOf('day').toDate()
+			},
+			userId: user.id,
+			completed: false
+		},
 		with: {
 			project: true
 		}
 	});
 
 	const freeToday = await db.query.freeTierGenerations.findMany({
-		where: ({ userId }, { eq }) => {
-			return eq(userId, user.id);
+		where: {
+			userId: user.id
 		}
 	});
 
@@ -49,7 +51,9 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 	const subscription = await getActiveSubscription(request.headers);
 
 	const projects = await db.query.projectsTable.findMany({
-		where: eq(projectsTable.userId, user.id),
+		where: {
+			userId: user.id
+		},
 		columns: {
 			id: true,
 			name: true
@@ -65,8 +69,8 @@ export const actions = {
 
 		const subscription = await getActiveSubscription(request.headers);
 		const freeToday = await db.query.freeTierGenerations.findMany({
-			where: ({ userId }, { eq }) => {
-				return eq(userId, user.id);
+			where: {
+				userId: user.id
 			}
 		});
 
@@ -142,7 +146,10 @@ export const actions = {
 
 		if (
 			!(await db.query.eventsTable.findFirst({
-				where: and(eq(eventsTable.id, form.data.id), eq(eventsTable.userId, user.id))
+				where: {
+					id: form.data.id,
+					userId: user.id
+				}
 			}))
 		) {
 			return fail(429, { form });
