@@ -55,7 +55,7 @@
 					{/if}
 				</button>
 			</div>
-			{#if !subscription}
+			{#if !canUse}
 				<span class={cn('text-muted mt-2', freeTodayCount >= 5 && 'text-error')}
 					>{5 - freeTodayCount} daily Events left on free tier {#if freeTodayCount >= 5}
 						<a href="/account/billing" class="underline">Upgrade</a>
