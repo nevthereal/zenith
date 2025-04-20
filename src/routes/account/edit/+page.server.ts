@@ -36,7 +36,7 @@ export const actions = {
 
 		const { success } = await limiter.limit(user.id);
 
-		if (!success) return setError(form, 'Too many requests. Try again later', { status: 429 });
+		if (!success) return setError(form, 'Name change limit reached', { status: 429 });
 
 		if (!form.valid) return fail(400, { form });
 

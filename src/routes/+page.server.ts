@@ -95,7 +95,7 @@ export const actions = {
 			const resetTime = prettyDate(dayjs(reset).toDate());
 
 			if (!success && user.role != 'admin') {
-				return setError(form, `Too many requests. Try again at ${resetTime}`, { status: 429 });
+				return setError(form, `Reached a limit. Try again at ${resetTime}`, { status: 429 });
 			}
 		}
 

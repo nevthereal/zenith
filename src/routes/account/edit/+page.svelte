@@ -11,7 +11,7 @@
 	const {
 		form: usernameForm,
 		enhance: usernameEnhance,
-		errors: usernameErrors,
+		allErrors: errors,
 		message: usernameMessage
 	} = superForm(data.updateForm);
 </script>
@@ -32,10 +32,10 @@
 				class="input input-bordered"
 			/>
 		</div>
-		{#if $usernameErrors.username}
-			{#each $usernameErrors.username as err}
+		{#if $errors}
+			{#each $errors as err}
 				<span class="text-error">
-					{`${err} `}
+					{new Intl.ListFormat('en', { type: 'conjunction' }).format(err.messages)}
 				</span>
 			{/each}
 		{/if}
