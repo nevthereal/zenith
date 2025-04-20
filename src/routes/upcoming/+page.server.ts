@@ -1,7 +1,5 @@
 import { db } from '$lib/db';
-import { and, asc, eq, gt } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
-import { eventsTable, projectsTable } from '$lib/db/schema';
 import dayjs from 'dayjs';
 import { checkUser, initializeEventForms } from '$lib/utils';
 
@@ -9,12 +7,14 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
 	const events = db.query.eventsTable.findMany({
-		where: and(
-			gt(eventsTable.date, dayjs().endOf('day').toDate()),
-			eq(eventsTable.userId, user.id),
-			eq(eventsTable.completed, false)
-		),
-		orderBy: asc(eventsTable.date),
+		where: {
+			date: {
+				gt: dayjs().endOf('day').toDate()
+			},
+			userId: user.id,
+			completed: false
+		},
+		orderBy: { date: 'asc' },
 		with: {
 			project: true
 		}
@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const { editForm, toggleForm } = await initializeEventForms();
 
 	const projects = await db.query.projectsTable.findMany({
-		where: eq(projectsTable.userId, user.id),
+		where: { userId: user.id },
 		columns: {
 			id: true,
 			name: true

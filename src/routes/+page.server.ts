@@ -1,5 +1,5 @@
 import { zEventLLM, zCreateEvent, zEditEvent, zToggleEvent } from '$lib/zod';
-import { OPENAI_KEY } from '$env/static/private';
+import { OPENAI_KEY, UNKEY_KEY } from '$env/static/private';
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
@@ -8,33 +8,33 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db';
-import { eventsTable, freeTierGenerations, projectsTable } from '$lib/db/schema';
-import { and, asc, eq, lt } from 'drizzle-orm';
-import { checkUser, initializeEventForms } from '$lib/utils';
-import { UPSTASH_TOKEN, UPSTASH_URL } from '$env/static/private';
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
+import { eventsTable, freeTierGenerations } from '$lib/db/schema';
+import { and, eq } from 'drizzle-orm';
+import { checkUser, initializeEventForms, prettyDate } from '$lib/utils';
 import { dev } from '$app/environment';
 import { getActiveSubscription } from '$lib/auth';
+import { Ratelimit } from '@unkey/ratelimit';
 
 export const load: PageServerLoad = async ({ locals, request }) => {
 	const user = checkUser(locals);
 
 	const events = db.query.eventsTable.findMany({
-		orderBy: asc(eventsTable.date),
-		where: and(
-			lt(eventsTable.date, dayjs().endOf('day').toDate()),
-			eq(eventsTable.userId, user.id),
-			eq(eventsTable.completed, false)
-		),
+		orderBy: { date: 'asc' },
+		where: {
+			date: {
+				lt: dayjs().endOf('day').toDate()
+			},
+			userId: user.id,
+			completed: false
+		},
 		with: {
 			project: true
 		}
 	});
 
 	const freeToday = await db.query.freeTierGenerations.findMany({
-		where: ({ userId }, { eq }) => {
-			return eq(userId, user.id);
+		where: {
+			userId: user.id
 		}
 	});
 
@@ -49,7 +49,9 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 	const subscription = await getActiveSubscription(request.headers);
 
 	const projects = await db.query.projectsTable.findMany({
-		where: eq(projectsTable.userId, user.id),
+		where: {
+			userId: user.id
+		},
 		columns: {
 			id: true,
 			name: true
@@ -65,8 +67,8 @@ export const actions = {
 
 		const subscription = await getActiveSubscription(request.headers);
 		const freeToday = await db.query.freeTierGenerations.findMany({
-			where: ({ userId }, { eq }) => {
-				return eq(userId, user.id);
+			where: {
+				userId: user.id
 			}
 		});
 
@@ -76,35 +78,31 @@ export const actions = {
 
 		const form = await superValidate(request, zod(zCreateEvent));
 
-		const openai = createOpenAI({
-			apiKey: OPENAI_KEY
-		});
-
 		if (!form.valid) {
 			return fail(400, { form });
 		}
 
-		if (!dev) {
-			const redis = new Redis({
-				url: UPSTASH_URL,
-				token: UPSTASH_TOKEN
+		if (dev) {
+			const limiter = new Ratelimit({
+				namespace: 'create-event',
+				limit: 5,
+				duration: '30s',
+				rootKey: UNKEY_KEY
 			});
 
-			const ratelimit = new Ratelimit({
-				redis,
-				limiter: Ratelimit.slidingWindow(10, '1h'),
-				prefix: 'create-event',
-				analytics: true
-			});
-			const rateLimitAttempt = await ratelimit.limit(user.id);
+			const { success, reset } = await limiter.limit(user.id);
 
-			if (!rateLimitAttempt.success && user.role != 'admin') {
-				return setError(form, 'Too many requests. Try again later', { status: 429 });
+			const resetTime = prettyDate(dayjs(reset).toDate());
+
+			if (!success && user.role != 'admin') {
+				return setError(form, `Too many requests. Try again at ${resetTime}`, { status: 429 });
 			}
 		}
 
 		const { object, finishReason } = await generateObject({
-			model: openai('gpt-4o-mini'),
+			model: createOpenAI({
+				apiKey: OPENAI_KEY
+			})('gpt-4o-mini'),
 			schema: zEventLLM,
 			schemaName: 'Event',
 			schemaDescription: 'An event or a task',
@@ -112,7 +110,7 @@ export const actions = {
 				`Right now is ${new Date()}.` +
 				`You are an assistant who processes the users input to an event for a todo-like app.`,
 			prompt: form.data.event,
-			maxRetries: 3
+			maxRetries: 5
 		});
 
 		if (finishReason == 'error') return setError(form, 'Generation error');
@@ -142,7 +140,10 @@ export const actions = {
 
 		if (
 			!(await db.query.eventsTable.findFirst({
-				where: and(eq(eventsTable.id, form.data.id), eq(eventsTable.userId, user.id))
+				where: {
+					id: form.data.id,
+					userId: user.id
+				}
 			}))
 		) {
 			return fail(429, { form });
@@ -151,7 +152,10 @@ export const actions = {
 		let projectId: number | null = null;
 		if (form.data.projectId != 0) {
 			const requestedProject = await db.query.projectsTable.findFirst({
-				where: eq(projectsTable.id, form.data.projectId)
+				where: {
+					id: form.data.projectId,
+					userId: user.id
+				}
 			});
 			if (!requestedProject) {
 				return fail(404, { form });
@@ -183,7 +187,10 @@ export const actions = {
 
 		if (
 			!(await db.query.eventsTable.findFirst({
-				where: and(eq(eventsTable.id, form.data.id), eq(eventsTable.userId, user.id))
+				where: {
+					id: form.data.id,
+					userId: user.id
+				}
 			}))
 		) {
 			return fail(429, { form });

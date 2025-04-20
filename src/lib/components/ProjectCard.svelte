@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { prettyDate } from '$lib/utils';
+	import type { users } from '$lib/db/schema';
 	import dayjs from 'dayjs';
 
 	interface Props {
 		name: string;
 		deadline: string | null;
-		collaborators: { user: { name: string } | null }[];
+		collaborators: (typeof users.$inferSelect)[];
 		id: number;
 	}
 
@@ -19,9 +19,9 @@
 	<h1 class="heading-sub mb-2">{name}</h1>
 	<div>
 		<p class="text-muted font-medium">
-			{#if collaborators.length != 0}
+			{#if collaborators && collaborators.length != 0}
 				<span
-					>Shared with {collaborators[0].user?.name}
+					>Shared with {collaborators[0].name}
 					{#if collaborators.length > 1}
 						and {collaborators.length - 1} other{collaborators.length - 1 != 1 ? 's' : ''}
 					{/if}</span

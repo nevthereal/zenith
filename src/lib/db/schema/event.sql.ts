@@ -1,5 +1,4 @@
 import { boolean, integer, text, timestamp, pgTable, serial } from 'drizzle-orm/pg-core';
-import { relations } from 'drizzle-orm';
 import { users } from './auth.sql';
 import { projectsTable } from './project.sql';
 
@@ -21,8 +20,3 @@ export const freeTierGenerations = pgTable('free_generations', {
 		.references(() => users.id, { onDelete: 'cascade' })
 		.notNull()
 });
-
-export const eventRelation = relations(eventsTable, ({ one }) => ({
-	users: one(users, { fields: [eventsTable.userId], references: [users.id] }),
-	project: one(projectsTable, { fields: [eventsTable.projectId], references: [projectsTable.id] })
-}));
