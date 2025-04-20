@@ -26,12 +26,9 @@ importers:
       '@sveltejs/enhanced-img':
         specifier: ^0.3.10
         version: 0.3.10(rollup@4.40.0)(svelte@5.27.2)(vite@5.4.18(@types/node@22.14.1))
-      '@upstash/ratelimit':
-        specifier: ^2.0.4
-        version: 2.0.4
-      '@upstash/redis':
-        specifier: ^1.34.3
-        version: 1.34.3
+      '@unkey/ratelimit':
+        specifier: ^0.5.5
+        version: 0.5.5
       ai:
         specifier: ^4.3.6
         version: 4.3.6(react@18.3.1)(zod@3.24.1)
@@ -1353,15 +1350,17 @@ packages:
     resolution: {integrity: sha512-EaewX6lxSjRJnc+99+dqzTeoDZUfyrA52d2/HRrkI830kgovWsmIiTfmr0NZorzqic7ga+1bS60lRBUgR3n/Bw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@upstash/core-analytics@0.0.10':
-    resolution: {integrity: sha512-7qJHGxpQgQr9/vmeS1PktEwvNAF7TI4iJDi8Pu2CFZ9YUGHZH4fOP5TfYlZ4aVxfopnELiE4BS4FBjyK7V1/xQ==}
-    engines: {node: '>=16.0.0'}
+  '@unkey/api@0.33.1':
+    resolution: {integrity: sha512-HXFQOGjO3S0+N6GMBOz9lkn2Fp41rdgNrafBkjRg8IjOsNv6SNdWrXZSELONinZYycr7Wxc/t7Vhx7xUdb0cdA==}
 
-  '@upstash/ratelimit@2.0.4':
-    resolution: {integrity: sha512-rKZWlZXXK93Xv1cz5/eCbGN4ZbvN3dWbjT2V6Of/3vqQGzd3TnD/xS3Okxp8EoG7L4MeLpy6UsRuMKGnuDZFAQ==}
+  '@unkey/error@0.2.0':
+    resolution: {integrity: sha512-DFGb4A7SrusZPP0FYuRIF0CO+Gi4etLUAEJ6EKc+TKYmscL0nEJ2Pr38FyX9MvjI4Wx5l35Wc9KsBjMm9Ybh7w==}
 
-  '@upstash/redis@1.34.3':
-    resolution: {integrity: sha512-VT25TyODGy/8ljl7GADnJoMmtmJ1F8d84UXfGonRRF8fWYJz7+2J6GzW+a6ETGtk4OyuRTt7FRSvFG5GvrfSdQ==}
+  '@unkey/ratelimit@0.5.5':
+    resolution: {integrity: sha512-79Xv7lZFHqScGzBQpO3hh2SZBhujXDDkyH/izWzeXcJ5sFYO+PsC+VaAFagEinbHbrx116RkIRIqbDrfZfRpxA==}
+
+  '@unkey/rbac@0.3.1':
+    resolution: {integrity: sha512-Hj+52XRIlBBl3/qOUq9K71Fwy3PWExBQOpOClVYHdrcmbgqNL6L4EdW/BzliLhqPCdwZTPVSJTnZ3Hw4ZYixsQ==}
 
   '@vercel/nft@0.27.5':
     resolution: {integrity: sha512-b2A7M+4yMHdWKY7xCC+kBEcnMrpaSE84CnuauTjhKKoCEeej0byJMAB8h/RBVnw/HdZOAFVcxR0Izr3LL24FwA==}
@@ -1602,9 +1601,6 @@ packages:
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
-
-  crypto-js@4.2.0:
-    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
 
   css-selector-tokenizer@0.8.0:
     resolution: {integrity: sha512-Jd6Ig3/pe62/qe5SBPTN8h8LeUg/pT4lLgtavPf7updwwHpvFzxvOQBHYj2LZDMjUnBzgvIUSjRcf6oT5HzHFg==}
@@ -4130,17 +4126,22 @@ snapshots:
       '@typescript-eslint/types': 8.11.0
       eslint-visitor-keys: 3.4.3
 
-  '@upstash/core-analytics@0.0.10':
+  '@unkey/api@0.33.1':
     dependencies:
-      '@upstash/redis': 1.34.3
+      '@unkey/rbac': 0.3.1
 
-  '@upstash/ratelimit@2.0.4':
+  '@unkey/error@0.2.0':
     dependencies:
-      '@upstash/core-analytics': 0.0.10
+      zod: 3.24.1
 
-  '@upstash/redis@1.34.3':
+  '@unkey/ratelimit@0.5.5':
     dependencies:
-      crypto-js: 4.2.0
+      '@unkey/api': 0.33.1
+
+  '@unkey/rbac@0.3.1':
+    dependencies:
+      '@unkey/error': 0.2.0
+      zod: 3.24.1
 
   '@vercel/nft@0.27.5':
     dependencies:
@@ -4413,8 +4414,6 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-
-  crypto-js@4.2.0: {}
 
   css-selector-tokenizer@0.8.0:
     dependencies:

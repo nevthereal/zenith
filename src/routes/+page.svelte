@@ -17,6 +17,8 @@
 	});
 
 	dayjs.extend(relativeTime);
+
+	const canUse = $derived(subscription || user.role === 'admin' || freeTodayCount < 5);
 </script>
 
 <svelte:head>
@@ -30,7 +32,7 @@
 		</h3>
 		<h1 class="heading-main">What are your plans?</h1>
 	</div>
-	{#if subscription || user.role === 'admin' || freeTodayCount < 5}
+	{#if canUse}
 		<form
 			action="?/create"
 			method="POST"
@@ -46,7 +48,7 @@
 					bind:value={$form.event}
 					{...$constraints.event}
 				/>
-				<button class="btn btn-primary" disabled={!subscription && freeTodayCount >= 5}
+				<button class="btn btn-primary" disabled={!canUse}
 					>Add!
 					{#if $delayed}
 						<Spinner />
@@ -56,7 +58,7 @@
 			{#if !subscription}
 				<span class={cn('text-muted mt-2', freeTodayCount >= 5 && 'text-error')}
 					>{5 - freeTodayCount} daily Events left on free tier {#if freeTodayCount >= 5}
-						<a href="/account/billing" class="font-bold">Upgrade</a>
+						<a href="/account/billing" class="underline">Upgrade</a>
 					{/if}</span
 				>
 			{/if}
