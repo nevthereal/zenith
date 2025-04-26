@@ -53,6 +53,11 @@ export const auth = betterAuth({
 		deleteUser: {
 			enabled: true
 		}
+	},
+	session: {
+		cookieCache: {
+			enabled: true
+		}
 	}
 });
 
