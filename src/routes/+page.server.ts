@@ -82,7 +82,7 @@ export const actions = {
 			return fail(400, { form });
 		}
 
-		if (dev) {
+		if (!dev) {
 			const limiter = new Ratelimit({
 				namespace: 'create-event',
 				limit: 5,
