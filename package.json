@@ -54,7 +54,7 @@
 		"@sveltejs/enhanced-img": "^0.3.10",
 		"@unkey/ratelimit": "^0.5.5",
 		"ai": "^4.3.6",
-		"better-auth": "^1.2.7",
+		"better-auth": "^1.2.10",
 		"clsx": "^2.1.1",
 		"dayjs": "^1.11.13",
 		"dotenv": "^16.4.5",
