@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin "daisyui";
+@plugin 'tailwindcss-motion';
 
 @layer base {
 	.heading-super-big {
@@ -16,7 +16,7 @@
 		@apply text-base font-medium tracking-tight md:text-xl;
 	}
 	.heading-muted {
-		@apply text-base font-medium tracking-tight text-base-content/80 md:text-xl;
+		@apply text-base-content/80 text-base font-medium tracking-tight md:text-xl;
 	}
 	.text-muted {
 		@apply text-base-content/80;

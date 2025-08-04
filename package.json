@@ -24,7 +24,7 @@
 		"@types/eslint": "^8.56.12",
 		"@types/pg": "^8.11.10",
 		"autoprefixer": "^10.4.20",
-		"daisyui": "^4.12.13",
+		"daisyui": "^5.0.50",
 		"drizzle-kit": "1.0.0-beta.1-199e5ec",
 		"eslint": "^9.13.0",
 		"eslint-config-prettier": "^9.1.0",
