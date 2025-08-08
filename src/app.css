@@ -1,5 +1,8 @@
 @import 'tailwindcss';
+
 @plugin "daisyui";
+@plugin "@tailwindcss/typography";
+
 @plugin 'tailwindcss-motion';
 
 @layer base {
