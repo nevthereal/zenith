@@ -1,9 +1,46 @@
 @import 'tailwindcss';
-
 @plugin "daisyui";
+
 @plugin "@tailwindcss/typography";
 
 @plugin 'tailwindcss-motion';
+
+
+@plugin "daisyui/theme" {
+	name: "blessednpc";
+	default: false;
+	prefersdark: true;
+	color-scheme: "dark";
+	--color-base-100: #1a202c;
+	--color-base-200: oklch(20% 0.042 265.755);
+	--color-base-300: oklch(27% 0.041 260.031);
+	--color-base-content: oklch(96% 0.007 247.896);
+	--color-primary: #5a67d8;
+	--color-primary-content: oklch(96% 0.016 293.756);
+	--color-secondary: #ecc94b;
+	--color-secondary-content: oklch(97% 0.013 236.62);
+	--color-accent: #38b2ac;
+	--color-accent-content: oklch(98% 0.031 120.757);
+	--color-neutral: #2d3748;
+	--color-neutral-content: oklch(98% 0.003 247.858);
+	--color-info: #4299e1;
+	--color-info-content: oklch(98% 0.019 200.873);
+	--color-success: #48bb78;
+	--color-success-content: oklch(98% 0.031 120.757);
+	--color-warning: #ed8936;
+	--color-warning-content: oklch(98% 0.016 73.684);
+	--color-error: #e53e3e;
+	--color-error-content: oklch(96% 0.015 12.422);
+	--radius-selector: 0.25rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.25rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 2px;
+	--depth: 1;
+	--noise: 1;
+  }
+  
 
 @layer base {
 	.heading-super-big {
