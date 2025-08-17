@@ -1,4 +1,5 @@
 import { auth } from '$lib/auth';
+import { building } from '$app/environment';
 import { svelteKitHandler } from 'better-auth/svelte-kit';
 
 export async function handle({ event, resolve }) {
@@ -11,5 +12,5 @@ export async function handle({ event, resolve }) {
 		event.locals.session = session.session;
 	}
 
-	return svelteKitHandler({ event, resolve, auth });
+	return svelteKitHandler({ event, resolve, auth, building });
 }

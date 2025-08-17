@@ -21,7 +21,7 @@
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
 		"@sveltejs/adapter-vercel": "^5.6.3",
-		"@sveltejs/kit": "^2.22.0",
+		"@sveltejs/kit": "^2.31.1",
 		"@sveltejs/vite-plugin-svelte": "^6.0.0",
 		"@tailwindcss/typography": "^0.5.15",
 		"@tailwindcss/vite": "^4.0.0",
@@ -34,7 +34,7 @@
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
-		"svelte": "^5.0.0",
+		"svelte": "^5.38.1",
 		"svelte-check": "^4.0.0",
 		"sveltekit-superforms": "^2.27.1",
 		"tailwindcss": "^4.0.0",
@@ -64,5 +64,6 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
-	}
+	},
+	"packageManager": "pnpm@10.12.4+sha512.5ea8b0deed94ed68691c9bad4c955492705c5eeb8a87ef86bc62c74a26b037b08ff9570f108b2e4dbd1dd1a9186fea925e527f141c648e85af45631074680184"
 }
