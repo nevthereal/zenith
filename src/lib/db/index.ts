@@ -1,10 +1,10 @@
 import { drizzle } from 'drizzle-orm/neon-http';
-import { DATABASE_URL } from '$env/static/private';
+import { DB_URL } from '$env/static/private';
 import * as schema from './schema';
 import { neon } from '@neondatabase/serverless';
 import { defineRelations } from 'drizzle-orm';
 
-const client = neon(DATABASE_URL);
+const client = neon(DB_URL);
 
 export const relations = defineRelations(schema, (r) => ({
 	eventsTable: {
