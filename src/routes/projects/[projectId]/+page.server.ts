@@ -6,7 +6,7 @@ import { projectsTable } from '$lib/db/schema';
 import { error, redirect } from '@sveltejs/kit';
 import { fail, setMessage, superValidate } from 'sveltekit-superforms';
 import { zDeleteProject, zEditProject } from '$lib/zod';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod, zod4 } from 'sveltekit-superforms/adapters';
 import dayjs from 'dayjs';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -46,14 +46,14 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 
 	const { editForm, toggleForm } = await initializeEventForms();
 
-	const projectEditForm = await superValidate(zod(zEditProject), {
+	const projectEditForm = await superValidate(zod4(zEditProject), {
 		defaults: {
 			projectId: project.id,
 			deadline: dayjs(project.deadline).isValid() ? dayjs(project.deadline).toDate() : undefined,
 			name: project.name
 		}
 	});
-	const projectDeleteForm = await superValidate(zod(zDeleteProject), {
+	const projectDeleteForm = await superValidate(zod4(zDeleteProject), {
 		defaults: {
 			projectId: project.id
 		}
@@ -72,7 +72,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 export const actions = {
 	edit: async ({ locals, request }) => {
 		const user = checkUser(locals);
-		const form = await superValidate(request, zod(zEditProject));
+		const form = await superValidate(request, zod4(zEditProject));
 
 		if (!form.valid) return fail(400, { form });
 
@@ -112,7 +112,7 @@ export const actions = {
 	delete: async ({ locals, request }) => {
 		const user = checkUser(locals);
 
-		const form = await superValidate(request, zod(zEditProject));
+		const form = await superValidate(request, zod4(zEditProject));
 
 		if (!form.valid) fail(400, { form });
 

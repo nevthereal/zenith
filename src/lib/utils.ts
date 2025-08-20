@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import clsx, { type ClassValue } from 'clsx';
 import { superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod, zod4 } from 'sveltekit-superforms/adapters';
 import { twMerge } from 'tailwind-merge';
 import { zEditEvent, zToggleEvent } from './zod';
 
@@ -16,8 +16,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export async function initializeEventForms() {
-	const editForm = await superValidate(zod(zEditEvent));
-	const toggleForm = await superValidate(zod(zToggleEvent));
+	const editForm = await superValidate(zod4(zEditEvent));
+	const toggleForm = await superValidate(zod4(zToggleEvent));
 
 	return { editForm, toggleForm };
 }

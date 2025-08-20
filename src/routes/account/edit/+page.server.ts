@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { checkUser } from '$lib/utils';
 import { superValidate, fail, setError } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod, zod4 } from 'sveltekit-superforms/adapters';
 import { zUpdateUser } from '$lib/zod';
 import { users } from '$lib/db/schema';
 import { db } from '$lib/db';
@@ -13,7 +13,7 @@ import { UNKEY_KEY } from '$env/static/private';
 export const load: PageServerLoad = async ({ locals }) => {
 	const user = checkUser(locals);
 
-	const updateForm = await superValidate(zod(zUpdateUser), {
+	const updateForm = await superValidate(zod4(zUpdateUser), {
 		defaults: {
 			username: user.name
 		}
@@ -25,7 +25,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions = {
 	username: async ({ request, locals }) => {
 		const user = checkUser(locals);
-		const form = await superValidate(request, zod(zUpdateUser));
+		const form = await superValidate(request, zod4(zUpdateUser));
 
 		const limiter = new Ratelimit({
 			limit: 1,

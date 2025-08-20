@@ -3,14 +3,14 @@ import type { Actions, PageServerLoad } from './$types';
 import { projectsTable } from '$lib/db/schema';
 import { checkUser } from '$lib/utils';
 import { fail, superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod, zod4 } from 'sveltekit-superforms/adapters';
 import { zCreateProject } from '$lib/zod';
 import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	checkUser(locals);
 
-	const createProjectForm = await superValidate(zod(zCreateProject));
+	const createProjectForm = await superValidate(zod4(zCreateProject));
 
 	return { createProjectForm };
 };
@@ -19,7 +19,7 @@ export const actions = {
 	default: async ({ locals, request }) => {
 		const user = checkUser(locals);
 
-		const form = await superValidate(request, zod(zCreateProject));
+		const form = await superValidate(request, zod4(zCreateProject));
 
 		if (!form.valid) {
 			return fail(400, { form });

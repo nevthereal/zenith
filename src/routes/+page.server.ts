@@ -4,7 +4,7 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
 import { superValidate, fail, setError } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
 import dayjs from 'dayjs';
 import { db } from '$lib/db';
@@ -42,7 +42,7 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 		dayjs(e.createdAt).isSame(new Date(), 'day')
 	).length;
 
-	const createForm = await superValidate(zod(zCreateEvent));
+	const createForm = await superValidate(zod4(zCreateEvent));
 
 	const { editForm, toggleForm } = await initializeEventForms();
 
@@ -76,7 +76,7 @@ export const actions = {
 
 		if (!subscription && freeTodayCount >= 5) return redirect(302, '/account/billing');
 
-		const form = await superValidate(request, zod(zCreateEvent));
+		const form = await superValidate(request, zod4(zCreateEvent));
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -99,16 +99,23 @@ export const actions = {
 			}
 		}
 
+		const usersEvents = await db.query.eventsTable.findMany({
+			where: {
+				userId: user.id
+			}
+		});
+
 		const { object, finishReason } = await generateObject({
 			model: createOpenAI({
 				apiKey: OPENAI_KEY
-			})('gpt-4o-mini'),
+			})('gpt-5-mini'),
 			schema: zEventLLM,
 			schemaName: 'Event',
 			schemaDescription: 'An event or a task',
 			system:
 				`Right now is ${new Date()}.` +
-				`You are an assistant who processes the users input to an event for a todo-like app.`,
+				`You are an assistant who processes the users input to an event for a todo-like app.` +
+				`Please pay attention to the other events: ${usersEvents}`,
 			prompt: form.data.event,
 			maxRetries: 5
 		});
@@ -132,7 +139,7 @@ export const actions = {
 	edit: async ({ request, locals }) => {
 		const user = checkUser(locals);
 
-		const form = await superValidate(request, zod(zEditEvent));
+		const form = await superValidate(request, zod4(zEditEvent));
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -179,7 +186,7 @@ export const actions = {
 	toggle: async ({ request, locals }) => {
 		const user = checkUser(locals);
 
-		const form = await superValidate(request, zod(zToggleEvent));
+		const form = await superValidate(request, zod4(zToggleEvent));
 
 		if (!form.valid) {
 			return fail(400, { form });

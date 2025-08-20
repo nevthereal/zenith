@@ -1,15 +1,17 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 // for LLM
 export const zEventLLM = z.object({
-	date: z
-		.string()
+	date: z.iso
 		.datetime({ offset: true, local: true })
-		.transform((value) => new Date(value))
 		.describe(
-			'The due date and time of the event or task. It should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific.'
+			'The due date and time of the event or task. It should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific. Provide in ISO format.'
 		),
-	content: z.string().describe('The activity or event.')
+	content: z
+		.string()
+		.describe(
+			'The activity or event. Strip any temporal information from the name, because it is already mentioned in the date field'
+		)
 });
 
 export const zCreateEvent = z.object({
