@@ -1,6 +1,6 @@
 import { zEventLLM, zCreateEvent, zEditEvent, zToggleEvent } from '$lib/zod';
-import { OPENAI_KEY, UNKEY_KEY } from '$env/static/private';
-import { createOpenAI } from '@ai-sdk/openai';
+import { VERCEL_GW_KEY, UNKEY_KEY } from '$env/static/private';
+import { createGateway } from '@ai-sdk/gateway';
 import { generateObject } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
 import { superValidate, fail, setError } from 'sveltekit-superforms';
@@ -106,8 +106,8 @@ export const actions = {
 		});
 
 		const { object, finishReason } = await generateObject({
-			model: createOpenAI({
-				apiKey: OPENAI_KEY
+			model: createGateway({
+				apiKey: VERCEL_GW_KEY
 			})('gpt-5-mini'),
 			schema: zEventLLM,
 			schemaName: 'Event',

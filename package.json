@@ -46,6 +46,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@ai-sdk/gateway": "^1.0.33",
 		"@ai-sdk/openai": "^2.0.17",
 		"@better-auth/stripe": "^1.2.2",
 		"@neondatabase/serverless": "^0.9.5",
