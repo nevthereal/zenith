@@ -20,7 +20,7 @@ export const zCreateEvent = z.object({
 
 export const zEditEvent = z.object({
 	event: z.string().min(3, 'Provide something meaningful'),
-	date: z.date(),
+	date: z.iso.datetime(),
 	id: z.number(),
 	projectId: z.number()
 });
