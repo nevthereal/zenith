@@ -1,10 +1,10 @@
-import { form, getRequestEvent, query } from '$app/server';
+import { command, form, getRequestEvent, query } from '$app/server';
 import { db } from '$lib/db';
 import dayjs from 'dayjs';
 import { checkUser } from './auth.remote';
-import { activeSubscription } from '$lib/auth';
+import { auth } from '$lib/auth';
 import { error, redirect } from '@sveltejs/kit';
-import { zCreateEvent, zEditEvent, zEventLLM } from '$lib/zod';
+import { zCreateEvent, zEditEvent, zEventLLM, zToggleEvent } from '$lib/zod';
 import { dev } from '$app/environment';
 import { Ratelimit } from '@unkey/ratelimit';
 import { UNKEY_KEY, VERCEL_GW_KEY } from '$env/static/private';
@@ -12,7 +12,7 @@ import { prettyDate } from '$lib/utils';
 import { generateObject } from 'ai';
 import { createGateway } from '@ai-sdk/gateway';
 import { eventsTable, freeTierGenerations } from '$lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 export const getEvents = query(async () => {
 	const user = await checkUser();
@@ -26,6 +26,26 @@ export const getEvents = query(async () => {
 			userId: user.id,
 			completed: false
 		},
+		with: {
+			project: true
+		}
+	});
+
+	return events;
+});
+
+export const getUpcomingEvents = query(async () => {
+	const user = await checkUser();
+
+	const events = db.query.eventsTable.findMany({
+		where: {
+			date: {
+				gt: dayjs().endOf('day').toDate()
+			},
+			userId: user.id,
+			completed: false
+		},
+		orderBy: { date: 'asc' },
 		with: {
 			project: true
 		}
@@ -49,30 +69,18 @@ export const getFreeCount = query(async () => {
 	return freeTodayCount;
 });
 
-export const getProjects = query(async () => {
-	const user = await checkUser();
-
-	const projects = await db.query.projectsTable.findMany({
-		where: {
-			userId: user.id
-		},
-		columns: {
-			id: true,
-			name: true
-		}
-	});
-
-	return projects;
-});
-
 export const getActiveSubscription = query(async () => {
 	const { request } = getRequestEvent();
-	const subscription = await activeSubscription(request.headers);
+	const subscriptions = await auth.api.listActiveSubscriptions({
+		headers: request.headers
+	});
+
+	const subscription = subscriptions.find((s) => s.status === 'active');
 
 	return subscription;
 });
 
-export const createTask = form(zCreateEvent, async (data, invalid) => {
+export const createEvent = form(zCreateEvent, async (data, invalid) => {
 	const user = await checkUser();
 
 	const subscription = await getActiveSubscription();
@@ -137,7 +145,7 @@ export const createTask = form(zCreateEvent, async (data, invalid) => {
 	return object;
 });
 
-export const edit = form(zEditEvent, async (data, invalid) => {
+export const editEvent = form(zEditEvent, async (data, invalid) => {
 	const user = await checkUser();
 
 	if (
@@ -161,4 +169,34 @@ export const edit = form(zEditEvent, async (data, invalid) => {
 		.where(eq(eventsTable.id, data.id))
 		.returning();
 	return updatedEvent;
+});
+
+export const toggleEvent = command(zToggleEvent, async (data) => {
+	const user = await checkUser();
+
+	if (
+		!(await db.query.eventsTable.findFirst({
+			where: {
+				id: data.id,
+				userId: user.id
+			}
+		}))
+	) {
+		return error(401);
+	}
+
+	const action = data.action;
+
+	if (action === 'complete' || action === 'uncomplete') {
+		await db
+			.update(eventsTable)
+			.set({
+				completed: action === 'complete' ? true : false
+			})
+			.where(eq(eventsTable.id, data.id));
+	} else {
+		await db
+			.delete(eventsTable)
+			.where(and(eq(eventsTable.id, data.id), eq(eventsTable.userId, user.id)));
+	}
 });

@@ -44,7 +44,7 @@ export const zUpdateUser = z.object({
 
 export const zCreateProject = z.object({
 	name: z.string().min(4).max(32),
-	deadline: z.date().optional()
+	deadline: z.iso.date().optional()
 });
 
 export const zEditProject = z.object({
