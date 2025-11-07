@@ -55,7 +55,7 @@
 		"@sveltejs/enhanced-img": "^0.3.10",
 		"@sveltejs/vite-plugin-svelte-inspector": "^5.0.1",
 		"@unkey/ratelimit": "^0.5.5",
-		"ai": "^5.0.19",
+		"ai": "^5.0.52",
 		"better-auth": "^1.3.26",
 		"clsx": "^2.1.1",
 		"dayjs": "^1.11.13",
