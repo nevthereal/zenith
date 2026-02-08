@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { checkUser } from '$lib/utils';
 import { superValidate, fail, setError } from 'sveltekit-superforms';
-import { zod, zod4 } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 import { zUpdateUser } from '$lib/zod';
 import { users } from '$lib/db/schema';
 import { db } from '$lib/db';

@@ -1,15 +1,17 @@
 import { db } from '$lib/db';
 import type { PageServerLoad } from './$types';
-import dayjs from 'dayjs';
+import { dayjs } from '$lib/datetime';
 import { checkUser, initializeEventForms } from '$lib/utils';
+import { resolveUserTimeZone } from '$lib/server/user-preferences';
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async ({ locals, cookies }) => {
 	const user = checkUser(locals);
+	const timeZone = resolveUserTimeZone(user, cookies);
 
 	const events = db.query.eventsTable.findMany({
 		where: {
 			date: {
-				gt: dayjs().endOf('day').toDate()
+				gt: dayjs().tz(timeZone).endOf('day').toDate()
 			},
 			userId: user.id,
 			completed: false

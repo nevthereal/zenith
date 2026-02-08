@@ -1,13 +1,15 @@
-<script lang="ts">
-	import { cn } from '$lib/utils.js';
-	import dayjs from 'dayjs';
-	import relativeTime from 'dayjs/plugin/relativeTime';
-
-	dayjs.extend(relativeTime);
+	<script lang="ts">
+		import { cn } from '$lib/utils.js';
+		import { dayjs } from '$lib/datetime';
 
 	let { data } = $props();
 
 	const user = data.user;
+	const userTimeZone = $derived(data.user?.timeZone);
+	const now = $derived(userTimeZone ? dayjs().tz(userTimeZone) : dayjs());
+	const joinedAt = $derived(
+		userTimeZone ? dayjs(user.createdAt).tz(userTimeZone) : dayjs(user.createdAt)
+	);
 
 	let revealed = $state(false);
 </script>
@@ -42,7 +44,7 @@
 		</li>
 		<li>
 			<span class="font-medium">Joined:</span>
-			<span class="text-muted">{dayjs().to(dayjs(user.createdAt))}</span>
+			<span class="text-muted">{now.to(joinedAt)}</span>
 		</li>
 		<li>
 			<span class="font-medium">Paid:</span>

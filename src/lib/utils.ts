@@ -1,9 +1,10 @@
 import { redirect } from '@sveltejs/kit';
 import clsx, { type ClassValue } from 'clsx';
 import { superValidate } from 'sveltekit-superforms';
-import { zod, zod4 } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 import { twMerge } from 'tailwind-merge';
 import { zEditEvent, zToggleEvent } from './zod';
+import { formatDateTime } from './datetime';
 
 export function checkUser(locals: App.Locals) {
 	const user = locals.user;
@@ -22,6 +23,9 @@ export async function initializeEventForms() {
 	return { editForm, toggleForm };
 }
 
-export function prettyDate(date: Date) {
-	return Intl.DateTimeFormat('en', { dateStyle: 'long', timeStyle: 'short' }).format(date);
+export function prettyDate(
+	date: Date,
+	options?: { locale?: string | null; timeZone?: string | null }
+) {
+	return formatDateTime(date, options);
 }

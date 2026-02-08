@@ -1,11 +1,31 @@
 <script>
 	import { dev } from '$app/environment';
+	import { onMount } from 'svelte';
 	import logo from '$lib/assets/zenith-logo.svg';
 	import '../app.css';
 
 	const { children, data } = $props();
 
 	const user = data.user;
+
+	onMount(async () => {
+		if (!user) return;
+
+		const resolved = Intl.DateTimeFormat().resolvedOptions();
+		const locale = resolved.locale ?? navigator.language;
+		const timeZone = resolved.timeZone;
+
+		if (!locale || !timeZone) return;
+		if (user.locale === locale && user.timeZone === timeZone) return;
+
+		await fetch('/api/user-context', {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json'
+			},
+			body: JSON.stringify({ locale, timeZone })
+		});
+	});
 </script>
 
 <svelte:head>

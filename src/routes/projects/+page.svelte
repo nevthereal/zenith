@@ -4,6 +4,8 @@
 	import Error from '../+error.svelte';
 
 	let { data } = $props();
+	const userLocale = $derived(data.user?.locale);
+	const userTimeZone = $derived(data.user?.timeZone);
 </script>
 
 <svelte:head>
@@ -38,6 +40,8 @@
 						collaborators={project.collaborators}
 						name={project.name}
 						deadline={project.deadline}
+						locale={userLocale}
+						timeZone={userTimeZone}
 					/>
 				{/each}
 			{/if}

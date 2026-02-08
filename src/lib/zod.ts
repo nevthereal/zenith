@@ -5,7 +5,7 @@ export const zEventLLM = z.object({
 	date: z.iso
 		.datetime({ offset: true, local: true })
 		.describe(
-			'The due date and time of the event or task. It should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific. Provide in ISO format.'
+			'The due date and time of the event or task. It should always be in the future and make sense in regard of the content and human behavior. The time should not be too specific. Provide in ISO 8601, preferably with a timezone offset for the user.'
 		),
 	content: z
 		.string()
