@@ -42,11 +42,8 @@
 	<a href="/" class="flex items-center"
 		><img src={logo} alt="Logo" class="size-16" /><span
 			class="text-2xl font-bold italic md:text-4xl"
-			>{#if user}
-				up today
-			{:else}
-				zenith
-			{/if}</span
+		>
+			zenith</span
 		></a
 	>
 	<div class="flex gap-8">
