@@ -65,12 +65,15 @@ export function parseUserDateTime(value: string, timeZone: string) {
 	const trimmed = value?.trim();
 	if (!trimmed) return new Date(NaN);
 
+	const resolvedTimeZone = safeTimeZone(timeZone);
+	if (!resolvedTimeZone) return new Date(NaN);
+
 	// If the value already includes a zone/offset, respect it.
 	if (/[zZ]$/.test(trimmed) || /[+-]\d{2}:?\d{2}$/.test(trimmed)) {
 		return new Date(trimmed);
 	}
 
-	const zoned = dayjs.tz(trimmed.replace(' ', 'T'), timeZone);
+	const zoned = dayjs.tz(trimmed.replace(' ', 'T'), resolvedTimeZone);
 	return zoned.toDate();
 }
 
