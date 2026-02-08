@@ -205,17 +205,19 @@ export const actions = {
 			}
 		}
 
+		const parsedDate = parseUserDateTime(
+			typeof rawDate === 'string' ? rawDate : String(rawDate ?? ''),
+			timeZone
+		);
+		if (Number.isNaN(parsedDate.getTime())) {
+			return setError(form, 'Invalid date provided', { status: 400 });
+		}
+
 		await db
 			.update(eventsTable)
 			.set({
 				content: form.data.event,
-				date: (() => {
-					if (typeof rawDate === 'string') {
-						const parsed = parseUserDateTime(rawDate, timeZone);
-						return Number.isNaN(parsed.getTime()) ? dayjs(form.data.date).toDate() : parsed;
-					}
-					return dayjs(form.data.date).toDate();
-				})(),
+				date: parsedDate,
 				projectId: projectId
 			})
 			.where(eq(eventsTable.id, form.data.id));
