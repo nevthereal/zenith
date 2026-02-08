@@ -13,7 +13,7 @@
 
 	let { name, deadline, collaborators, id, locale, timeZone }: Props = $props();
 
-	const deadlineDate = $derived(() => {
+	const deadlineDate = $derived.by(() => {
 		if (!deadline) return null;
 		const dateString =
 			deadline instanceof Date ? dayjs(deadline).utc().format('YYYY-MM-DD') : deadline;
