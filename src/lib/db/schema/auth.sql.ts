@@ -11,6 +11,8 @@ export const users = pgTable(
 		createdAt: timestamp('created_at').notNull(),
 		updatedAt: timestamp('updated_at').notNull(),
 		stripeCustomerId: text('stripe_customer_id'),
+		locale: text('locale'),
+		timeZone: text('time_zone'),
 		role: text('role'),
 		banned: boolean('banned'),
 		banReason: text('ban_reason'),

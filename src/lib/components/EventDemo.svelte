@@ -1,5 +1,5 @@
 <script lang="ts">
-	import dayjs from 'dayjs';
+	import { dayjs } from '$lib/datetime';
 </script>
 
 <div class="flex flex-col items-center justify-center gap-4">

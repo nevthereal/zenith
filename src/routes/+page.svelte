@@ -4,8 +4,7 @@
 	import Error from '$lib/components/Error.svelte';
 	import Loading from '$lib/components/Loading.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
-	import dayjs from 'dayjs';
-	import relativeTime from 'dayjs/plugin/relativeTime';
+	import { dayjs } from '$lib/datetime';
 	import { cn } from '$lib/utils.js';
 
 	let { data } = $props();
@@ -16,7 +15,8 @@
 		invalidateAll: true
 	});
 
-	dayjs.extend(relativeTime);
+	const userLocale = $derived(data.user?.locale);
+	const userTimeZone = $derived(data.user?.timeZone);
 </script>
 
 <svelte:head>
@@ -77,8 +77,13 @@
 			{#if events.length == 0}
 				<h2 class="heading-small italic">All done for today!</h2>
 			{:else}
-				{@const dueEvents = events.filter((e) => dayjs(e.date).isAfter(dayjs()))}
-				{@const overDueEvents = events.filter((e) => dayjs(e.date).isBefore(dayjs()))}
+				{@const now = userTimeZone ? dayjs().tz(userTimeZone) : dayjs()}
+				{@const dueEvents = events.filter((e) =>
+					(userTimeZone ? dayjs(e.date).tz(userTimeZone) : dayjs(e.date)).isAfter(now)
+				)}
+				{@const overDueEvents = events.filter((e) =>
+					(userTimeZone ? dayjs(e.date).tz(userTimeZone) : dayjs(e.date)).isBefore(now)
+				)}
 				{#if dueEvents.length != 0}
 					<h3 class="heading-sub my-4 mr-auto">Today:</h3>
 					<div class="flex w-full flex-col gap-4">
@@ -88,6 +93,8 @@
 								{event}
 								editFormData={data.editForm}
 								toggleFormData={data.toggleForm}
+								locale={userLocale}
+								timeZone={userTimeZone}
 							/>
 						{/each}
 					</div>
@@ -101,6 +108,8 @@
 								{event}
 								editFormData={data.editForm}
 								toggleFormData={data.toggleForm}
+								locale={userLocale}
+								timeZone={userTimeZone}
 							/>
 						{/each}
 					</div>

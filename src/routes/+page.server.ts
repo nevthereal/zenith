@@ -6,7 +6,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { superValidate, fail, setError } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { redirect } from '@sveltejs/kit';
-import dayjs from 'dayjs';
+import { dayjs, formatDateTimeIso, parseUserDateTime } from '$lib/datetime';
 import { db } from '$lib/db';
 import { eventsTable, freeTierGenerations } from '$lib/db/schema';
 import { and, eq } from 'drizzle-orm';
@@ -14,15 +14,17 @@ import { checkUser, initializeEventForms, prettyDate } from '$lib/utils';
 import { dev } from '$app/environment';
 import { getActiveSubscription } from '$lib/auth';
 import { Ratelimit } from '@unkey/ratelimit';
+import { resolveUserLocale, resolveUserTimeZone } from '$lib/server/user-preferences';
 
-export const load: PageServerLoad = async ({ locals, request }) => {
+export const load: PageServerLoad = async ({ locals, request, cookies }) => {
 	const user = checkUser(locals);
+	const timeZone = resolveUserTimeZone(user, cookies);
 
 	const events = db.query.eventsTable.findMany({
 		orderBy: { date: 'asc' },
 		where: {
 			date: {
-				lt: dayjs().endOf('day').toDate()
+				lt: dayjs().tz(timeZone).endOf('day').toDate()
 			},
 			userId: user.id,
 			completed: false
@@ -39,7 +41,7 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 	});
 
 	const freeTodayCount = freeToday.filter((e) =>
-		dayjs(e.createdAt).isSame(new Date(), 'day')
+		dayjs(e.createdAt).tz(timeZone).isSame(dayjs().tz(timeZone), 'day')
 	).length;
 
 	const createForm = await superValidate(zod4(zCreateEvent));
@@ -58,12 +60,23 @@ export const load: PageServerLoad = async ({ locals, request }) => {
 		}
 	});
 
-	return { createForm, events, editForm, user, toggleForm, projects, subscription, freeTodayCount };
+	return {
+		createForm,
+		events,
+		editForm,
+		user,
+		toggleForm,
+		projects,
+		subscription,
+		freeTodayCount
+	};
 };
 
 export const actions = {
-	create: async ({ request, locals }) => {
+	create: async ({ request, locals, cookies }) => {
 		const user = checkUser(locals);
+		const timeZone = resolveUserTimeZone(user, cookies);
+		const locale = resolveUserLocale(user, cookies, request.headers);
 
 		const subscription = await getActiveSubscription(request.headers);
 		const freeToday = await db.query.freeTierGenerations.findMany({
@@ -72,7 +85,9 @@ export const actions = {
 			}
 		});
 
-		const freeTodayCount = freeToday.filter((e) => dayjs(e.createdAt).isSame('day')).length;
+		const freeTodayCount = freeToday.filter((e) =>
+			dayjs(e.createdAt).tz(timeZone).isSame(dayjs().tz(timeZone), 'day')
+		).length;
 
 		if (!subscription && freeTodayCount >= 5) return redirect(302, '/account/billing');
 
@@ -92,7 +107,7 @@ export const actions = {
 
 			const { success, reset } = await limiter.limit(user.id);
 
-			const resetTime = prettyDate(dayjs(reset).toDate());
+			const resetTime = prettyDate(dayjs(reset).toDate(), { locale, timeZone });
 
 			if (!success && user.role != 'admin') {
 				return setError(form, `Reached a limit. Try again at ${resetTime}`, { status: 429 });
@@ -105,6 +120,12 @@ export const actions = {
 			}
 		});
 
+		const nowInUserTimeZone = dayjs().tz(timeZone);
+		const usersEventsForPrompt = usersEvents.map((event) => ({
+			content: event.content,
+			date: formatDateTimeIso(event.date, timeZone)
+		}));
+
 		const { object, finishReason } = await generateObject({
 			model: createGateway({
 				apiKey: VERCEL_GW_KEY
@@ -113,14 +134,21 @@ export const actions = {
 			schemaName: 'Event',
 			schemaDescription: 'An event or a task',
 			system:
-				`Right now is ${new Date()}.` +
+				`Right now is ${nowInUserTimeZone.format()} (${timeZone}, locale ${locale}). ` +
 				`You are an assistant who processes the users input to an event for a todo-like app.` +
-				`Please pay attention to the other events: ${usersEvents}`,
+				`Please pay attention to the other events (times are in the user's time zone): ${JSON.stringify(
+					usersEventsForPrompt
+				)}`,
 			prompt: form.data.event,
 			maxRetries: 5
 		});
 
 		if (finishReason == 'error') return setError(form, 'Generation error');
+
+		const parsedDate = parseUserDateTime(object.date, timeZone);
+		if (Number.isNaN(parsedDate.getTime())) {
+			return setError(form, 'Could not parse a valid date from the generated event.');
+		}
 
 		if (!subscription) {
 			await db.insert(freeTierGenerations).values({
@@ -130,14 +158,18 @@ export const actions = {
 
 		await db.insert(eventsTable).values({
 			content: object.content,
-			date: new Date(object.date),
+			date: parsedDate,
 			userId: user.id
 		});
 
 		return { form };
 	},
-	edit: async ({ request, locals }) => {
+	edit: async ({ request, locals, cookies }) => {
 		const user = checkUser(locals);
+		const timeZone = resolveUserTimeZone(user, cookies);
+
+		const formData = await request.clone().formData();
+		const rawDate = formData.get('date');
 
 		const form = await superValidate(request, zod4(zEditEvent));
 
@@ -177,7 +209,13 @@ export const actions = {
 			.update(eventsTable)
 			.set({
 				content: form.data.event,
-				date: dayjs(form.data.date).toDate(),
+				date: (() => {
+					if (typeof rawDate === 'string') {
+						const parsed = parseUserDateTime(rawDate, timeZone);
+						return Number.isNaN(parsed.getTime()) ? dayjs(form.data.date).toDate() : parsed;
+					}
+					return dayjs(form.data.date).toDate();
+				})(),
 				projectId: projectId
 			})
 			.where(eq(eventsTable.id, form.data.id));

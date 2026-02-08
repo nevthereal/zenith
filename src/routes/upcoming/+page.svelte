@@ -4,6 +4,8 @@
 	import Loading from '$lib/components/Loading.svelte';
 
 	let { data } = $props();
+	const userLocale = $derived(data.user?.locale);
+	const userTimeZone = $derived(data.user?.timeZone);
 </script>
 
 <svelte:head>
@@ -25,6 +27,8 @@
 						{event}
 						editFormData={data.editForm}
 						toggleFormData={data.toggleForm}
+						locale={userLocale}
+						timeZone={userTimeZone}
 					/>
 				{/each}
 			{/if}

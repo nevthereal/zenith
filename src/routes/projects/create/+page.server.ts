@@ -3,9 +3,10 @@ import type { Actions, PageServerLoad } from './$types';
 import { projectsTable } from '$lib/db/schema';
 import { checkUser } from '$lib/utils';
 import { fail, superValidate } from 'sveltekit-superforms';
-import { zod, zod4 } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 import { zCreateProject } from '$lib/zod';
 import { redirect } from '@sveltejs/kit';
+import { normalizeDateInput } from '$lib/datetime';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	checkUser(locals);
@@ -19,6 +20,10 @@ export const actions = {
 	default: async ({ locals, request }) => {
 		const user = checkUser(locals);
 
+		const formData = await request.clone().formData();
+		const rawDeadline = formData.get('deadline');
+		const deadline = typeof rawDeadline === 'string' ? normalizeDateInput(rawDeadline) : undefined;
+
 		const form = await superValidate(request, zod4(zCreateProject));
 
 		if (!form.valid) {
@@ -29,7 +34,7 @@ export const actions = {
 			.values({
 				name: form.data.name,
 				userId: user.id,
-				deadline: form.data.deadline?.toDateString()
+				deadline: deadline
 			})
 			.returning({
 				projectId: projectsTable.id

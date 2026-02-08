@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { eventsTable, projectsTable } from '$lib/db/schema';
+	import { dayjs } from '$lib/datetime';
 	import { cn, prettyDate } from '$lib/utils';
 	import type { zToggleEvent, zEditEvent } from '$lib/zod';
-	import dayjs from 'dayjs';
 	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
 	import Spinner from './Spinner.svelte';
 	import Label from './Label.svelte';
@@ -22,9 +22,11 @@
 			id: number;
 			name: string;
 		}[];
+		locale?: string | null;
+		timeZone?: string | null;
 	}
 
-	let { editFormData, toggleFormData, event, projects }: Props = $props();
+	let { editFormData, toggleFormData, event, projects, locale, timeZone }: Props = $props();
 
 	let editModal: HTMLDialogElement;
 	let toggleModal: HTMLDialogElement;
@@ -55,12 +57,14 @@
 		id: `toggleForm-${event.id}`
 	});
 
-	const date = $derived(dayjs(event.date));
+	const eventDate = $derived(timeZone ? dayjs(event.date).tz(timeZone) : dayjs(event.date));
 	const dateInput = dateProxy(editForm, 'date', { format: 'datetime-local' });
 
 	$editForm.event = event.content;
 	$editForm.id = event.id;
-	$dateInput = dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS');
+	$dateInput = (timeZone ? dayjs(event.date).tz(timeZone) : dayjs(event.date)).format(
+		'YYYY-MM-DDTHH:mm:ss.SSS'
+	);
 	if (event.projectId) {
 		$editForm.projectId = event.projectId;
 	} else {
@@ -79,9 +83,15 @@
 		</h1>
 		<div class="text-md md:text-base">
 			<p>
-				<span class={cn(date.isBefore(dayjs().startOf('day')) && !event.completed && 'text-error')}>
-					{prettyDate(event.date)}
-				</span>
+					<span
+						class={cn(
+							eventDate.isBefore(
+								timeZone ? dayjs().tz(timeZone).startOf('day') : dayjs().startOf('day')
+							) && !event.completed && 'text-error'
+						)}
+					>
+						{prettyDate(event.date, { locale, timeZone })}
+					</span>
 				{#if event.project}
 					<a href={`/projects/${event.project.id}`} class="text-secondary"
 						><i class="fa-solid fa-arrow-right max-md:hidden"></i>
@@ -134,7 +144,9 @@
 							type="datetime-local"
 							placeholder="When?"
 							class="input input-bordered"
-							defaultValue={dayjs(event.date).format('YYYY-MM-DDTHH:mm:ss.SSS')}
+							defaultValue={(timeZone ? dayjs(event.date).tz(timeZone) : dayjs(event.date)).format(
+								'YYYY-MM-DDTHH:mm:ss.SSS'
+							)}
 						/>
 					</div>
 					<div class="flex flex-col md:col-span-2">

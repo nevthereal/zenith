@@ -3,13 +3,23 @@
 	import Label from '$lib/components/Label.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import { cn } from '$lib/utils.js';
-	import dayjs from 'dayjs';
-	import relativeTime from 'dayjs/plugin/relativeTime.js';
+	import { dayjs, formatDate } from '$lib/datetime';
 	import { dateProxy, superForm } from 'sveltekit-superforms';
 
-	dayjs.extend(relativeTime);
-
 	let { data } = $props();
+	const userLocale = $derived(data.user?.locale);
+	const userTimeZone = $derived(data.user?.timeZone);
+	const deadlineDate = $derived(() => {
+		if (!data.project.deadline) return null;
+		const dateString =
+			data.project.deadline instanceof Date
+				? dayjs(data.project.deadline).utc().format('YYYY-MM-DD')
+				: data.project.deadline;
+		const parsed = userTimeZone
+			? dayjs.tz(`${dateString}T00:00`, userTimeZone)
+			: dayjs(dateString);
+		return parsed.isValid() ? parsed : null;
+	});
 
 	let editModal: HTMLDialogElement;
 
@@ -59,10 +69,13 @@
 					<li>
 						<span class="font-medium">Deadline:</span>
 						<span class="text-muted"
-							>{#if data.project.deadline}
-								{dayjs().to(dayjs(data.project.deadline))} ({dayjs(data.project.deadline).format(
-									'D MMMM YYYY'
-								)})
+							>{#if deadlineDate}
+								{(userTimeZone ? dayjs().tz(userTimeZone) : dayjs()).to(deadlineDate)} (
+								{formatDate(deadlineDate.toDate(), {
+									locale: userLocale,
+									timeZone: userTimeZone
+								})}
+								)
 							{:else}
 								No deadline
 							{/if}
@@ -98,6 +111,8 @@
 							projects={data.userProjects}
 							editFormData={data.editForm}
 							toggleFormData={data.toggleForm}
+							locale={userLocale}
+							timeZone={userTimeZone}
 						/>
 					{/each}
 				</section>
@@ -113,6 +128,8 @@
 							projects={data.userProjects}
 							editFormData={data.editForm}
 							toggleFormData={data.toggleForm}
+							locale={userLocale}
+							timeZone={userTimeZone}
 						/>
 					{/each}
 				</section>

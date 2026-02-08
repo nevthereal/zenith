@@ -1,15 +1,27 @@
 <script lang="ts">
 	import type { users } from '$lib/db/schema';
-	import dayjs from 'dayjs';
+	import { dayjs, formatDate, parseUserDateTime } from '$lib/datetime';
 
 	interface Props {
 		name: string;
-		deadline: string | null;
+		deadline: string | Date | null;
 		collaborators: (typeof users.$inferSelect)[];
 		id: number;
+		locale?: string | null;
+		timeZone?: string | null;
 	}
 
-	let { name, deadline, collaborators, id }: Props = $props();
+	let { name, deadline, collaborators, id, locale, timeZone }: Props = $props();
+
+	const deadlineDate = $derived(() => {
+		if (!deadline) return null;
+		const dateString =
+			deadline instanceof Date ? dayjs(deadline).utc().format('YYYY-MM-DD') : deadline;
+		const parsed = timeZone
+			? parseUserDateTime(`${dateString}T00:00`, timeZone)
+			: new Date(dateString);
+		return Number.isNaN(parsed.getTime()) ? null : parsed;
+	});
 </script>
 
 <a
@@ -29,8 +41,8 @@
 			{/if}
 		</p>
 		<p class="text-muted font-medium">
-			{#if deadline}
-				<span>Deadline: {dayjs(deadline).format('D MMMM YYYY')}</span>
+			{#if deadlineDate}
+				<span>Deadline: {formatDate(deadlineDate, { locale, timeZone })}</span>
 			{:else}
 				<span>No deadline set</span>
 			{/if}
