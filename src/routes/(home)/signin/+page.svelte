@@ -1,6 +1,8 @@
 <script>
 	import { page } from '$app/state';
 	import { authClient } from '$lib/auth/client';
+
+	let loading = $state(false);
 </script>
 
 <svelte:head>
@@ -16,13 +18,16 @@
 	</div>
 
 	<button
-		onclick={async () =>
+		onclick={async () => {
+			loading = true;
 			await authClient(page.url.origin).signIn.social({
 				provider: 'github',
 				newUserCallbackURL: '/',
 				callbackURL: '/'
-			})}
+			});
+		}}
 		class="btn m-auto flex gap-4 text-lg"
-		><i class="fa-brands fa-github"></i>Sign in with GitHub</button
+		><i class={!loading ? 'fa-brands fa-github' : 'fa-solid fa-spinner animate-spin'}></i>Sign in
+		with GitHub</button
 	>
 </div>

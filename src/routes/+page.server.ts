@@ -1,7 +1,6 @@
 import { zEventLLM, zCreateEvent, zEditEvent, zToggleEvent } from '$lib/zod';
 import { VERCEL_GW_KEY, UNKEY_KEY } from '$env/static/private';
-import { createGateway } from '@ai-sdk/gateway';
-import { generateObject } from 'ai';
+import { generateText, createGateway, Output } from 'ai';
 import type { Actions, PageServerLoad } from './$types';
 import { superValidate, fail, setError } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
@@ -126,13 +125,12 @@ export const actions = {
 			date: formatDateTimeIso(event.date, timeZone)
 		}));
 
-		const { object, finishReason } = await generateObject({
-			model: createGateway({
-				apiKey: VERCEL_GW_KEY
-			})('gpt-5-mini'),
-			schema: zEventLLM,
-			schemaName: 'Event',
-			schemaDescription: 'An event or a task',
+		const gw = createGateway({
+			apiKey: VERCEL_GW_KEY
+		});
+
+		const { output, finishReason } = await generateText({
+			model: gw('gpt-5.4-mini'),
 			system:
 				`Right now is ${nowInUserTimeZone.format()} (${timeZone}, locale ${locale}). ` +
 				`You are an assistant who processes the users input to an event for a todo-like app.` +
@@ -140,12 +138,17 @@ export const actions = {
 					usersEventsForPrompt
 				)}`,
 			prompt: form.data.event,
-			maxRetries: 5
+			maxRetries: 5,
+			output: Output.object({
+				schema: zEventLLM,
+				name: 'Event',
+				description: 'An event or a task'
+			})
 		});
 
 		if (finishReason == 'error') return setError(form, 'Generation error');
 
-		const parsedDate = parseUserDateTime(object.date, timeZone);
+		const parsedDate = parseUserDateTime(output.date, timeZone);
 		if (Number.isNaN(parsedDate.getTime())) {
 			return setError(form, 'Could not parse a valid date from the generated event.');
 		}
@@ -157,7 +160,7 @@ export const actions = {
 		}
 
 		await db.insert(eventsTable).values({
-			content: object.content,
+			content: output.content,
 			date: parsedDate,
 			userId: user.id
 		});
