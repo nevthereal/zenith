@@ -17,6 +17,8 @@
 	const { subscription, freeTodayCount } = $derived(data);
 	const projects = $derived(data.projects);
 	const todayEvents = getTodayEvents();
+	const canCreateEvents = $derived(subscription || user.role === 'admin' || freeTodayCount < 5);
+	const showFreeTierInfo = $derived(!subscription && user.role !== 'admin');
 
 	const createEventForm = createEvent.preflight(zCreateEvent);
 	const enhancedCreateEventForm = createEventForm.enhance(async ({ form, submit }) => {
@@ -40,7 +42,7 @@
 		</h3>
 		<h1 class="heading-main">What are your plans?</h1>
 	</div>
-	{#if subscription || user.role === 'admin' || freeTodayCount < 5}
+	{#if canCreateEvents}
 		<form
 			{...enhancedCreateEventForm}
 			class="motion-preset-blur-up my-12 w-full max-w-2xl motion-delay-300"
@@ -69,7 +71,7 @@
 							</Field.Content>
 							<button
 								class="btn btn-primary mt-7 min-w-28"
-								disabled={createEventForm.pending > 0 || (!subscription && freeTodayCount >= 5)}
+								disabled={createEventForm.pending > 0 || !canCreateEvents}
 							>
 								Add!
 								{#if createEventForm.pending > 0}
@@ -85,7 +87,7 @@
 					</Field.Field>
 				</Field.Group>
 			</Field.Set>
-			{#if !subscription}
+			{#if showFreeTierInfo}
 				<span class={cn('text-muted mt-2 block', freeTodayCount >= 5 && 'text-error')}
 					>{5 - freeTodayCount} daily Events left on free tier {#if freeTodayCount >= 5}
 						<a href="/account/billing" class="underline">Upgrade</a>

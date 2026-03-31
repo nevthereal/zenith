@@ -8,17 +8,17 @@ import { users } from '$lib/db/schema';
 import { getUserContext } from '$lib/server/request-context';
 import { zUpdateUser } from '$lib/zod';
 
+const usernameLimiter = new Ratelimit({
+	limit: 1,
+	duration: '1d',
+	rootKey: UNKEY_KEY,
+	namespace: 'update-username'
+});
+
 export const updateUsername = form(zUpdateUser, async ({ username }) => {
 	const { user } = getUserContext();
 
-	const limiter = new Ratelimit({
-		limit: 1,
-		duration: '1d',
-		rootKey: UNKEY_KEY,
-		namespace: 'update-username'
-	});
-
-	const { success } = await limiter.limit(user.id);
+	const { success } = await usernameLimiter.limit(user.id);
 
 	if (!success) {
 		invalid('Name change limit reached');

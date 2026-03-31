@@ -1,6 +1,6 @@
 import { form, query } from '$app/server';
 import { error, invalid, redirect } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { db } from '$lib/db';
 import { projectsTable } from '$lib/db/schema';
 import { dayjs, normalizeDateInput } from '$lib/datetime';
@@ -30,7 +30,7 @@ export const getProject = query(zProjectQueryId, async (projectId) => {
 	const { user } = getUserContext();
 
 	const project = await db.query.projectsTable.findFirst({
-		where: { id: projectId },
+		where: { id: projectId, userId: user.id },
 		with: {
 			events: {
 				orderBy: {
@@ -43,7 +43,7 @@ export const getProject = query(zProjectQueryId, async (projectId) => {
 		}
 	});
 
-	if (!project || project.userId !== user.id) {
+	if (!project) {
 		error(404, 'Project not found');
 	}
 
@@ -80,19 +80,19 @@ export const editProject = form(zEditProjectForm, async ({ id, name, deadline })
 
 	const trimmedName = name?.trim() ?? '';
 	const normalizedName = trimmedName.length > 0 ? trimmedName : undefined;
-	const normalizedDeadline = normalizeOptionalDate(deadline);
+	const updates = {
+		...(normalizedName !== undefined ? { name: normalizedName } : {}),
+		...(deadline !== undefined ? { deadline: normalizeOptionalDate(deadline) } : {})
+	};
 
-	if (!normalizedName && !normalizedDeadline && deadline !== '') {
+	if (Object.keys(updates).length === 0) {
 		invalid('Provide a name or deadline');
 	}
 
 	await db
 		.update(projectsTable)
-		.set({
-			name: normalizedName ?? project.name,
-			deadline: normalizedDeadline ?? null
-		})
-		.where(eq(projectsTable.id, id));
+		.set(updates)
+		.where(and(eq(projectsTable.id, id), eq(projectsTable.userId, user.id)));
 
 	return { ok: true };
 });
@@ -108,7 +108,9 @@ export const deleteProject = form(zDeleteProjectForm, async ({ id }) => {
 		invalid('Project not found');
 	}
 
-	await db.delete(projectsTable).where(eq(projectsTable.id, id));
+	await db
+		.delete(projectsTable)
+		.where(and(eq(projectsTable.id, id), eq(projectsTable.userId, user.id)));
 
 	redirect(303, '/projects');
 });

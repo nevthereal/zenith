@@ -44,7 +44,7 @@
 									cancelUrl: `${page.url.origin}/account/billing`
 								});
 							} catch (error) {
-								console.log(error);
+								console.error(error);
 							}
 						}}>Subscribe</button
 					>

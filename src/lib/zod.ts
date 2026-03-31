@@ -1,4 +1,12 @@
 import { z } from 'zod/v4';
+import { normalizeDateInput } from '$lib/datetime';
+
+const zDeadlineInput = z
+	.string()
+	.refine((value) => value.trim().length === 0 || normalizeDateInput(value) !== undefined, {
+		message: 'Please provide a valid deadline'
+	})
+	.optional();
 
 // for LLM
 export const zEventLLM = z.object({
@@ -63,7 +71,7 @@ export const zCreateProject = z.object({
 
 export const zCreateProjectForm = z.object({
 	name: z.string().trim().min(4, 'Project names need at least 4 characters').max(32),
-	deadline: z.string().optional()
+	deadline: zDeadlineInput
 });
 
 export const zEditProject = z.object({
@@ -74,7 +82,7 @@ export const zEditProject = z.object({
 
 export const zEditProjectForm = z.object({
 	id: z.number().int().positive(),
-	deadline: z.string().optional(),
+	deadline: zDeadlineInput,
 	name: z
 		.string()
 		.max(32, 'Project names can be at most 32 characters')

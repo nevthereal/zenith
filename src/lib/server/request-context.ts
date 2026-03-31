@@ -1,5 +1,6 @@
 import { getRequestEvent } from '$app/server';
 import { redirect } from '@sveltejs/kit';
+import { resolveUserLocale, resolveUserTimeZone } from '$lib/server/user-preferences';
 
 export function requireUser() {
 	const { locals } = getRequestEvent();
@@ -18,7 +19,7 @@ export function getUserContext() {
 	return {
 		event,
 		user,
-		locale: user.locale ?? 'en-US',
-		timeZone: user.timeZone ?? 'UTC'
+		locale: resolveUserLocale(user, event.cookies, event.request.headers),
+		timeZone: resolveUserTimeZone(user, event.cookies)
 	};
 }

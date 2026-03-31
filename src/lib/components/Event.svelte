@@ -25,27 +25,30 @@
 	}
 
 	let { event, projects, locale, timeZone }: Props = $props();
-	const eventId = event.id;
 
 	let editModal: HTMLDialogElement;
 	let toggleModal: HTMLDialogElement;
 	const eventDate = $derived(timeZone ? dayjs(event.date).tz(timeZone) : dayjs(event.date));
-	const editEventForm = editEvent.for(eventId).preflight(zEditEventForm);
-	const toggleEventForm = toggleEvent.for(eventId).preflight(zToggleEventForm);
-	const enhancedEditEventForm = editEventForm.enhance(async ({ submit }) => {
-		await submit();
+	const editEventForm = $derived.by(() => editEvent.for(event.id).preflight(zEditEventForm));
+	const toggleEventForm = $derived.by(() => toggleEvent.for(event.id).preflight(zToggleEventForm));
+	const enhancedEditEventForm = $derived.by(() =>
+		editEventForm.enhance(async ({ submit }) => {
+			await submit();
 
-		if (!editEventForm.fields.allIssues()?.length) {
-			editModal.close();
-		}
-	});
-	const enhancedToggleEventForm = toggleEventForm.enhance(async ({ submit }) => {
-		await submit();
+			if (!editEventForm.fields.allIssues()?.length) {
+				editModal.close();
+			}
+		})
+	);
+	const enhancedToggleEventForm = $derived.by(() =>
+		toggleEventForm.enhance(async ({ submit }) => {
+			await submit();
 
-		if (!toggleEventForm.fields.allIssues()?.length) {
-			toggleModal.close();
-		}
-	});
+			if (!toggleEventForm.fields.allIssues()?.length) {
+				toggleModal.close();
+			}
+		})
+	);
 
 	function eventDateInputValue(date: Date) {
 		return (timeZone ? dayjs(date).tz(timeZone) : dayjs(date)).format('YYYY-MM-DDTHH:mm');
@@ -53,7 +56,7 @@
 
 	function openEditModal() {
 		editEventForm.fields.set({
-			id: eventId,
+			id: event.id,
 			event: event.content,
 			date: eventDateInputValue(event.date),
 			projectId: event.projectId ? String(event.projectId) : '0'
@@ -63,7 +66,7 @@
 
 	function openToggleModal() {
 		toggleEventForm.fields.set({
-			id: eventId,
+			id: event.id,
 			action: event.completed ? 'uncomplete' : 'complete'
 		});
 		toggleModal.showModal();
@@ -98,10 +101,10 @@
 		</div>
 	</div>
 	<div class="flex md:gap-2">
-		<button class="btn btn-circle my-auto" aria-label="Edit Project" onclick={openEditModal}>
+		<button class="btn btn-circle my-auto" aria-label="Edit event" onclick={openEditModal}>
 			<i class="fa-solid fa-pencil text-lg md:text-xl"></i>
 		</button>
-		<button class="btn btn-circle my-auto" aria-label="Delete or Complete Project" onclick={openToggleModal}>
+		<button class="btn btn-circle my-auto" aria-label="Change event status" onclick={openToggleModal}>
 			<i class="fa-regular fa-circle-check text-lg md:text-xl"></i>
 		</button>
 	</div>
@@ -148,7 +151,7 @@
 							{...editEventForm.fields.projectId.as('select')}
 						>
 							<option value="0">No project</option>
-							{#each projects as project}
+							{#each projects as project (project.id)}
 								<option value={String(project.id)}>{project.name}</option>
 							{/each}
 						</select>
@@ -183,7 +186,11 @@
 			<h2 class="text-xl font-bold">Complete or Delete Event?</h2>
 			<div class="modal-action">
 				<form {...enhancedToggleEventForm} class="flex w-full flex-col gap-3 md:flex-row">
-					<select {...toggleEventForm.fields.action.as('select')} class="select w-full">
+					<select
+						aria-label="Action"
+						{...toggleEventForm.fields.action.as('select')}
+						class="select w-full"
+					>
 						<option value={event.completed ? 'uncomplete' : 'complete'}
 							>{event.completed ? 'Uncomplete' : 'Complete'}</option
 						>

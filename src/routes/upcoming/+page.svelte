@@ -5,10 +5,10 @@
 	import { getUpcomingEvents } from '$lib/remote/events.remote';
 
 	let { data } = $props();
-	const user = $derived(data.user!);
+	const user = $derived(data.user);
 	const upcomingEvents = getUpcomingEvents();
-	const userLocale = $derived(user.locale);
-	const userTimeZone = $derived(user.timeZone);
+	const userLocale = $derived(user?.locale);
+	const userTimeZone = $derived(user?.timeZone);
 </script>
 
 <svelte:head>

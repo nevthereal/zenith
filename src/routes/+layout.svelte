@@ -1,6 +1,5 @@
 <script>
 	import { dev } from '$app/environment';
-	import { onMount } from 'svelte';
 	import logo from '$lib/assets/zenith-logo.svg';
 	import '../app.css';
 
@@ -8,7 +7,7 @@
 
 	const user = $derived(data.user);
 
-	onMount(async () => {
+	$effect(() => {
 		if (!user) return;
 
 		const resolved = Intl.DateTimeFormat().resolvedOptions();
@@ -18,7 +17,7 @@
 		if (!locale || !timeZone) return;
 		if (user.locale === locale && user.timeZone === timeZone) return;
 
-		await fetch('/api/user-context', {
+		void fetch('/api/user-context', {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/json'

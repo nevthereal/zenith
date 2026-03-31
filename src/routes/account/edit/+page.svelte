@@ -7,17 +7,12 @@
 	import { zUpdateUser } from '$lib/zod';
 
 	let { data } = $props();
-	const user = $derived(data.user!);
 
 	let deleteModal: HTMLDialogElement;
-	let usernameInitialized = $state(false);
-	const usernameForm = updateUsername.preflight(zUpdateUser);
-
-	$effect(() => {
-		if (usernameInitialized) return;
-
-		usernameForm.fields.username.set(user.name);
-		usernameInitialized = true;
+	const usernameForm = $derived.by(() => {
+		const form = updateUsername.preflight(zUpdateUser);
+		form.fields.username.set(data.user?.name ?? '');
+		return form;
 	});
 </script>
 

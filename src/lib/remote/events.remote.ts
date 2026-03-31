@@ -71,6 +71,7 @@ export const getCompletedEvents = query(async () => {
 
 export const createEvent = form(zCreateEvent, async ({ event }) => {
 	const { user, timeZone, locale, event: requestEvent } = getUserContext();
+	const nowInUserTimeZone = dayjs().tz(timeZone);
 	const subscription = await getActiveSubscription(requestEvent.request.headers);
 
 	const freeToday = await db.query.freeTierGenerations.findMany({
@@ -103,14 +104,22 @@ export const createEvent = form(zCreateEvent, async ({ event }) => {
 		}
 	}
 
-	const usersEvents = await db.query.eventsTable.findMany({
+	const promptEvents = await db.query.eventsTable.findMany({
 		where: {
-			userId: user.id
+			userId: user.id,
+			completed: false
+		},
+		orderBy: {
+			date: 'asc'
+		},
+		limit: 25,
+		columns: {
+			content: true,
+			date: true
 		}
 	});
 
-	const nowInUserTimeZone = dayjs().tz(timeZone);
-	const usersEventsForPrompt = usersEvents.map((entry) => ({
+	const usersEventsForPrompt = promptEvents.map((entry) => ({
 		content: entry.content,
 		date: formatDateTimeIso(entry.date, timeZone)
 	}));
@@ -144,6 +153,10 @@ export const createEvent = form(zCreateEvent, async ({ event }) => {
 
 	if (Number.isNaN(parsedDate.getTime())) {
 		invalid('Could not parse a valid date from the generated event.');
+	}
+
+	if (!dayjs(parsedDate).tz(timeZone).isAfter(nowInUserTimeZone)) {
+		invalid('Generated event must be scheduled in the future.');
 	}
 
 	if (!subscription) {
@@ -180,10 +193,6 @@ export const editEvent = form(zEditEventForm, async ({ id, event, date, projectI
 	if (projectId !== '0') {
 		const requestedProjectId = Number(projectId);
 
-		if (!Number.isInteger(requestedProjectId)) {
-			invalid('Project not found');
-		}
-
 		const requestedProject = await db.query.projectsTable.findFirst({
 			where: {
 				id: requestedProjectId,
@@ -211,7 +220,7 @@ export const editEvent = form(zEditEventForm, async ({ id, event, date, projectI
 			date: parsedDate,
 			projectId: resolvedProjectId
 		})
-		.where(eq(eventsTable.id, id));
+		.where(and(eq(eventsTable.id, id), eq(eventsTable.userId, user.id)));
 
 	return { ok: true };
 });
@@ -236,7 +245,7 @@ export const toggleEvent = form(zToggleEventForm, async ({ id, action }) => {
 			.set({
 				completed: action === 'complete'
 			})
-			.where(eq(eventsTable.id, id));
+			.where(and(eq(eventsTable.id, id), eq(eventsTable.userId, user.id)));
 	} else {
 		await db
 			.delete(eventsTable)

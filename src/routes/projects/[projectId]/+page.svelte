@@ -10,23 +10,27 @@
 	import { zDeleteProjectForm, zEditProjectForm } from '$lib/zod';
 
 	let { data } = $props();
-	const projectId = data.projectId;
+	type Project = Awaited<ReturnType<typeof getProject>>;
+
+	const projectId = $derived(data.projectId);
 	const user = $derived(data.user!);
-	const projectQuery = getProject(projectId);
+	const projectQuery = $derived(getProject(projectId));
 	const userLocale = $derived(user.locale);
 	const userTimeZone = $derived(user.timeZone);
 
 	let editModal: HTMLDialogElement;
 	let deleteConfirmation = $state('');
-	const editProjectForm = editProject.for(projectId).preflight(zEditProjectForm);
-	const deleteProjectForm = deleteProject.for(projectId).preflight(zDeleteProjectForm);
-	const enhancedEditProjectForm = editProjectForm.enhance(async ({ submit }) => {
-		await submit();
+	const editProjectForm = $derived(editProject.for(projectId).preflight(zEditProjectForm));
+	const deleteProjectForm = $derived(deleteProject.for(projectId).preflight(zDeleteProjectForm));
+	const enhancedEditProjectForm = $derived(
+		editProjectForm.enhance(async ({ submit }) => {
+			await submit();
 
-		if (!editProjectForm.fields.allIssues()?.length) {
-			editModal.close();
-		}
-	});
+			if (!editProjectForm.fields.allIssues()?.length) {
+				closeEditModal();
+			}
+		})
+	);
 
 	function deadlineInputValue(deadline: string | Date | null) {
 		if (!deadline) return '';
@@ -34,13 +38,19 @@
 		return deadline instanceof Date ? dayjs(deadline).utc().format('YYYY-MM-DD') : deadline;
 	}
 
-	function openEditModal(project: Awaited<typeof projectQuery>) {
+	function openEditModal(project: Project) {
+		deleteConfirmation = '';
 		editProjectForm.fields.set({
 			id: project.id,
 			name: project.name,
 			deadline: deadlineInputValue(project.deadline)
 		});
 		editModal.showModal();
+	}
+
+	function closeEditModal() {
+		deleteConfirmation = '';
+		editModal.close();
 	}
 </script>
 
@@ -129,7 +139,7 @@
 		</div>
 	</div>
 
-	<dialog bind:this={editModal} class="modal">
+	<dialog bind:this={editModal} class="modal" onclose={() => (deleteConfirmation = '')}>
 		<div class="modal-box">
 			<h1 class="heading-main mb-4">Edit Project</h1>
 			<form {...enhancedEditProjectForm} class="flex flex-col gap-4">

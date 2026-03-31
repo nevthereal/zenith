@@ -4,6 +4,9 @@ import { svelteKitHandler } from 'better-auth/svelte-kit';
 import { building } from '$app/environment';
 
 export async function handle({ event, resolve }) {
+	event.locals.user = null;
+	event.locals.session = null;
+
 	const session = await auth.api.getSession({
 		headers: event.request.headers
 	});

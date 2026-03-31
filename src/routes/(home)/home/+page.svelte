@@ -24,6 +24,9 @@
 		src={EarthImage}
 		class="motion-preset-focus absolute inset-0 h-full w-full rounded-box object-cover"
 		alt="hero banner"
+		loading="eager"
+		width="1920"
+		height="1080"
 	/>
 	<div class="hero-overlay absolute inset-0 rounded-box bg-opacity-70"></div>
 	<div class="hero-content relative z-10 w-[80%] text-center">

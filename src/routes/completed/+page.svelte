@@ -5,10 +5,9 @@
 	import { getCompletedEvents } from '$lib/remote/events.remote';
 
 	let { data } = $props();
-	const user = $derived(data.user!);
-	const completedEvents = getCompletedEvents();
-	const userLocale = $derived(user.locale);
-	const userTimeZone = $derived(user.timeZone);
+	const user = $derived(data.user);
+	const userLocale = $derived(user?.locale);
+	const userTimeZone = $derived(user?.timeZone);
 </script>
 
 <svelte:head>
@@ -19,7 +18,7 @@
 	<h1 class="heading-main text-center">Completed Events</h1>
 	<section class="mt-4 flex w-full max-w-2xl flex-col items-center gap-4 md:mt-8">
 		<svelte:boundary>
-			{@const events = await completedEvents}
+			{@const events = await getCompletedEvents()}
 			{#if events.length === 0}
 				<h2 class="heading-small italic">No completed events.</h2>
 			{:else}

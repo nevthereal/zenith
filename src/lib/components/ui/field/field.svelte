@@ -8,6 +8,7 @@
 	type Props = HTMLAttributes<HTMLDivElement> & {
 		children?: Snippet;
 		class?: string;
+		group?: boolean;
 		orientation?: Orientation;
 		ref?: HTMLDivElement | null;
 	};
@@ -16,7 +17,9 @@
 		ref = $bindable(null),
 		class: className,
 		children,
+		group = false,
 		orientation = 'vertical',
+		role,
 		...restProps
 	}: Props = $props();
 </script>
@@ -32,7 +35,7 @@
 		orientation === 'responsive' && 'flex-col gap-4 sm:flex-row sm:items-start sm:justify-between',
 		className
 	)}
-	role="group"
+	role={group ? (role ?? 'group') : role}
 	{...restProps}
 >
 	{@render children?.()}
