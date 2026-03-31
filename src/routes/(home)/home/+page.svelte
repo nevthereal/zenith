@@ -1,6 +1,5 @@
 <script lang="ts">
-	import EarthImage from '$lib/assets/earth.jpg?enhanced';
-	import { fade } from 'svelte/transition';
+	import EarthImage from '$lib/assets/earth.jpg';
 </script>
 
 <svelte:head>
@@ -21,7 +20,7 @@
 <section
 	class="hero relative mx-auto my-8 h-[75dvh] w-11/12 rounded-box bg-base-100 bg-blend-color-dodge"
 >
-	<enhanced:img
+	<img
 		src={EarthImage}
 		class="motion-preset-focus absolute inset-0 h-full w-full rounded-box object-cover"
 		alt="hero banner"

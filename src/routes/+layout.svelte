@@ -6,7 +6,7 @@
 
 	const { children, data } = $props();
 
-	const user = data.user;
+	const user = $derived(data.user);
 
 	onMount(async () => {
 		if (!user) return;

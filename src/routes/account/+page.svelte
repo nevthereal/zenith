@@ -1,11 +1,10 @@
 	<script lang="ts">
-		import { cn } from '$lib/utils.js';
-		import { dayjs } from '$lib/datetime';
+	import { cn } from '$lib/utils.js';
+	import { dayjs } from '$lib/datetime';
 
 	let { data } = $props();
-
-	const user = data.user;
-	const userTimeZone = $derived(data.user?.timeZone);
+	const user = $derived(data.user!);
+	const userTimeZone = $derived(user.timeZone);
 	const now = $derived(userTimeZone ? dayjs().tz(userTimeZone) : dayjs());
 	const joinedAt = $derived(
 		userTimeZone ? dayjs(user.createdAt).tz(userTimeZone) : dayjs(user.createdAt)

@@ -64,6 +64,10 @@ export const auth = betterAuth({
 export type Auth = typeof auth;
 export type User = typeof auth.$Infer.Session.user;
 export type Session = typeof auth.$Infer.Session.session;
+export type AppUser = User & {
+	locale?: string | null;
+	timeZone?: string | null;
+};
 
 export async function getActiveSubscription(headers: Headers) {
 	const subscriptions = await auth.api.listActiveSubscriptions({

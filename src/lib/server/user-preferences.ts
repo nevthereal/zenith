@@ -1,8 +1,8 @@
 import type { Cookies } from '@sveltejs/kit';
-import type { User } from '$lib/auth';
+import type { AppUser } from '$lib/auth';
 import { normalizeLocale, safeTimeZone } from '$lib/datetime';
 
-export function resolveUserTimeZone(user: User | null, cookies: Cookies) {
+export function resolveUserTimeZone(user: AppUser | null, cookies: Cookies) {
 	const userTimeZone = safeTimeZone(user?.timeZone);
 	if (userTimeZone) return userTimeZone;
 
@@ -12,7 +12,7 @@ export function resolveUserTimeZone(user: User | null, cookies: Cookies) {
 	return 'UTC';
 }
 
-export function resolveUserLocale(user: User | null, cookies: Cookies, headers: Headers) {
+export function resolveUserLocale(user: AppUser | null, cookies: Cookies, headers: Headers) {
 	const userLocale = normalizeLocale(user?.locale);
 	if (userLocale) return userLocale;
 

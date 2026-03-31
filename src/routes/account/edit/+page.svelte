@@ -1,19 +1,24 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { authClient } from '$lib/auth/client.js';
-	import Label from '$lib/components/Label.svelte';
-	import { superForm } from 'sveltekit-superforms';
+	import * as Field from '$lib/components/ui/field/index.js';
+	import { updateUsername } from '$lib/remote/account.remote';
+	import { cn } from '$lib/utils.js';
+	import { zUpdateUser } from '$lib/zod';
 
 	let { data } = $props();
+	const user = $derived(data.user!);
 
 	let deleteModal: HTMLDialogElement;
+	let usernameInitialized = $state(false);
+	const usernameForm = updateUsername.preflight(zUpdateUser);
 
-	const {
-		form: usernameForm,
-		enhance: usernameEnhance,
-		allErrors: errors,
-		message: usernameMessage
-	} = superForm(data.updateForm);
+	$effect(() => {
+		if (usernameInitialized) return;
+
+		usernameForm.fields.username.set(user.name);
+		usernameInitialized = true;
+	});
 </script>
 
 <svelte:head>
@@ -22,27 +27,27 @@
 
 <section class="max-w-64 space-y-4">
 	<h1 class="heading-main">Edit account</h1>
-	<form use:usernameEnhance action="?/username" method="post" class="flex flex-col gap-2">
-		<div class="flex flex-col">
-			<Label forAttr="username">Update username</Label>
+	<form {...usernameForm} class="flex flex-col gap-4">
+		<Field.Field data-invalid={usernameForm.fields.username.issues()?.length ? true : undefined}>
+			<Field.Label for="username">Update username</Field.Label>
 			<input
-				type="text"
-				bind:value={$usernameForm.username}
-				name="username"
-				class="input input-bordered"
+				id="username"
+				class={cn(
+					'input input-bordered w-full',
+					usernameForm.fields.username.issues()?.length && 'input-error'
+				)}
+				{...usernameForm.fields.username.as('text')}
 			/>
-		</div>
-		{#if $errors}
-			{#each $errors as err}
-				<span class="text-error">
-					{new Intl.ListFormat('en', { type: 'conjunction' }).format(err.messages)}
-				</span>
+			{#each usernameForm.fields.username.issues() ?? [] as issue (`username-${issue.message}`)}
+				<Field.Error>{issue.message}</Field.Error>
 			{/each}
-		{/if}
-		<button class="btn btn-primary">Update</button>
-		{#if $usernameMessage}
-			<span class="text-success">{$usernameMessage}</span>
-		{/if}
+		</Field.Field>
+		{#each usernameForm.fields.allIssues() ?? [] as issue (`account-${issue.path.join('.')}-${issue.message}`)}
+			{#if issue.path.length === 0}
+				<Field.Error>{issue.message}</Field.Error>
+			{/if}
+		{/each}
+		<button class="btn btn-primary" disabled={usernameForm.pending > 0}>Update</button>
 	</form>
 	<div class="flex flex-col gap-2">
 		<h2 class="heading-sub">Danger zone</h2>
