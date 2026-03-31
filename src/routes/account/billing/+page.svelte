@@ -4,7 +4,7 @@
 	import { authClient } from '$lib/auth/client.js';
 
 	const { data } = $props();
-	const user = data.user;
+	const user = $derived(data.user!);
 
 	const { subscription } = $derived(data);
 </script>
@@ -44,7 +44,7 @@
 									cancelUrl: `${page.url.origin}/account/billing`
 								});
 							} catch (error) {
-								console.log(error);
+								console.error(error);
 							}
 						}}>Subscribe</button
 					>

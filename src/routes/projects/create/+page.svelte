@@ -1,12 +1,11 @@
 <script lang="ts">
-	import Label from '$lib/components/Label.svelte';
-	import { dateProxy, superForm } from 'sveltekit-superforms';
+	import * as Field from '$lib/components/ui/field/index.js';
+	import Spinner from '$lib/components/Spinner.svelte';
+	import { createProject } from '$lib/remote/projects.remote';
+	import { cn } from '$lib/utils.js';
+	import { zCreateProjectForm } from '$lib/zod';
 
-	let { data } = $props();
-
-	const { form, errors, enhance, constraints } = superForm(data.createProjectForm);
-
-	const dateInput = dateProxy(form, 'deadline', { format: 'date' });
+	const createProjectForm = createProject.preflight(zCreateProjectForm);
 </script>
 
 <svelte:head>
@@ -15,31 +14,44 @@
 
 <section class="mx-auto w-full max-w-xl">
 	<h1 class="heading-main text-center">Create a project</h1>
-	<form method="post" class="flex flex-col gap-2 md:mx-16" use:enhance>
-		<div class="flex flex-col">
-			<Label forAttr="name">Project name:</Label>
-			<input
-				{...$constraints.name}
-				type="text"
-				class="input input-primary"
-				name="name"
-				bind:value={$form.name}
-			/>
-			{#if $errors.name}
-				<span>{$errors.name}</span>
-			{/if}
-		</div>
-		<div class="flex flex-col">
-			<Label forAttr="dealine">Deadline (optional):</Label>
-			<input
-				{...$constraints.deadline}
-				type="date"
-				class="input input-primary"
-				name="deadline"
-				bind:value={$dateInput}
-			/>
-		</div>
-		<button class="btn btn-primary mx-auto mt-2">Create</button>
+	<form {...createProjectForm} class="md:mx-16">
+		<Field.Set class="gap-6">
+			<Field.Group>
+				<Field.Field data-invalid={createProjectForm.fields.name.issues()?.length ? true : undefined}>
+					<Field.Label for="name">Project name</Field.Label>
+					<input
+						id="name"
+						class={cn(
+							'input input-primary w-full',
+							createProjectForm.fields.name.issues()?.length && 'input-error'
+						)}
+						{...createProjectForm.fields.name.as('text')}
+					/>
+					{#each createProjectForm.fields.name.issues() ?? [] as issue (`name-${issue.message}`)}
+						<Field.Error>{issue.message}</Field.Error>
+					{/each}
+				</Field.Field>
+				<Field.Field>
+					<Field.Label for="deadline">Deadline (optional)</Field.Label>
+					<input
+						id="deadline"
+						class="input input-primary w-full"
+						{...createProjectForm.fields.deadline.as('date')}
+					/>
+				</Field.Field>
+			</Field.Group>
+			{#each createProjectForm.fields.allIssues() ?? [] as issue (`project-${issue.path.join('.')}-${issue.message}`)}
+				{#if issue.path.length === 0}
+					<Field.Error>{issue.message}</Field.Error>
+				{/if}
+			{/each}
+			<button class="btn btn-primary mx-auto mt-2" disabled={createProjectForm.pending > 0}>
+				Create
+				{#if createProjectForm.pending > 0}
+					<Spinner />
+				{/if}
+			</button>
+		</Field.Set>
 	</form>
 </section>
 

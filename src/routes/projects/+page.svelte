@@ -1,11 +1,14 @@
 <script lang="ts">
 	import ProjectCard from '$lib/components/ProjectCard.svelte';
 	import ProjectCardLoading from '$lib/components/ProjectCardLoading.svelte';
-	import Error from '../+error.svelte';
+	import Error from '$lib/components/Error.svelte';
+	import { getProjects } from '$lib/remote/projects.remote';
 
 	let { data } = $props();
-	const userLocale = $derived(data.user?.locale);
-	const userTimeZone = $derived(data.user?.timeZone);
+	const user = $derived(data.user!);
+	const myProjects = getProjects();
+	const userLocale = $derived(user.locale);
+	const userTimeZone = $derived(user.timeZone);
 </script>
 
 <svelte:head>
@@ -26,9 +29,8 @@
 			></i>
 			<p class="text-xl font-medium">Create a space</p>
 		</a>
-		{#await data.myProjects}
-			<ProjectCardLoading />
-		{:then projects}
+		<svelte:boundary>
+			{@const projects = await myProjects}
 			{#if projects.length === 0}
 				<div class="flex items-center justify-center">
 					<p>No projects</p>
@@ -45,8 +47,17 @@
 					/>
 				{/each}
 			{/if}
-		{:catch}
-			<Error />
-		{/await}
+
+			{#snippet pending()}
+				<ProjectCardLoading />
+			{/snippet}
+
+			{#snippet failed(_error, reset)}
+				<div class="col-span-full flex flex-col items-center gap-3">
+					<Error />
+					<button class="btn btn-outline btn-sm" onclick={reset}>Retry</button>
+				</div>
+			{/snippet}
+		</svelte:boundary>
 	</section>
 </div>

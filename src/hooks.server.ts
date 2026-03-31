@@ -1,8 +1,12 @@
 import { auth } from '$lib/auth';
 import { resolveUserLocale, resolveUserTimeZone } from '$lib/server/user-preferences';
 import { svelteKitHandler } from 'better-auth/svelte-kit';
+import { building } from '$app/environment';
 
 export async function handle({ event, resolve }) {
+	event.locals.user = null;
+	event.locals.session = null;
+
 	const session = await auth.api.getSession({
 		headers: event.request.headers
 	});
@@ -15,5 +19,5 @@ export async function handle({ event, resolve }) {
 		event.locals.session = session.session;
 	}
 
-	return svelteKitHandler({ event, resolve, auth });
+	return svelteKitHandler({ event, resolve, auth, building });
 }

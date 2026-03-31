@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { eventsTable, projectsTable } from '$lib/db/schema';
 	import { dayjs } from '$lib/datetime';
+	import { editEvent, toggleEvent } from '$lib/remote/events.remote';
+	import * as Field from '$lib/components/ui/field/index.js';
 	import { cn, prettyDate } from '$lib/utils';
-	import type { zToggleEvent, zEditEvent } from '$lib/zod';
-	import { type SuperValidated, type Infer, superForm, dateProxy } from 'sveltekit-superforms';
+	import { zEditEventForm, zToggleEventForm } from '$lib/zod';
 	import Spinner from './Spinner.svelte';
-	import Label from './Label.svelte';
 
 	type Event = typeof eventsTable.$inferSelect;
 	type Project = typeof projectsTable.$inferSelect;
@@ -15,8 +15,6 @@
 	}
 
 	interface Props {
-		editFormData: SuperValidated<Infer<typeof zEditEvent>>;
-		toggleFormData: SuperValidated<Infer<typeof zToggleEvent>>;
 		event: EventWithProject;
 		projects: {
 			id: number;
@@ -26,52 +24,53 @@
 		timeZone?: string | null;
 	}
 
-	let { editFormData, toggleFormData, event, projects, locale, timeZone }: Props = $props();
+	let { event, projects, locale, timeZone }: Props = $props();
 
 	let editModal: HTMLDialogElement;
 	let toggleModal: HTMLDialogElement;
-
-	const {
-		form: editForm,
-		enhance: editEnhance,
-		constraints: editConstraints,
-		delayed: editDelayed,
-		allErrors
-	} = superForm(editFormData, {
-		onResult({ result }) {
-			if (result.type === 'success') editModal.close();
-		},
-		invalidateAll: true,
-		id: `editForm-${event.id}`
-	});
-
-	const {
-		enhance: toggleEnhance,
-		form: toggleForm,
-		delayed
-	} = superForm(toggleFormData, {
-		onResult({ result }) {
-			if (result.type === 'success') editModal.close();
-		},
-		invalidateAll: true,
-		id: `toggleForm-${event.id}`
-	});
-
 	const eventDate = $derived(timeZone ? dayjs(event.date).tz(timeZone) : dayjs(event.date));
-	const dateInput = dateProxy(editForm, 'date', { format: 'datetime-local' });
+	const editEventForm = $derived.by(() => editEvent.for(event.id).preflight(zEditEventForm));
+	const toggleEventForm = $derived.by(() => toggleEvent.for(event.id).preflight(zToggleEventForm));
+	const enhancedEditEventForm = $derived.by(() =>
+		editEventForm.enhance(async ({ submit }) => {
+			await submit();
 
-	$editForm.event = event.content;
-	$editForm.id = event.id;
-	$dateInput = (timeZone ? dayjs(event.date).tz(timeZone) : dayjs(event.date)).format(
-		'YYYY-MM-DDTHH:mm:ss.SSS'
+			if (!editEventForm.fields.allIssues()?.length) {
+				editModal.close();
+			}
+		})
 	);
-	if (event.projectId) {
-		$editForm.projectId = event.projectId;
-	} else {
-		$editForm.projectId = 0;
+	const enhancedToggleEventForm = $derived.by(() =>
+		toggleEventForm.enhance(async ({ submit }) => {
+			await submit();
+
+			if (!toggleEventForm.fields.allIssues()?.length) {
+				toggleModal.close();
+			}
+		})
+	);
+
+	function eventDateInputValue(date: Date) {
+		return (timeZone ? dayjs(date).tz(timeZone) : dayjs(date)).format('YYYY-MM-DDTHH:mm');
 	}
-	$toggleForm.action = event.completed ? 'uncomplete' : 'complete';
-	$toggleForm.id = event.id;
+
+	function openEditModal() {
+		editEventForm.fields.set({
+			id: event.id,
+			event: event.content,
+			date: eventDateInputValue(event.date),
+			projectId: event.projectId ? String(event.projectId) : '0'
+		});
+		editModal.showModal();
+	}
+
+	function openToggleModal() {
+		toggleEventForm.fields.set({
+			id: event.id,
+			action: event.completed ? 'uncomplete' : 'complete'
+		});
+		toggleModal.showModal();
+	}
 </script>
 
 <div
@@ -102,71 +101,71 @@
 		</div>
 	</div>
 	<div class="flex md:gap-2">
-		<button
-			class="btn btn-circle my-auto"
-			aria-label="Edit Project"
-			onclick={() => editModal.showModal()}
-		>
+		<button class="btn btn-circle my-auto" aria-label="Edit event" onclick={openEditModal}>
 			<i class="fa-solid fa-pencil text-lg md:text-xl"></i>
 		</button>
-		<button
-			class="btn btn-circle my-auto"
-			aria-label="Delete or Complete Project"
-			onclick={() => toggleModal.showModal()}
-		>
+		<button class="btn btn-circle my-auto" aria-label="Change event status" onclick={openToggleModal}>
 			<i class="fa-regular fa-circle-check text-lg md:text-xl"></i>
 		</button>
 	</div>
 	<dialog id={`edit-modal-${event.id}`} bind:this={editModal} class="modal">
 		<div class="modal-box">
 			<h1 class="mb-4 text-xl font-medium">Edit Event</h1>
-			<form method="POST" action="/?/edit" use:editEnhance class="flex flex-col gap-4">
-				<input type="hidden" name="id" bind:value={$editForm.id} />
+			<form {...enhancedEditEventForm} class="flex flex-col gap-4">
 				<div class="grid gap-4 md:grid-cols-2">
-					<div class="flex flex-col">
-						<Label forAttr="event">Event name</Label>
+					<Field.Field data-invalid={editEventForm.fields.event.issues()?.length ? true : undefined}>
+						<Field.Label for={`event-name-${event.id}`}>Event name</Field.Label>
 						<input
-							{...$editConstraints.event}
-							bind:value={$editForm.event}
-							type="text"
-							name="event"
+							id={`event-name-${event.id}`}
 							placeholder="What?"
-							class="input input-bordered"
-							defaultValue={$editForm.event}
-						/>
-					</div>
-					<div class="flex flex-col">
-						<Label forAttr="date">Date</Label>
-						<input
-							{...$editConstraints.date}
-							bind:value={$dateInput}
-							name="date"
-							type="datetime-local"
-							placeholder="When?"
-							class="input input-bordered"
-							defaultValue={(timeZone ? dayjs(event.date).tz(timeZone) : dayjs(event.date)).format(
-								'YYYY-MM-DDTHH:mm:ss.SSS'
+							class={cn(
+								'input input-bordered w-full',
+								editEventForm.fields.event.issues()?.length && 'input-error'
 							)}
+							{...editEventForm.fields.event.as('text')}
 						/>
-					</div>
-					<div class="flex flex-col md:col-span-2">
-						<Label forAttr="project">Project</Label>
+						{#each editEventForm.fields.event.issues() ?? [] as issue (`event-name-${issue.message}`)}
+							<Field.Error>{issue.message}</Field.Error>
+						{/each}
+					</Field.Field>
+					<Field.Field data-invalid={editEventForm.fields.date.issues()?.length ? true : undefined}>
+						<Field.Label for={`event-date-${event.id}`}>Date</Field.Label>
+						<input
+							id={`event-date-${event.id}`}
+							placeholder="When?"
+							class={cn(
+								'input input-bordered w-full',
+								editEventForm.fields.date.issues()?.length && 'input-error'
+							)}
+							{...editEventForm.fields.date.as('datetime-local')}
+						/>
+						{#each editEventForm.fields.date.issues() ?? [] as issue (`event-date-${issue.message}`)}
+							<Field.Error>{issue.message}</Field.Error>
+						{/each}
+					</Field.Field>
+					<Field.Field class="md:col-span-2">
+						<Field.Label for={`event-project-${event.id}`}>Project</Field.Label>
 						<select
-							name="projectId"
-							class="select select-bordered"
-							bind:value={$editForm.projectId}
+							id={`event-project-${event.id}`}
+							class="select select-bordered w-full"
+							{...editEventForm.fields.projectId.as('select')}
 						>
-							<option value={0}>No project</option>
-							{#each projects as project}
-								<option value={project.id}>{project.name}</option>
+							<option value="0">No project</option>
+							{#each projects as project (project.id)}
+								<option value={String(project.id)}>{project.name}</option>
 							{/each}
 						</select>
-					</div>
+					</Field.Field>
 				</div>
+				{#each editEventForm.fields.allIssues() ?? [] as issue (`edit-event-${issue.path.join('.')}-${issue.message}`)}
+					{#if issue.path.length === 0}
+						<Field.Error>{issue.message}</Field.Error>
+					{/if}
+				{/each}
 				<div class="flex">
-					<button class="btn btn-primary mx-auto" type="submit">
+					<button class="btn btn-primary mx-auto" type="submit" disabled={editEventForm.pending > 0}>
 						Update
-						{#if $editDelayed}
+						{#if editEventForm.pending > 0}
 							<Spinner />
 						{/if}
 					</button>
@@ -175,13 +174,7 @@
 			<p
 				class="mt-8 hidden select-none text-center font-mono text-xs text-base-content/75 md:block"
 			>
-				{#if $allErrors.length != 0}
-					{#each $allErrors as err}
-						<span class="mt-2 text-error">{err.messages}</span>
-					{/each}
-				{:else}
-					<span>press <kbd class="kbd">esc</kbd> or click outside to cancel</span>
-				{/if}
+				<span>press <kbd class="kbd">esc</kbd> or click outside to cancel</span>
 			</p>
 		</div>
 		<form method="dialog" class="modal-backdrop">
@@ -192,20 +185,31 @@
 		<div class="modal-box">
 			<h2 class="text-xl font-bold">Complete or Delete Event?</h2>
 			<div class="modal-action">
-				<form method="POST" action="/?/toggle" use:toggleEnhance class="flex gap-2">
-					<select name="action" id="action" bind:value={$toggleForm.action} class="select">
+				<form {...enhancedToggleEventForm} class="flex w-full flex-col gap-3 md:flex-row">
+					<select
+						aria-label="Action"
+						{...toggleEventForm.fields.action.as('select')}
+						class="select w-full"
+					>
 						<option value={event.completed ? 'uncomplete' : 'complete'}
 							>{event.completed ? 'Uncomplete' : 'Complete'}</option
 						>
 						<option value="delete">Delete</option>
 					</select>
-					<input type="hidden" name="id" bind:value={$toggleForm.id} />
+					{#each toggleEventForm.fields.allIssues() ?? [] as issue (`toggle-${issue.path.join('.')}-${issue.message}`)}
+						{#if issue.path.length === 0}
+							<Field.Error>{issue.message}</Field.Error>
+						{/if}
+					{/each}
 					<button
-						disabled={$delayed}
-						class={cn('btn', $toggleForm.action === 'delete' ? 'btn-error' : 'btn-success')}
+						disabled={toggleEventForm.pending > 0}
+						class={cn(
+							'btn',
+							toggleEventForm.fields.action.value() === 'delete' ? 'btn-error' : 'btn-success'
+						)}
 					>
 						Confirm
-						{#if $delayed}<Spinner />{/if}</button
+						{#if toggleEventForm.pending > 0}<Spinner />{/if}</button
 					>
 				</form>
 			</div>
