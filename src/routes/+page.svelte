@@ -28,7 +28,6 @@
 			form.reset();
 		}
 	});
-
 </script>
 
 <svelte:head>

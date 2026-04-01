@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import { authClient } from '$lib/auth/client.js';
 	import * as Field from '$lib/components/ui/field/index.js';
 	import { updateUsername } from '$lib/remote/account.remote';
@@ -64,7 +63,7 @@
 			<button
 				class="btn btn-error"
 				onclick={async () => {
-					await authClient(page.url.origin).deleteUser({ callbackURL: '/home' });
+					await authClient.deleteUser({ callbackURL: '/home' });
 					location.reload();
 				}}>Delete</button
 			>

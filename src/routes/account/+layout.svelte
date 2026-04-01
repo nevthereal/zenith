@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import { authClient } from '$lib/auth/client';
-	import { redirect } from '@sveltejs/kit';
 
 	const { children } = $props();
 </script>
@@ -28,7 +26,7 @@
 			<li>
 				<button
 					onclick={async () => {
-						await authClient(page.url.origin).signOut();
+						await authClient.signOut();
 						location.reload();
 					}}
 					class="flex items-center gap-2 text-error"
