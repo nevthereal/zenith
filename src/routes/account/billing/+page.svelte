@@ -38,7 +38,7 @@
 						class="btn btn-warning"
 						onclick={async () => {
 							try {
-								await authClient(page.url.origin).subscription.upgrade({
+								await authClient.subscription.upgrade({
 									plan: 'pro',
 									successUrl: `${page.url.origin}`,
 									cancelUrl: `${page.url.origin}/account/billing`
